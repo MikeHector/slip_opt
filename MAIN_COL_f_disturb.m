@@ -1,7 +1,7 @@
 % MHector
 % 6.1.18
 % Master script to run a bunch of collocations from
-
+%Something new
 %Let's run over several damping values using previous damping value
 %solution as a seed for the next optimization
 clear; clc;
