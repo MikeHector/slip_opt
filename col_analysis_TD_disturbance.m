@@ -15,7 +15,7 @@ fig = figure;
 an1 = plot(1,1); hold on
 an2 = plot(2,2);
 title = title('wut');
-axis([-0.2, 0.15, 0, .9])
+axis([-0.4, 0.3, 0, .9])
 % axis([0, 0.6, -50, 50])
 legend('leg torque', 'ankle torque')
 xlabel('x displacement')
