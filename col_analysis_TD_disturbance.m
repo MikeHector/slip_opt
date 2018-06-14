@@ -8,7 +8,7 @@ if record_video==1
     q.FrameRate=10;
     open(q);
 end
-strucc = dir('opt_TD*');
+strucc = dir('C:\Users\mike-\Google Drive\DRL- Mike Hector\SLIP Program\Collocation\optimization_results\opt_TD_disturb2*');
 
 velmax = 3;
 fig = figure;
@@ -23,6 +23,7 @@ ylabel('y displacement')
 
 for i = 1:length(strucc)
     filename = strucc(i).name;
+    filename = strcat('C:\Users\mike-\Google Drive\DRL- Mike Hector\SLIP Program\Collocation\optimization_results\',filename);
     load(filename)
     results{i} = opt_results;
     disturb(i) = opt_results.TD_angle;
