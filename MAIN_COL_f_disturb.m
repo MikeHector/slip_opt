@@ -52,7 +52,7 @@ wb = waitbar(0, 'Optimizing unoptimized optimizations');
 for i = 1:length(TD_angle)
     ankles_on = 1;
     [x_opt_ankle, opt_results] = RUN_COL(seed, damping_values, apex_vel, apex_height, ankles_on, end_vel, disturbance_f, TD_angle(i));
-    save(strcat('opt_TD_disturb_', num2str(cputime*10000000)),'opt_results');
+    
     seed = x_opt_ankle;
     if opt_results.flag < 0
         bad_stuff = bad_stuff + 1;
