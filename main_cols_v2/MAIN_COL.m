@@ -6,7 +6,7 @@
 %solution as a seed for the next optimization
 clear; clc;
 
-delta_damping = 50;
+delta_damping = 1;
 damping_values = 0:delta_damping:500;
 % damping_values = [damping_values, 200:2:1500];
 apex_vel = 1; apex_height = 1.1; 
@@ -47,7 +47,7 @@ while damping < 300
     end
      damping = damping_values(i);
      
-     if abs(min(diff(damping_values))) < 1e-3
+     if abs(min(diff(damping_values))) < 1e-6
          break
      end
      damping_values
