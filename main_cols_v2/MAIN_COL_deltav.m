@@ -6,8 +6,8 @@
 %solution as a seed for the next optimization
 clear; clc;
 
-delta_vel = .05;
-vel_values = .5:delta_vel:3;
+dv = .05;
+vel_values = 0:dv:2;
 % damping_values = [damping_values, 200:2:1500];
 apex_vel = 1; apex_height = 1.1; 
 damping = 40;
@@ -33,10 +33,10 @@ bad_stuff = 0;
 too_many_iters = 0;
 
 i = 1;
-apex_vel = vel_values(i);
-while apex_vel <= 3
+% apex_vel = vel_values(i);
+while vel_values(i) <= 2
     ankles_on = 1;
-    [x_opt_ankle, opt_results] = RUN_COL(opt_seed, damping, apex_vel, apex_height, ankles_on, apex_vel, 0, atan2(opt_seed(2,1),opt_seed(1,1)));
+    [x_opt_ankle, opt_results] = RUN_COL(opt_seed, damping, apex_vel, apex_height, ankles_on, apex_vel + vel_values(i), 0, atan2(opt_seed(2,1),opt_seed(1,1)));
     if opt_results.flag <= 0
         vel_values(end+1) = (vel_values(i) + vel_values(i-1))/2;
         vel_values = sort(vel_values);
@@ -46,7 +46,7 @@ while apex_vel <= 3
         opt_seed = x_opt_ankle; 
         i = i + 1;
     end
-     apex_vel = vel_values(i);
+     damping = vel_values(i);
      
      if abs(min(diff(vel_values))) < 1e-6
          break
