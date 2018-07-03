@@ -7,7 +7,7 @@
 clear; clc;
 
 delta_damping = 1;
-damping_values = 0:delta_damping:500;
+damping_values = 149:delta_damping:450;
 % damping_values = [damping_values, 200:2:1500];
 apex_vel = 1; apex_height = 1.1; 
 
@@ -23,8 +23,8 @@ apex_vel = 1; apex_height = 1.1;
 % t = linspace(0,.2,40);
 % seedy = [x; y; r0; dx; dy; dr0; Tl; Ta; t];
 
-load('C://Users/mike-/Documents/DRL/collocation/opt_results/no_damp_baseline.mat')
-opt_seed = optimized;
+load('C://Users/mike-/Documents/DRL/collocation/opt_results/damping_results/opt_damping_331973906250.mat')
+opt_seed = opt_results.X;
 
 clearvars -except opt_seed apex_vel apex_height damping_values delta_damping
 
@@ -33,24 +33,28 @@ too_many_iters = 0;
 
 i = 1;
 damping = damping_values(i);
-while damping < 300
+for i = 1:length(damping_values)
     ankles_on = 1;
     [x_opt_ankle, opt_results] = RUN_COL(opt_seed, damping, apex_vel, apex_height, ankles_on, apex_vel, 0, atan2(opt_seed(2,1),opt_seed(1,1)));
-    if opt_results.flag <= 0
-        damping_values(end+1) = (damping_values(i) + damping_values(i-1))/2;
-        damping_values = sort(damping_values);
-    else
+%     if opt_results.flag <= 0
+%         damping_values(end+1) = (damping_values(i) + damping_values(i-1))/2;
+%         damping_values = sort(damping_values);
+%         if abs(damping_values(i) - damping_values(i - 1)) < 1e-6
+%             i = i + 1;
+%         end
+%     else
         filename = strcat('opt_damping_', num2str(cputime*10000000));
         save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\',filename),'opt_results');
         opt_seed = x_opt_ankle; 
-        i = i + 1;
-    end
+%         i = i + 1;
+%     end
      damping = damping_values(i);
      
-     if abs(min(diff(damping_values))) < 1e-6
-         break
+     if opt_results.flag == 0
+         too_many_iters = too_many_iters + 1;
+     elseif opt_results.flag < 0
+         bad_stuff = bad_stuff + 1;
      end
-     damping_values
 end
 
 % end

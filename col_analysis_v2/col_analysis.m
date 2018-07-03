@@ -1,4 +1,5 @@
 % MHector
+
 % 6.5.18
 % COL analysis
 clc; clear; close all
@@ -12,10 +13,19 @@ strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_resu
 
 cmax = 450;
 fig = figure;
-an1 = plot(1,1); hold on
+hold on
+subplot(2,2,1); an1 = plot(1,1);
+axis([-0.25, .5, .5, 1]); title('xy traj'); xlabel('x'); ylabel('y');
+subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
+axis([-.25, .5, -50, 50]); title('torque traj'); xlabel('x'); ylabel('torque');
+subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2);
+axis([0,150, 0, 1]); xlabel('damping'); ylabel('cost');
+subplot(2,2,4); an4 = plot(1,1);
+axis([-.25, .5, -.1, .1]); xlabel('x'); ylabel('xcop')
 % an2 = plot(2,2);
 title = title('wut');
-axis([-0.25, 0.25, .1, .9])
+% axis([-0.25, 0.25, .1, .9])
+
 % legend('leg torque', 'ankle torque')
 xlabel('time')
 % ylabel('torque')
@@ -29,10 +39,18 @@ for i = 1:length(strucc)
 end
 [c_sorted,i] = sort(c);
 
+q=1;
 for k = 1:length(i)
     results_sorted_c{k} = results{i(k)};
+    flags(k) = results{i(k)}.flag;
+    if results{i(k)}.flag > 0
+        c_graph(q) = results{i(k)}.c;
+        cost_graph(q) = results{i(k)}.cost;
+        q = q+1;
+    end
 end
-
+an32.XData = c_graph;
+an32.YData = cost_graph;
 for i = 1:numel(results)
     if results_sorted_c{i}.flag > 0
         time = results_sorted_c{i}.t;
@@ -40,15 +58,27 @@ for i = 1:numel(results)
         ankle_response = results_sorted_c{i}.Tankle;
         x = results_sorted_c{i}.x;
         y = results_sorted_c{i}.y;
+        r = results_sorted_c{i}.r;
+        k = results_sorted_c{i}.k;
+        xcop = -ankle_response .* r ./(k .*(results_sorted_c{i}.r0 -r).* y);
 
         an1.XData = x;
         an1.YData = y;
 
-%         an2.XData = time;
-%         an2.YData = ankle_response;    
+        an2.XData = x;
+        an2.YData = ankle_response;  
         
+        an22.XData = x;
+        an22.YData = leg_response; 
+        
+        an3.XData = results_sorted_c{i}.c;
+        an3.YData = results_sorted_c{i}.cost;
+        
+        an4.XData = x;
+        an4.YData = xcop;
+
         drawnow
-        title.String = ['damping = ', num2str(results_sorted_c{i}.c)];
+        title.String = ['damping = ', num2str(floor(results_sorted_c{i}.c))];
         pause(.05)
         if record_video==1
             F=getframe(gcf);
