@@ -5,10 +5,10 @@ function [ improve ] = spaced(flags, variable)
 %   flags that are +/- M % away from being evenly spaced
     N = 20;
     M = 1; %percent
-    middle = mean(variable);
+    
     %Find max variable
     badCounter = 1;
-    for i = middle:length(variable)
+    for i = 1:length(variable)
         if flag(i) < 0
             badCounter = badCounter + 1;
         end
@@ -18,20 +18,8 @@ function [ improve ] = spaced(flags, variable)
         end
     end
     
-    %Find min variable
-    badCounter = 1;
-    for i = 1:middle
-        if flag(i) < 0
-            badCounter = badCounter + 1;
-        end
-        if badCounter == 5
-            maxVar = variable(i -5);
-            break
-        end
-    end
-    
-    dist = linspace(minVar, maxVar,N);
-    span = abs(minVar - maxVar);
+    dist = linspace(min(variable), max(variable),N);
+    span = abs(min(variable) - max(variable));
     improve = [];
     for i = 1:length(dist)
         highBound = dist(i) + M/100 * span;
