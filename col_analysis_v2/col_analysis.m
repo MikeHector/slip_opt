@@ -36,6 +36,9 @@ for i = 1:length(strucc)
     load(filename)
     results{i} = opt_results;
     c(i) = opt_results.c;
+    if opt_results.c == 150
+        pause
+    end
 end
 [c_sorted,i] = sort(c);
 
