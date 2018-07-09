@@ -11,17 +11,17 @@ if record_video==1
 end
 strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_*');
 
-cmax = 450;
+cmax = 410;
 fig = figure;
 hold on
 subplot(2,2,1); an1 = plot(1,1);
-axis([-0.25, .5, .5, 1]); title('xy traj'); xlabel('x'); ylabel('y');
+axis([-0.25, .5, .25, 1]); title('xy traj'); xlabel('x'); ylabel('y');
 subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
 axis([-.25, .5, -50, 50]); title('torque traj'); xlabel('x'); ylabel('torque');
 subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2);
-axis([0,150, 0, 1]); xlabel('damping'); ylabel('cost');
+axis([0,cmax, 0, 10]); xlabel('damping'); ylabel('cost');
 subplot(2,2,4); an4 = plot(1,1);
-axis([-.25, .5, -.1, .1]); xlabel('x'); ylabel('xcop')
+axis([-.25, .5, -.12, .12]); xlabel('x'); ylabel('xcop')
 % an2 = plot(2,2);
 title = title('wut');
 % axis([-0.25, 0.25, .1, .9])
