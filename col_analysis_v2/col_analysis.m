@@ -37,7 +37,7 @@ for i = 1:length(strucc)
     results{i} = opt_results;
     c(i) = opt_results.c;
     if opt_results.c == 150
-        pause
+%         pause
     end
 end
 [c_sorted,i] = sort(c);

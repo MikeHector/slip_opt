@@ -27,7 +27,7 @@ end
 
 [~, keep] = spaced(flags, c_sorted);
 BADTHINGSARECOMING = 0;
-for i = 257:numel(results_sorted_c)
+for i = 1:numel(results_sorted_c)
     if ismember(results_sorted_c{i}.c, keep)
         %Check some seeds
         legacyCost = results_sorted_c{i}.cost;
@@ -50,9 +50,12 @@ for i = 257:numel(results_sorted_c)
             X0 = seeds{k};
             opt_results.flag = 0;
             counter = 0;
-            while opt_results.flag == 0 && counter < 10
+            while opt_results.flag == 0
                 [X0, opt_results] = RUN_COL(X0, res.c, res.apex_velocity, res.apex_height, 1, res.apex_velocity, 0, atan2(X(2,1),X(1,1)) - pi/2);
                 counter = counter + 1;
+                if counter > 10
+                    break
+                end
             end
             filename = strcat('optCheck_damping_', num2str(cputime*10000000));
             save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\',filename),'opt_results');
