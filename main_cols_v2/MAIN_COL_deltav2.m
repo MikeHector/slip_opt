@@ -7,7 +7,7 @@
 clear; clc;
 
 delta_v = .01;
-end_vel_values = 0:delta_damping:2;
+end_vel_values = 0:delta_v:2;
 % damping_values = [damping_values, 200:2:1500];
 apex_vel = 1; apex_height = 1.1; 
 
