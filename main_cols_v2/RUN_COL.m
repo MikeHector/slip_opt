@@ -2,7 +2,7 @@
 % 4.26.18
 % Collocation of slip through stance; v2 includes stance duration as a
 % decision variable
-function [optimized, opt_res] = RUN_COL(seed, leg_damping, apex_vel, apex_height, ankles_on, end_vel, disturbance_f, TD_angle)
+function [optimized, opt_res] = RUN_COL(seed, leg_damping, apex_vel, apex_height, ankles_on, end_vel, disturbance_f, TD_angle) %TD_angle should be nan unless it is dictated
     %Define parameters
     close all
     param.m = 32; param.k = 3000; param.r0_start = .9; param.g= 9.81; 

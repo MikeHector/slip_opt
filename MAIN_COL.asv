@@ -36,7 +36,7 @@ damping = damping_values(i);
 while damping < 300
     ankles_on = 1;
     [x_opt_ankle, opt_results] = RUN_COL(opt_seed, damping, apex_vel, apex_height, ankles_on, apex_vel, 0, NaN);
-    if (opt_results.flag <= 0) && (damping_values(i) - damping_values(i - 1)) > 1e-6))
+    if opt_results.flag <= 0 && (damping_values(end) - damping_values(end - 1) > 1e-6)
         damping_values(end+1) = (damping_values(i) + damping_values(i-1))/2;
         damping_values = sort(damping_values);           
     else
