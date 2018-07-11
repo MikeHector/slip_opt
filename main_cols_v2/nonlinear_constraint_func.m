@@ -39,7 +39,10 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     %y - velocity + position. energy approach
     ViolationMatrix(2,end +1) = .5 * dy(1)^2 - Parameters.g * (Parameters.apex_height - y(1));
     
-    ViolationMatrix(2,end +1) = atan2(y(1),x(1)) - Parameters.TD_angle;
+    %Lock the TD angle
+    if ~isnana(TD_angle)
+        ViolationMatrix(2,end +1) = atan2(y(1),x(1)) - Parameters.TD_angle;
+    end
     
     %x - velocity
     %Column 24
