@@ -40,7 +40,7 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     ViolationMatrix(2,end +1) = .5 * dy(1)^2 - Parameters.g * (Parameters.apex_height - y(1));
     
     %Lock the TD angle
-    if ~isnana(Parameters.TD_angle)
+    if ~isnan(Parameters.TD_angle)
         ViolationMatrix(2,end +1) = atan2(y(1),x(1)) - Parameters.TD_angle;
     end
     
