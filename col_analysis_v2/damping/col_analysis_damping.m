@@ -36,7 +36,7 @@ for i = 1:length(strucc)
     load(filename)
     results{i} = opt_results;
     c(i) = opt_results.c;
-    if opt_results.c == 150
+    if opt_results.c == 40
 %         pause
     end
 end

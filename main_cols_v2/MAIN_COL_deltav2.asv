@@ -44,7 +44,7 @@ for i = 1:length(end_vel_values)
 %         end
 %     else
         filename = strcat('opt_damping_', num2str(cputime*10000000));
-        save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\deltav_results\',filename),'opt_results');
+        save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\delta_results\',filename),'opt_results');
         opt_seed = x_opt_ankle; 
 %         i = i + 1;
 %     end
