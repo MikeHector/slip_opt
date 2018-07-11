@@ -26,10 +26,12 @@ apex_vel = 1; apex_height = 1.1;
 % seedy = [x; y; r0; dx; dy; dr0; Tl; Ta; t];
 
 % load('D:\Documents\DRL\slip_opt\opt_results\no_damp_baseline.mat') 
-load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat')
+% load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat')
+load('C:\Users\Administrator\Documents\DRL\slip_opt\opt_damping_30_baseline.mat')
 opt_seed = opt_results.X;
+damping = opt_results.c;
 
-clearvars -except opt_seed apex_vel apex_height damping_values delta_damping
+clearvars -except opt_seed apex_vel apex_height velocity_values damping
 
 bad_stuff = 0;
 too_many_iters = 0;
@@ -44,8 +46,9 @@ while velocity < 2.5
 %         damping_values = sort(damping_values);           
 %     else
         filename = strcat('opt_vel_', num2str(cputime*10000000));
-        save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\velocity_results\',filename),'opt_results');
+%         save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\velocity_results\',filename),'opt_results');
 %         save(strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\',filename),'opt_results');
+        save(strcat('C:\Users\Administrator\Documents\DRL\slip_opt\opt_results\velocity_results',filename),'opt_results');
         opt_seed = x_opt_ankle; 
         i = i + 1;
         velocity = velocity_values(i);
@@ -80,10 +83,11 @@ apex_vel = 1; apex_height = 1.1;
 % seedy = [x; y; r0; dx; dy; dr0; Tl; Ta; t];
 
 % load('D:\Documents\DRL\slip_opt\opt_results\no_damp_baseline.mat') 
-load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat')
+% load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat')
+load('C:\Users\Administrator\Documents\DRL\slip_opt\opt_damping_30_baseline.mat')
 opt_seed = opt_results.X;
 
-clearvars -except opt_seed apex_vel apex_height damping_values delta_damping
+clearvars -except opt_seed apex_vel apex_height velocity_values delta_damping
 
 bad_stuff = 0;
 too_many_iters = 0;
@@ -98,8 +102,9 @@ while velocity < 2.5
 %         damping_values = sort(damping_values);           
 %     else
         filename = strcat('opt_vel_', num2str(cputime*10000000));
-        save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\velocity_results\',filename),'opt_results');
+%         save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\velocity_results\',filename),'opt_results');
 %         save(strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\',filename),'opt_results');
+        save(strcat('C:\Users\Administrator\Documents\DRL\slip_opt\opt_results\velocity_results',filename),'opt_results');
         opt_seed = x_opt_ankle; 
         i = i + 1;
         velocity = velocity_values(i);
