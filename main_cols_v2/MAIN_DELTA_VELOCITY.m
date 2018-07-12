@@ -25,7 +25,7 @@ apex_vel = 1; apex_height = 1.1;
 % t = linspace(0,.2,40);
 % seedy = [x; y; r0; dx; dy; dr0; Tl; Ta; t];
 
-load('D:\Documents\DRL\slip_opt\opt_results\no_damp_baseline.mat') %My Desktop
+load('D:\Documents\DRL\slip_opt\opt_damping_30_baseline.mat') %My Desktop
 % load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat') %DRL Desktop
 % load('C:\Users\Administrator\Documents\DRL\slip_opt\opt_damping_30_baseline.mat') %My laptop
 % load('C:\Users\Administrator\Documents\DRL\slip_opt\opt_damping_30_baseline.mat') %DRL laptop
@@ -39,7 +39,7 @@ too_many_iters = 0;
 
 i = 1;
 end_velocity = delta_velocity_values(i) + apex_vel;
-while end_velocity(i) < 2.6
+for i = 1:length(delta_velocity_values)
     ankles_on = 1;
     [x_opt_ankle, opt_results] = RUN_COL(opt_seed, damping, apex_vel, apex_height, ankles_on, end_velocity, 0, NaN);
 %     if (opt_results.flag <= 0) && ((damping_values(i) - damping_values(i - 1)) > 1e-3)
@@ -52,7 +52,7 @@ while end_velocity(i) < 2.6
 %         save(strcat('C:\Users\Administrator\Documents\DRL\slip_opt\opt_results\velocity_results',filename),'opt_results'); %My laptop
 %         save(strcat('C:\Users\DRL\Documents\mike_git\slip_opt\opt_results\deltav_results',filename),'opt_results'); %DRL laptop
         opt_seed = x_opt_ankle; 
-        i = i + 1;
+%         i = i + 1;
 %         velocity = delta_velocity_values(i);
         end_velocity = delta_velocity_values(i) + apex_vel;
 %     end
@@ -85,7 +85,7 @@ apex_vel = 1; apex_height = 1.1;
 % t = linspace(0,.2,40);
 % seedy = [x; y; r0; dx; dy; dr0; Tl; Ta; t];
 
-load('D:\Documents\DRL\slip_opt\opt_results\no_damp_baseline.mat') %My Desktop
+load('D:\Documents\DRL\slip_opt\opt_damping_30_baseline.mat') %My Desktop
 % load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat') %DRL Desktop
 % load('C:\Users\Administrator\Documents\DRL\slip_opt\opt_damping_30_baseline.mat') %My laptop
 % load('C:\Users\Administrator\Documents\DRL\slip_opt\opt_damping_30_baseline.mat') %DRL laptop
@@ -99,7 +99,7 @@ too_many_iters = 0;
 
 i = 1;
 end_velocity = delta_velocity_values(i) + apex_vel;
-while end_velocity(i) < 2.6
+for i = 1:length(delta_velocity_values)
     ankles_on = 1;
     [x_opt_ankle, opt_results] = RUN_COL(opt_seed, damping, apex_vel, apex_height, ankles_on, end_velocity, 0, NaN);
 %     if (opt_results.flag <= 0) && ((damping_values(i) - damping_values(i - 1)) > 1e-3)
@@ -112,7 +112,7 @@ while end_velocity(i) < 2.6
 %         save(strcat('C:\Users\Administrator\Documents\DRL\slip_opt\opt_results\velocity_results',filename),'opt_results'); %My laptop
 %         save(strcat('C:\Users\DRL\Documents\mike_git\slip_opt\opt_results\deltav_results',filename),'opt_results'); %DRL laptop
         opt_seed = x_opt_ankle; 
-        i = i + 1;
+%         i = i + 1;
 %         velocity = delta_velocity_values(i);
         end_velocity = delta_velocity_values(i) + apex_vel;
 %     end
