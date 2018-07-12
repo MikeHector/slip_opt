@@ -114,9 +114,9 @@ figure;
 plot(dvUnique, energy_leg(indUnique)); hold on; 
 plot(dvUnique, energy_ankle(indUnique),'r');
 % a = line([71 71],[0, 12*10^4]); a.LineStyle = '--';
-xlabel('Damping')
+xlabel('Change in velocity - apex to apex')
 ylabel('Energy')
-legend('Leg energy', 'Ankle energy','Leg begins saturation')
+legend('Leg energy', 'Ankle energy')
 title('Optimal energies of actuators through stance')
 % a.Color = 'k';
 % figure
