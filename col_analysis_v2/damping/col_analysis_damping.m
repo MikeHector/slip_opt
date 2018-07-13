@@ -37,7 +37,7 @@ for i = 1:length(strucc)
     results{i} = opt_results;
     c(i) = opt_results.c;
     if opt_results.c == 30
-        pause
+%         pause
     end
 end
 [c_sorted,i] = sort(c);
@@ -90,7 +90,7 @@ for i = 1:numel(results)
 
         drawnow
         title1.String = ['damping = ', num2str(floor(results_sorted_c{i}.c))];
-%         pause(.05)
+        pause(.1)
         if record_video==1
             F=getframe(gcf);
             writeVideo(v,F);
