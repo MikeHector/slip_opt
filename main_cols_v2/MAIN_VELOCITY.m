@@ -28,7 +28,7 @@ apex_vel = 1; apex_height = 1.1;
 % load('D:\Documents\DRL\slip_opt\opt_results\no_damp_baseline.mat') %My Desktop
 % load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat') %DRL Desktop
 % load('C:\Users\Administrator\Documents\DRL\slip_opt\opt_damping_30_baseline.mat') %My laptop
-load('C:\Users\Administrator\Documents\DRL\slip_opt\opt_damping_30_baseline.mat') %DRL laptop
+load('C:\Users\DRL\Documents\mike_git\slip_opt\opt_damping_30_baseline.mat') %DRL laptop
 opt_seed = opt_results.X;
 damping = opt_results.c;
 
@@ -87,10 +87,10 @@ apex_vel = 1; apex_height = 1.1;
 % load('D:\Documents\DRL\slip_opt\opt_results\no_damp_baseline.mat') %My Desktop
 % load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat') %DRL Desktop
 % load('C:\Users\Administrator\Documents\DRL\slip_opt\opt_damping_30_baseline.mat') %My laptop
-load('C:\Users\Administrator\Documents\DRL\slip_opt\opt_damping_30_baseline.mat') %DRL laptop
+load('C:\Users\DRL\Documents\mike_git\slip_opt\opt_damping_30_baseline.mat') %DRL laptop
 opt_seed = opt_results.X;
-
-clearvars -except opt_seed apex_vel apex_height velocity_values delta_damping
+damping = opt_results.c;
+clearvars -except opt_seed apex_vel apex_height velocity_values damping
 
 bad_stuff = 0;
 too_many_iters = 0;
