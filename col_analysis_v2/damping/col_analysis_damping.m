@@ -36,8 +36,8 @@ for i = 1:length(strucc)
     load(filename)
     results{i} = opt_results;
     c(i) = opt_results.c;
-    if opt_results.c == 30
-%         pause
+    if opt_results.c == 400
+        pause
     end
 end
 [c_sorted,i] = sort(c);

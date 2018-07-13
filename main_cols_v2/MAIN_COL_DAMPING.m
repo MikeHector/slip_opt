@@ -25,7 +25,8 @@ apex_vel = 1; apex_height = 1.1;
 
 % load('D:\Documents\DRL\slip_opt\opt_results\no_damp_baseline.mat') 
 % load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat')
-load('C:\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_318924375000.mat')
+% load('C:\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_318924375000.mat')
+load('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_363118125000.mat')
 opt_seed = opt_results.X;
 
 clearvars -except opt_seed apex_vel apex_height damping_values delta_damping
@@ -36,15 +37,15 @@ too_many_iters = 0;
 i = 1;
 damping = damping_values(i);
 bad_counter = 0;
-while damping < 601
+while damping < 1000
     ankles_on = 1;
     [x_opt_ankle, opt_results] = RUN_COL(opt_seed, damping, apex_vel, apex_height, ankles_on, apex_vel, 0, NaN);
 %     if (opt_results.flag <= 0) && ((damping_values(i) - damping_values(i - 1)) > 1e-3)
 %         damping_values(end+1) = (damping_values(i) + damping_values(i-1))/2;
 %         damping_values = sort(damping_values);           
 %     else
-        uniqueID = datetime('now','TimeZone','local','Format','d-MM-y-HH-mm-ss-SSSS');
-        filename = strcat('opt_damping_', num2str(uniqueID));
+        uniqueID = string(datetime, 'dMMyHHmmssSSSS');
+        filename = strcat('opt_damping_', uniqueID);
         save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\',filename),'opt_results');
 %         save(strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\',filename),'opt_results');
         opt_seed = x_opt_ankle; 
