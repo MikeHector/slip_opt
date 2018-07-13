@@ -11,11 +11,11 @@ if record_video==1
 end
 strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_*');%dir('D:\Documents\DRL\slip_opt\opt_results\damping_results\opt_damping_*'); %dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_*');
 
-cmax = 410;
+cmax = 450;
 fig = figure;
 hold on
 subplot(2,2,1); an1 = plot(1,1);
-axis([-0.25, .5, .25, 1]); title('xy traj'); xlabel('x'); ylabel('y');
+axis([-0.25, .5, 0, 1]); title('xy traj'); xlabel('x'); ylabel('y');
 subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
 axis([-.25, .5, -50, 50]); title('torque traj'); xlabel('x'); ylabel('torque');
 subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2);
@@ -37,7 +37,7 @@ for i = 1:length(strucc)
     results{i} = opt_results;
     c(i) = opt_results.c;
     if opt_results.c == 400
-        pause
+%         pause
     end
 end
 [c_sorted,i] = sort(c);
@@ -90,7 +90,7 @@ for i = 1:numel(results)
 
         drawnow
         title1.String = ['damping = ', num2str(floor(results_sorted_c{i}.c))];
-        pause(.1)
+        pause(.02)
         if record_video==1
             F=getframe(gcf);
             writeVideo(v,F);

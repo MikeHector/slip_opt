@@ -9,17 +9,18 @@ if record_video==1
     v.FrameRate=10;
     open(v);
 end
-strucc = dir('D:\Documents\DRL\slip_opt\opt_results\velocity_results\opt_vel_*'); %dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_*');
+% strucc = dir('D:\Documents\DRL\slip_opt\opt_results\velocity_results\vel*');  %My desktop
+strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\velocity_results\vel*'); %DRL desktop
 
-vmax = 1.5;
+vmax = 2.5;
 fig = figure;
 hold on
 subplot(2,2,1); an1 = plot(1,1);
-axis([-0.25, .5, .25, 1]); title('xy traj'); xlabel('x'); ylabel('y');
+axis([-0.3, .3, .25, 1]); title('xy traj'); xlabel('x'); ylabel('y');
 subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
-axis([-.25, .5, -50, 50]); title('torque traj'); xlabel('x'); ylabel('torque');
+axis([-.3, .3, -5, 50]); title('torque traj'); xlabel('x'); ylabel('torque');
 subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2);
-axis([0,vmax, 0, 3]); xlabel('velocity'); ylabel('cost');
+axis([.5,vmax, 0, .5]); xlabel('velocity'); ylabel('cost');
 subplot(2,2,4); an4 = plot(1,1);
 axis([-.25, .5, -.12, .12]); xlabel('x'); ylabel('xcop')
 % an2 = plot(2,2);
@@ -32,7 +33,8 @@ xlabel('time')
 
 for i = 1:length(strucc)
     filename = strucc(i).name;
-    filename = strcat('D:\Documents\DRL\slip_opt\opt_results\velocity_results\', filename); %strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\', filename);
+%     filename = strcat('D:\Documents\DRL\slip_opt\opt_results\velocity_results\', filename); %My desktop
+    filename = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\velocity_results\', filename); %DRL Desktop
     load(filename)
     results{i} = opt_results;
     vel(i) = opt_results.apex_velocity;
@@ -90,7 +92,7 @@ for i = 1:numel(results)
 
         drawnow
         title1.String = ['apex velocity = ', num2str(results_sorted_vel{i}.apex_velocity)];
-        pause(.2)
+        pause(.05)
         if record_video==1
             F=getframe(gcf);
             writeVideo(v,F);
@@ -110,10 +112,10 @@ end
 figure;
 plot(velUnique, energy_leg(indUnique)); hold on; 
 plot(velUnique, energy_ankle(indUnique),'r');
-a = line([1 1],[0, 12*10^4]); a.LineStyle = '--';
+% a = line([1 1],[0, 12*10^4]); a.LineStyle = '--';
 xlabel('Apex Velocity')
 ylabel('Energy')
-legend('Leg energy', 'Ankle energy','Leg begins saturation')
+legend('Leg energy', 'Ankle energy')
 title('Optimal energies of actuators through stance')
 % a.Color = 'k';
 % figure

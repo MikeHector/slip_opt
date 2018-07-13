@@ -9,8 +9,8 @@ if record_video==1
     v.FrameRate=10;
     open(v);
 end
-% strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\deltav_results\deltav_re*'); %DRL desktop
-strucc = dir('D:\Documents\DRL\slip_opt\opt_results\deltav_results\deltav_re*'); %My Desktop
+strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\deltav_results\deltav_re*'); %DRL desktop
+% strucc = dir('D:\Documents\DRL\slip_opt\opt_results\deltav_results\deltav_re*'); %My Desktop
 %dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_*');
 
 cmax = 410;
@@ -34,8 +34,8 @@ xlabel('time')
 
 for i = 1:length(strucc)
     filename = strucc(i).name;
-%     filename = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\', filename); 
-    filename = strcat('D:\Documents\DRL\slip_opt\opt_results\deltav_results\', filename); %My desktop
+    filename = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\deltav_results\', filename); %DRL desktop
+%     filename = strcat('D:\Documents\DRL\slip_opt\opt_results\deltav_results\', filename); %My desktop
     load(filename) 
     results{i} = opt_results;
     deltav(i) = opt_results.end_vel - opt_results.apex_velocity; %Starting apex velocity - Ending apex velocity
