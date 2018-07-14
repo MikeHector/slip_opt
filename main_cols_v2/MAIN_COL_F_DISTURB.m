@@ -6,8 +6,8 @@
 %solution as a seed for the next optimization
 clear; clc;
 
-delta_damping = 1;
-damping_values = 400:delta_damping:800;
+delta_f = .5;
+f_values = 0:delta_f:50;
 % damping_values = [damping_values, 200:2:1500];
 apex_vel = 1; apex_height = 1.1; 
 
@@ -24,32 +24,34 @@ apex_vel = 1; apex_height = 1.1;
 % seedy = [x; y; r0; dx; dy; dr0; Tl; Ta; t];
 
 % load('D:\Documents\DRL\slip_opt\opt_results\no_damp_baseline.mat') 
-% load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat')
-load('C:\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_318924375000.mat')
+load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat')
+% load('C:\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_318924375000.mat')
+% load('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_363118125000.mat')
 opt_seed = opt_results.X;
+damping = opt_results.c;
 
-clearvars -except opt_seed apex_vel apex_height damping_values delta_damping
+clearvars -except opt_seed apex_vel apex_height f_values delta_f damping
 
 bad_stuff = 0;
 too_many_iters = 0;
 
 i = 1;
-damping = damping_values(i);
+f_disturb = f_values(i);
 bad_counter = 0;
-while damping < 601
+while f_disturb < 1000
     ankles_on = 1;
-    [x_opt_ankle, opt_results] = RUN_COL(opt_seed, damping, apex_vel, apex_height, ankles_on, apex_vel, 0, NaN);
+    [x_opt_ankle, opt_results] = RUN_COL(opt_seed, damping, apex_vel, apex_height, ankles_on, apex_vel, f_disturb, NaN);
 %     if (opt_results.flag <= 0) && ((damping_values(i) - damping_values(i - 1)) > 1e-3)
 %         damping_values(end+1) = (damping_values(i) + damping_values(i-1))/2;
 %         damping_values = sort(damping_values);           
 %     else
-        uniqueID = datetime('now','TimeZone','local','Format','d-MM-y-HH-mm-ss-SSSS');
-        filename = strcat('opt_damping_', num2str(uniqueID));
-        save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\',filename),'opt_results');
+        uniqueID = string(datetime, 'dMMyHHmmssSSSS');
+        filename = strcat('opt_fdisturb_', uniqueID);
+        save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\fdisturb_results\',filename),'opt_results');
 %         save(strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\',filename),'opt_results');
         opt_seed = x_opt_ankle; 
         i = i + 1;
-        damping = damping_values(i);
+        f_disturb = f_values(i);
         
         if opt_results.flag < 0
             bad_counter = bad_counter + 1;
