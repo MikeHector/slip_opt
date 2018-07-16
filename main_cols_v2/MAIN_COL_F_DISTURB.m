@@ -65,7 +65,7 @@ while f_disturb < 1000
         end
         
 %     end
-%      damping_values
+     disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);disp(f_disturb);
 end
 
 % end

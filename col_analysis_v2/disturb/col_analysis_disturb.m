@@ -12,7 +12,7 @@ end
 % strucc = dir('D:\Documents\DRL\slip_opt\opt_results\velocity_results\vel*');  %My desktop
 strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\fdisturb_results\opt*'); %DRL desktop
 
-disturbMax = 50;
+disturbMax = 150;
 fig = figure;
 hold on
 subplot(2,2,1); an1 = plot(1,1);
@@ -39,7 +39,7 @@ for i = 1:length(strucc)
     results{i} = opt_results;
     disturb(i) = opt_results.disturbance_f;
     if opt_results.disturbance_f == 50
-        pause
+%         pause
     end
 end
 [disturb_sorted,i] = sort(disturb);
