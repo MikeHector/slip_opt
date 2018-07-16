@@ -24,7 +24,7 @@ apex_vel = 1; apex_height = 1.1;
 % seedy = [x; y; r0; dx; dy; dr0; Tl; Ta; t];
 
 % load('D:\Documents\DRL\slip_opt\opt_results\no_damp_baseline.mat') 
-% load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat')
+load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat')
 % load('C:\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_318924375000.mat')
 % load('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_363118125000.mat')
 load('C:\\Users\mike-\Documents\DRL\collocation\opt_results\fdisturb_results\opt_fdisturb_130720181342589980.mat')
@@ -46,9 +46,9 @@ while f_disturb < 1000
 %         damping_values(end+1) = (damping_values(i) + damping_values(i-1))/2;
 %         damping_values = sort(damping_values);           
 %     else
-        uniqueID = string(datetime, 'dMMyHHmmssSSSS');
-        filename = strcat('opt_fdisturb_', uniqueID);
-        save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\fdisturb_results\',filename),'opt_results');
+%         uniqueID = string(datetime, 'dMMyHHmmssSSSS');
+%         filename = strcat('opt_fdisturb_', uniqueID);
+%         save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\fdisturb_results\',filename),'opt_results');
 %         save(strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\',filename),'opt_results');
         opt_seed = x_opt_ankle; 
         i = i + 1;
