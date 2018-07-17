@@ -7,7 +7,7 @@
 clear; clc;
 
 delta_TD = .002;
-TDa_disturb = 0:delta_TD:.3;
+TDa_disturb = linspace(0, -.3, .3/(delta_TD) +1);
 % damping_values = [damping_values, 200:2:1500];
 apex_vel = 1; apex_height = 1.1; 
 
