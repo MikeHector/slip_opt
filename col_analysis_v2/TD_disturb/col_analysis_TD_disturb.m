@@ -3,24 +3,25 @@
 % 6.5.18
 % COL analysis
 clc; clear; close all
-record_video = 0;
+record_video = 1;
 if record_video==1
-    v=VideoWriter('torques_over_damping','MPEG-4');
+    v=VideoWriter('torques_over_TD_disturbance','MPEG-4');
     v.FrameRate=10;
     open(v);
 end
 % strucc = dir('D:\Documents\DRL\slip_opt\opt_results\velocity_results\vel*');  %My desktop
 strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\TDdisturb_results\opt*'); %DRL desktop
 
-disturbMax = 150;
+disturbMax = 0;
 fig = figure;
 hold on
 subplot(2,2,1); an1 = plot(1,1);
 axis([-0.3, .3, .25, 1]); title('xy traj'); xlabel('x'); ylabel('y');
 subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
-axis([-.3, .3, -5, 50]); title('torque traj'); xlabel('x'); ylabel('torque');
-subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2);
-axis([0,2, 0, .5]); xlabel('TD Disturbance'); ylabel('cost');
+axis([-.3, .3, -50, 50]); title('torque traj'); xlabel('x'); ylabel('torque');
+subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2); an33 = plot([1.6836 1.6836],[-10 10],'r--');
+axis([1.5,2, 0, 10]); xlabel('TD Disturbance'); ylabel('cost');
+title2 = title('wut');
 subplot(2,2,4); an4 = plot(1,1);
 axis([-.25, .5, -.12, .12]); xlabel('x'); ylabel('xcop')
 % an2 = plot(2,2);
@@ -49,7 +50,7 @@ for k = 1:length(i)
     results_sorted_TD{k} = results{i(k)};
     flags(k) = results{i(k)}.flag;
     if results{i(k)}.flag > 0
-        TD_graph(q) = results{i(k)}.disturbance_f;
+        TD_graph(q) = atan2(results{i(k)}.y(1), results{i(k)}.x(1));
         cost_graph(q) = results{i(k)}.cost;
         q = q+1;
     end
@@ -95,7 +96,10 @@ for i = 1:numel(results)
 
         drawnow
         title1.String = ['TD angle= ', num2str(TDangle)];
-        pause(.5)
+        title2.String = ['Critical TD angle = 1.6836'];
+        
+        pause(.025)
+        
         if record_video==1
             F=getframe(gcf);
             writeVideo(v,F);

@@ -93,7 +93,7 @@ for i = 1:numel(results)
 
         drawnow
         title1.String = ['change in velocity = ', num2str(results_sorted_deltav{i}.end_vel - results_sorted_deltav{i}.apex_velocity)];
-        pause(.01)
+        pause(.005)
         if record_video==1
             F=getframe(gcf);
             writeVideo(v,F);

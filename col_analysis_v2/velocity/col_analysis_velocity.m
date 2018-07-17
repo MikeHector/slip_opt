@@ -3,9 +3,9 @@
 % 6.5.18
 % COL analysis
 clc; clear; close all
-record_video = 0;
+record_video = 1;
 if record_video==1
-    v=VideoWriter('torques_over_damping','MPEG-4');
+    v=VideoWriter('torques_over_velocities','MPEG-4');
     v.FrameRate=10;
     open(v);
 end

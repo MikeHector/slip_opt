@@ -3,9 +3,9 @@
 % 6.5.18
 % COL analysis
 clc; clear; close all
-record_video = 0;
+record_video = 1;
 if record_video==1
-    v=VideoWriter('torques_over_damping','MPEG-4');
+    v=VideoWriter('torques_over_force_disturbance','MPEG-4');
     v.FrameRate=10;
     open(v);
 end
@@ -22,7 +22,7 @@ axis([-.3, .3, -5, 50]); title('torque traj'); xlabel('x'); ylabel('torque');
 subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2);
 axis([0,disturbMax, 0, .5]); xlabel('velocity'); ylabel('cost');
 subplot(2,2,4); an4 = plot(1,1);
-axis([-.25, .5, -.12, .12]); xlabel('x'); ylabel('xcop')
+axis([-.25, .25, -.12, .12]); xlabel('x'); ylabel('xcop')
 % an2 = plot(2,2);
 title1 = title('wut');
 % axis([-0.25, 0.25, .1, .9])

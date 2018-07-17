@@ -19,7 +19,7 @@ axis([-0.25, .5, 0, 1]); title('xy traj'); xlabel('x'); ylabel('y');
 subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
 axis([-.25, .5, -50, 50]); title('torque traj'); xlabel('x'); ylabel('torque');
 subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2);
-axis([0,cmax, 0, 10]); xlabel('damping'); ylabel('cost');
+axis([0,cmax+20, 0, 20]); xlabel('damping'); ylabel('cost');
 subplot(2,2,4); an4 = plot(1,1);
 axis([-.25, .5, -.12, .12]); xlabel('x'); ylabel('xcop')
 % an2 = plot(2,2);
