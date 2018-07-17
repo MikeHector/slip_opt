@@ -6,8 +6,8 @@
 %solution as a seed for the next optimization
 clear; clc;
 
-delta_TD = .025;
-TDa_disturb = 0:delta_f:.3;
+delta_TD = .002;
+TDa_disturb = 0:delta_TD:.3;
 % damping_values = [damping_values, 200:2:1500];
 apex_vel = 1; apex_height = 1.1; 
 
@@ -29,7 +29,7 @@ load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat')
 opt_seed = opt_results.X;
 damping = opt_results.c;
 
-clearvars -except opt_seed apex_vel apex_height f_values delta_f damping TD_values
+clearvars -except opt_seed apex_vel apex_height f_values delta_TD TDa_disturb damping
 
 bad_stuff = 0;
 too_many_iters = 0;
