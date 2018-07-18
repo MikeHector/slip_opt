@@ -9,8 +9,8 @@ if record_video==1
     v.FrameRate=10;
     open(v);
 end
-strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_*');%dir('D:\Documents\DRL\slip_opt\opt_results\damping_results\opt_damping_*'); %dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_*');
-
+% strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_*');%dir('D:\Documents\DRL\slip_opt\opt_results\damping_results\opt_damping_*'); %dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_*');
+strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\perturb_results\opt*');
 cmax = 450;
 fig = figure;
 hold on
@@ -32,7 +32,7 @@ xlabel('time')
 
 for i = 1:length(strucc)
     filename = strucc(i).name;
-    filename = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\', filename); %strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\', filename); 
+    filename = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\perturb_results\', filename); %strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\', filename); 
     load(filename)
     results{i} = opt_results;
     c(i) = opt_results.c;

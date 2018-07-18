@@ -9,7 +9,7 @@
 % [g i] = space_func(directory, variable_name, n, m)
 
 function [golden, improve] = space_func(directory, variable_name, n, m)
-    strucc = dir(directory); 
+    strucc = dir(directory);
     var_for_max_counter = 1;
     for i = 1:length(strucc)
         filename = strucc(i).name;
@@ -17,7 +17,7 @@ function [golden, improve] = space_func(directory, variable_name, n, m)
         if strcmp(variable_name, 'deltav')
             res.var = opt_results.end_vel - opt_results.apex_velocity;
         elseif strcmp(variable_name, 'TD_disturbance')
-            res.var = atan2(opt_results.y(1),opt_results.x(1))
+            res.var = atan2(opt_results.y(1),opt_results.x(1));
         else
             res.var = opt_results.(variable_name);
         end
@@ -25,7 +25,6 @@ function [golden, improve] = space_func(directory, variable_name, n, m)
         res.filename = filename;
 
         S{i} = res;
-        res.flag
         if res.flag >= 0 %Make sure they aren't infeasible
             var_for_max(var_for_max_counter) = res.var;
             var_for_max_counter = var_for_max_counter + 1;
@@ -36,9 +35,9 @@ function [golden, improve] = space_func(directory, variable_name, n, m)
     mVar = (maxVar - minVar) * m/100;
     nArray = linspace(minVar,maxVar,n);
     
-    for q = 1:numel(S)
-        fuckme(q) = S{q}.var;
-    end
+%     for q = 1:numel(S)
+%         variable(q) = S{q}.var;
+%     end
     
     improve_count = 1;
     j = 1;

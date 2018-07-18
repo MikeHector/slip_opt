@@ -7,7 +7,7 @@
 clear; clc;
 
 delta_damping = 1;
-damping_values = 400:delta_damping:800;
+damping_values = linspace(30, 0, 31);
 % damping_values = [damping_values, 200:2:1500];
 apex_vel = 1; apex_height = 1.1; 
 
@@ -24,9 +24,9 @@ apex_vel = 1; apex_height = 1.1;
 % seedy = [x; y; r0; dx; dy; dr0; Tl; Ta; t];
 
 % load('D:\Documents\DRL\slip_opt\opt_results\no_damp_baseline.mat') 
-% load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat')
+load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat')
 % load('C:\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_318924375000.mat')
-load('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_363118125000.mat')
+% load('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_363118125000.mat')
 opt_seed = opt_results.X;
 
 clearvars -except opt_seed apex_vel apex_height damping_values delta_damping

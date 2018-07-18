@@ -9,7 +9,7 @@
 % [g i] = space_func(directory, variable_name, n, m)
 
 function [golden, improve] = space_func(directory, variable_name, n, m)
-    strucc = dir(directory); 
+    strucc = dir(directory);
     var_for_max_counter = 1;
     for i = 1:length(strucc)
         filename = strucc(i).name;
