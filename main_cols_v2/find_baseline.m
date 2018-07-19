@@ -24,11 +24,12 @@ apex_vel = 1; apex_height = 1.1;
 % seedy = [x; y; r0; dx; dy; dr0; Tl; Ta; t];
 
 % load('D:\Documents\DRL\slip_opt\opt_results\no_damp_baseline.mat') 
-load('C://Users/mike-/Documents/DRL/collocation/opt_results/baselines/no_damp_baseline.mat')
+% load('C://Users/mike-/Documents/DRL/collocation/opt_results/baselines/no_damp_baseline.mat')
+load('C:\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\new_obj_func\opt_damping_baseline_60.mat')
 % load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat')
 % load('C:\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_318924375000.mat')
 % load('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_363118125000.mat')
-opt_seed = optimized;
+opt_seed = opt_results.X;
 
 clearvars -except opt_seed apex_vel apex_height damping_values delta_damping
 
@@ -39,9 +40,9 @@ i = 1;
 damping = damping_values(i);
 bad_counter = 0;
 count = 1;
-highest_cost = 1e6;
+lowest_cost = 1e6;
 save_counter = 0;
-while count < 500
+while count < 50
     ankles_on = 1;
     [x_opt_ankle, opt_results] = RUN_COL(opt_seed, damping, apex_vel, apex_height, ankles_on, apex_vel, 0, NaN);
 %     if (opt_results.flag <= 0) && ((damping_values(i) - damping_values(i - 1)) > 1e-3)
@@ -49,13 +50,15 @@ while count < 500
 %         damping_values = sort(damping_values);           
 %     else
 %         uniqueID = string(datetime, 'dMMyHHmmssSSSS');
-        if opt_results.flag > 0 && opt_results.cost < highest_cost && save_counter <= 20 
-            highest_cost = opt_results.cost;
+        cost_track(count) = opt_results.cost;
+        if opt_results.flag > 0 && opt_results.cost < lowest_cost && save_counter <= 20 
+            lowest_cost = opt_results.cost;
             uniqueID = 'baseline';
             filename = strcat('opt_damping_', uniqueID);
-            save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\new_obj_func',filename),'opt_results');
+            save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\new_obj_func\',filename),'opt_results');
 %         save(strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\',filename),'opt_results');
             opt_seed = x_opt_ankle;
+            
             %Perturb it a little
             for k=1:size(opt_seed,1)
                 magPerturb = .1 * std(opt_seed(k,:));
@@ -64,6 +67,9 @@ while count < 500
             save_counter = save_counter + 1;
         
         else 
+            %Load best so far
+            load('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\new_obj_func\opt_damping_baseline.mat')
+            opt_seed = opt_results.X;
             %Perturb it more
             for k=1:size(opt_seed,1)
                 magPerturb = .5 * std(opt_seed(k,:));

@@ -12,9 +12,9 @@ function [ cost ] = objective_function_2( DecisionVariables, Parameters )
     R = Parameters.R;
     for i = 1:Parameters.N - 1
         cost_leg = cost_leg + ...
-            R * u(2, i)^2 * hk + max(0, u(1, i) * Parameters.transmission * DecisionVariables(5, i)) * hk;
+            R * u(1, i)^2 * hk + max(0, u(1, i) * Parameters.transmission * DecisionVariables(6, i) * hk);
         cost_ankle = cost_ankle + ...
-            R * u(1, i)^2 * hk + max(0, u(2, i) / r(i) * v(i)^2) * hk;
+            R * u(2, i)^2 * hk + max(0, u(2, i) / r(i) * v(i) * hk);
     end
     cost = cost_leg + cost_ankle;
 end
