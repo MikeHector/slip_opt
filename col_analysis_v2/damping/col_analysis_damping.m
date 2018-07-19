@@ -11,7 +11,8 @@ if record_video==1
 end
 % strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_*');%dir('D:\Documents\DRL\slip_opt\opt_results\damping_results\opt_damping_*'); %dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_*');
 strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\perturb_results\opt*');
-cmax = 450;
+strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\new_obj_func\new*');
+cmax = 50;
 fig = figure;
 hold on
 subplot(2,2,1); an1 = plot(1,1);
@@ -32,7 +33,7 @@ xlabel('time')
 
 for i = 1:length(strucc)
     filename = strucc(i).name;
-    filename = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\perturb_results\', filename); %strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\', filename); 
+    filename = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\new_obj_func\', filename); %strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\', filename); 
     load(filename)
     results{i} = opt_results;
     c(i) = opt_results.c;
@@ -90,7 +91,7 @@ for i = 1:numel(results)
 
         drawnow
         title1.String = ['damping = ', num2str(floor(results_sorted_c{i}.c))];
-        pause(.02)
+        pause(.5)
         if record_video==1
             F=getframe(gcf);
             writeVideo(v,F);

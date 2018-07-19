@@ -52,7 +52,7 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     %This would give a more symmetric slip resposne
 %     ViolationMatrix(1,end+1) = x(1) + x(end);
     
-    %Symmetry constraint
+%     %Symmetry constraint
 %     if mod(Parameters.N,2) ~= 1
 %         disp('NEED AN ODD NUMBER OF COLLOCATION POINTS')
 %     end

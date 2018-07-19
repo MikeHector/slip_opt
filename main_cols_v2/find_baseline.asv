@@ -38,7 +38,10 @@ too_many_iters = 0;
 i = 1;
 damping = damping_values(i);
 bad_counter = 0;
-while damping < 1000
+count = 1;
+highest_cost = 1e6;
+save_counter = 0;
+while count < 500
     ankles_on = 1;
     [x_opt_ankle, opt_results] = RUN_COL(opt_seed, damping, apex_vel, apex_height, ankles_on, apex_vel, 0, NaN);
 %     if (opt_results.flag <= 0) && ((damping_values(i) - damping_values(i - 1)) > 1e-3)
@@ -46,26 +49,29 @@ while damping < 1000
 %         damping_values = sort(damping_values);           
 %     else
 %         uniqueID = string(datetime, 'dMMyHHmmssSSSS');
-        uniqueID = 'symm_baseline';
-        filename = strcat('opt_damping_', uniqueID);
-        save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\new_obj_func',filename),'opt_results');
+        if opt_results.flag > 0 && opt_results.cost < highest_cost   
+            highest_cost = opt_results.cost;
+            uniqueID = 'baseline';
+            filename = strcat('opt_damping_', uniqueID);
+            save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\new_obj_func',filename),'opt_results');
 %         save(strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\',filename),'opt_results');
-        opt_seed = x_opt_ankle; 
-        i = i + 1;
-        damping = damping_values(i);
-        
-        if opt_results.flag < 0
-            bad_counter = bad_counter + 1;
-        elseif opt_results.flag >= 0 && bad_counter > 0
-            bad_counter = 0; %reset
+            opt_seed = x_opt_ankle;
+            %Perturb it a little
+            for k=1:size(opt_seed,1)
+                magPerturb = .1 * std(opt_seed(k,:));
+                opt_seed(k,:) = opt_seed(k,:) + magPerturb * rand(size(opt_seed(k,:)));
+            end
+            save_counter = save_counter + 1;
+        elseif save_counter >= 20
+            %Perturb it more
+            for k=1:size(opt_seed,1)
+                magPerturb = .5 * std(opt_seed(k,:));
+                opt_seed(k,:) = opt_seed(k,:) + magPerturb * rand(size(opt_seed(k,:)));
+            end
         end
-        
-        if bad_counter == 10
-            break
-        end
-        
-%     end
-%      damping_values
+
+    count = count + 1
+       
 end
 
 % end

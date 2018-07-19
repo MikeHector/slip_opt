@@ -13,7 +13,8 @@ function [optimized, opt_res] = RUN_COL(seed, leg_damping, apex_vel, apex_height
     param.c = leg_damping; param.fmincon_stuff = []; param.end_vel = end_vel;
     param.disturbance_on = 1; param.disturbance_f = disturbance_f;
     param.disturbance_t_start = 0.05; param.disturbance_t_end = .15;
-    param.TD_angle = TD_angle;
+    param.TD_angle = TD_angle; param.obj_func = 'Better approximation of energy';
+    param.R = 0;
     
     assert(length(seed) == param.N,'Seed was not the expected dimension')
     %Define initial conditions
@@ -30,7 +31,7 @@ function [optimized, opt_res] = RUN_COL(seed, leg_damping, apex_vel, apex_height
     % plot(x0(1,:),x0(2,:))
 
     %Cost function
-    cost_func = @(x) objective_function(x, param);
+    cost_func = @(x) objective_function_2(x, param);
 
     %Set up nonlinear constraint (which we'll be calling a lot)
     nonlcon = @(x) nonlinear_constraint_func(x, param);
