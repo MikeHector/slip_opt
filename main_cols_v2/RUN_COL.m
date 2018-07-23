@@ -14,7 +14,7 @@ function [optimized, opt_res] = RUN_COL(seed, leg_damping, apex_vel, apex_height
     param.disturbance_on = 1; param.disturbance_f = disturbance_f;
     param.disturbance_t_start = 0.05; param.disturbance_t_end = .15;
     param.TD_angle = TD_angle; param.obj_func = 'Better approximation of energy';
-    param.R = 0;
+    param.R_leg = .004; param.R_ankle = .001;
     
     assert(length(seed) == param.N,'Seed was not the expected dimension')
     %Define initial conditions
