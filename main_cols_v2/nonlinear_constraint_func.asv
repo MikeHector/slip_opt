@@ -78,8 +78,7 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     
     %Height Eq gait constraint
     %Column 26
-%     ViolationMatrix(2,end + 1) = y(1) - (y(end) - 0); Dont need with new
-%     final apex constraint
+    ViolationMatrix(2,end + 1) = y(1) - (y(end) - 0);
     
     %End condition Fs =0 ~> r0 = r @ End of stance 
     %Column 27
