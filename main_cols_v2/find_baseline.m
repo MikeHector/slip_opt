@@ -53,7 +53,7 @@ while count < 50
         cost_track(count) = opt_results.cost;
         if opt_results.flag > 0 && opt_results.cost < lowest_cost && save_counter <= 20 && opt_results.cost > 0
             lowest_cost = opt_results.cost;
-            uniqueID = 'baseline_Rs';
+            uniqueID = 'baseline_Rs2';
             filename = strcat('opt_damping_', uniqueID);
             save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\new_obj_func\',filename),'opt_results');
 %         save(strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\',filename),'opt_results');

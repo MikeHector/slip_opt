@@ -11,11 +11,15 @@ function [ cost ] = objective_function_2( DecisionVariables, Parameters )
     cost_ankle = 0;
     R_leg = Parameters.R_leg;
     R_ankle = Parameters.R_ankle;
+    mechA_leg = Parameters.mechA_leg;
+    mechA_ankle = Parameters.mechA_ankle;
     for i = 1:Parameters.N - 1
         cost_leg = cost_leg + ...
-            max(0, R_leg * u(1, i)^2 * hk) + max(0, u(1, i) * Parameters.transmission * DecisionVariables(6, i) * hk);
+            max(0, R_leg * u(1, i)^2 * hk) +... %electrical
+            max(0, u(1, i) * Parameters.transmission / mechA_leg * DecisionVariables(6, i) * hk); %mechanical
         cost_ankle = cost_ankle + ...
-            max(0, R_ankle * u(2, i)^2 * hk) + max(0, u(2, i) / r(i) * v(i) * hk);
+            max(0, R_ankle * u(2, i)^2 * hk) +... %electrical
+            max(0, u(2, i) * Parameters.transmission_ankle / (mechA_ankle * r(i)) * v(i) * hk); %mechanical
     end
     cost = cost_leg + cost_ankle;
 end

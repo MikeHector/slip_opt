@@ -16,9 +16,9 @@ function [ f_eval ] = dynamics( DecisionVars, Parameters, time )
     %Common factors
     r = sqrt(x.^2 + y.^2);
     Fs = Parameters.k * (r0 - r);
-    Fg = Fs - Tleg * Parameters.transmission;
-    Ft = Tankle / r + Fp; %Force from ankle torque and perturbation
-    Fd = Parameters.c * sqrt(dx.^2 + dy.^2);
+    Ft = Tankle * Parameters.transmission_ankle / (Parameters.mechA_ankle * r) + Fp; %Force from ankle torque and perturbation
+    Fd = Parameters.c * dr0;
+    Fg = Fs - Tleg * Parameters.transmission / Parameters.mechA_leg - Fd;
     
     xdd = (Fs * x / r - Fd * x / r  + Ft * y / r) / Parameters.m;
     

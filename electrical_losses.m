@@ -26,4 +26,3 @@ uDotMaxAnkle = noLoadSpeed_ankle * 2 * pi/ 60/ harmonicGearDrive * lever;
 R_ankle = (noLoadSpeed_ankle * 2 * pi / 60)^2 / maxPower_ankle;
 trans_mech_advantage_ankle = 1/lever * harmonicGearDrive;
 
-

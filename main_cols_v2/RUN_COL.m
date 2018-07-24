@@ -6,15 +6,16 @@ function [optimized, opt_res] = RUN_COL(seed, leg_damping, apex_vel, apex_height
     %Define parameters
     close all
     param.m = 32; param.k = 3000; param.r0_start = .9; param.g= 9.81; 
-    param.anklemax = 30; param.legmax = 50; param.N = 60;
+    param.anklemax = 4.5; param.legmax = 12; param.N = 60;
     param.dof = 3; param.cntrl_dof = 2; param.i_motor = .003; 
-    param.transmission = 50; param.lf = .23; param.r0_min = .7; 
+    param.transmission = 16; param.lf = .23; param.r0_min = .7; 
     param.r0_max = 1.3; param.timemax = 1; param.timemin = .2;
     param.c = leg_damping; param.fmincon_stuff = []; param.end_vel = end_vel;
     param.disturbance_on = 1; param.disturbance_f = disturbance_f;
     param.disturbance_t_start = 0.05; param.disturbance_t_end = .15;
     param.TD_angle = TD_angle; param.obj_func = 'Better approximation of energy';
-    param.R_leg = .004; param.R_ankle = .001; param.apex_height_final = apex_height;
+    param.R_leg = 25.2; param.R_ankle = 214.5; param.apex_height_final = apex_height;
+    param.mechA_leg = .3; param.mechA_ankle = .7; param.transmission_ankle = 50;
     
     assert(length(seed) == param.N,'Seed was not the expected dimension')
     %Define initial conditions
@@ -62,7 +63,7 @@ function [optimized, opt_res] = RUN_COL(seed, leg_damping, apex_vel, apex_height
 
 
     %Optimizer parameters
-    param.options = optimoptions('fmincon','Display','iter','MaxFunctionEvaluations',1000000,...
+    param.options = optimoptions('fmincon','Display','iter','MaxFunctionEvaluations',100000,...
                             'MaxIterations', 150000, 'ConstraintTolerance', 1e-3,...
                             'UseParallel', true, ...
                             'OptimalityTolerance',1e-6); %,'OutputFcn', outputfunc)
