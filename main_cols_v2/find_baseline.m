@@ -26,7 +26,7 @@ apex_vel = 1; apex_height = 1.1;
 % load('D:\Documents\DRL\slip_opt\opt_results\no_damp_baseline.mat') 
 % load('C://Users/mike-/Documents/DRL/collocation/opt_results/baselines/no_damp_baseline.mat')
 % load('C:\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\new_obj_func\opt_damping_baseline_60.mat')
-load('C:\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\new_obj_func\opt_damping_baseline_Rs7_artificial_symm_high_T.mat')
+load('C:\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\new_obj_func\opt_damping_baseline_Rs8_high_T.mat')
 % load('C://Users/mike-/Documents/DRL/collocation/opt_damping_30_baseline.mat')
 % load('C:\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_318924375000.mat')
 % load('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_363118125000.mat')
