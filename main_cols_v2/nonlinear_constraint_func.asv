@@ -33,7 +33,7 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     %r0 spring starts undeflected; change in r0 is 0
     %Column 21
     ViolationMatrix(3,end + 1) = Parameters.r0_start - r0(1);
-    ViolationMatrix(1,end) = Parameters.r0_start - r(1);
+    ViolationMatrix(1,end) = Parameters.r0_start^2 - x(1)^2 - y(1)^2;
     ViolationMatrix(6,end) = dr0(1);
 
     %y - velocity + position. energy approach
@@ -56,8 +56,11 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     
     %Height Eq gait constraint
     %Column 26
-%     ViolationMatrix(2,end + 1) = y(1) - (y(end) - 0); Dont need with new
-%     final apex constraint
+    ViolationMatrix(2,end + 1) = y(1) - (y(end) - 0); %Dont need with new
+%     final apex constraint?
+   
+
+    ViolationMatrix(1,end +1) = x(1) + x(end); %Artificial AF
     
     %End condition Fs =0 ~> r0 = r @ End of stance 
     %Column 27

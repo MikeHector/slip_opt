@@ -30,38 +30,32 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     r = sqrt(x.^2 + y.^2);
     
     %Starting constraints
-    %r0 spring starts undeflected; change in r0 is 0
-    %Column 21
-    ViolationMatrix(3,end + 1) = Parameters.r0_start - r0(1);
-    ViolationMatrix(1,end) = Parameters.r0_start - r(1);
-    ViolationMatrix(6,end) = dr0(1);
-
+    %r0 spring starts undeflected
+    ViolationMatrix(1,end + 1) = Parameters.r0_start - r0(1);
+    %change in r0 is 0
+    ViolationMatrix(2,end) = Parameters.r0_start^2 - x(1)^2 - y(1)^2;
+    %Velocity of spring starts at 0
+    ViolationMatrix(3,end) = dr0(1);
     %y - velocity + position. energy approach
-    ViolationMatrix(2,end +1) = .5 * dy(1)^2 - Parameters.g * (Parameters.apex_height - y(1));
+    ViolationMatrix(4,end) = .5 * dy(1)^2 - Parameters.g * (Parameters.apex_height - y(1));
+    %x - velocity
+    ViolationMatrix(5,end) = dx(1) - Parameters.apex_velocity;
+
+    %Ending Constraints
+    %x - velocity end
+    ViolationMatrix(6,end) = dx(end) - Parameters.end_vel;
+    %Final apex height constraint
+    ViolationMatrix(7,end) = Parameters.g * (Parameters.apex_height_final - y(end)) - .5 * dy(end)^2;
+    %End condition Fs =0 ~> r0 = r @ End of stance 
+    ViolationMatrix(8,end) = r0(end)^2 - x(1)^2 - y(1)^2; 
     
     %Lock the TD angle
     if ~isnan(Parameters.TD_angle)
-        ViolationMatrix(2,end +1) = atan2(y(1),x(1)) - Parameters.TD_angle;
+        ViolationMatrix(9,end) = atan2(y(1),x(1)) - Parameters.TD_angle;
     end
     
-    %x - velocity
-    %Column 24
-    ViolationMatrix(4,end + 1) = dx(1) - Parameters.apex_velocity;
-    % Equilibrium gait constraints
-    %Velocity EQ gait constraint
-    %Column 25
-    ViolationMatrix(4,end + 1) = dx(end) - Parameters.end_vel; %xvel - same
-%     ViolationMatrix(5,end + 1) = dy(1) + dy(end); %yvel - change sign
-    ViolationMatrix(5,end + 1) = Parameters.g * (Parameters.apex_height_final - y(end)) - .5 * dy(end)^2; %Final apex height condition
-    
-    %Height Eq gait constraint
-    %Column 26
-%     ViolationMatrix(2,end + 1) = y(1) - (y(end) - 0); Dont need with new
-%     final apex constraint
-    
-    %End condition Fs =0 ~> r0 = r @ End of stance 
-    %Column 27
-    ViolationMatrix(3,end + 1) = r0(end) - r(end); 
+%     ViolationMatrix(1,end + 1) = y(1) - (y(end) - 0); %Dont need with new apex height constraint
+%     ViolationMatrix(2,end) = x(1) + x(end); %Artificial AF
     
     %Inequality constraints
     %Ankle torque bounds

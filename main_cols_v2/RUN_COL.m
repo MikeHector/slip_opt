@@ -6,7 +6,7 @@ function [optimized, opt_res] = RUN_COL(seed, leg_damping, apex_vel, apex_height
     %Define parameters
     close all
     param.m = 32; param.k = 3000; param.r0_start = .9; param.g= 9.81; 
-    param.anklemax = 4.5; param.legmax = 12; param.N = 60;
+    param.anklemax = 30; param.legmax = 50; param.N = 60;
     param.dof = 3; param.cntrl_dof = 2; param.i_motor = .003; 
     param.transmission = 16; param.lf = .23; param.r0_min = .7; 
     param.r0_max = 1.3; param.timemax = 1; param.timemin = .2;
@@ -63,7 +63,7 @@ function [optimized, opt_res] = RUN_COL(seed, leg_damping, apex_vel, apex_height
 
 
     %Optimizer parameters
-    param.options = optimoptions('fmincon','Display','iter','MaxFunctionEvaluations',100000,...
+    param.options = optimoptions('fmincon','Display','iter','MaxFunctionEvaluations',1000000,...
                             'MaxIterations', 150000, 'ConstraintTolerance', 1e-3,...
                             'UseParallel', true, ...
                             'OptimalityTolerance',1e-6); %,'OutputFcn', outputfunc)
