@@ -7,7 +7,7 @@ function [ f_eval ] = dynamics( DecisionVars, Parameters, time )
     dx = DecisionVars(4); dy = DecisionVars(5); dr0 = DecisionVars(6);
     Tleg = DecisionVars(7); Tankle = DecisionVars(8);
     
-    if Parameters.disturbance_on == 1 && time > Parameters.disturbance_t_start && time < Parameters.disturbance_t_end
+    if time > Parameters.disturbance_t_start && time < Parameters.disturbance_t_end
         Fp = Parameters.disturbance_f; %Perturbation 
     else
         Fp = 0;

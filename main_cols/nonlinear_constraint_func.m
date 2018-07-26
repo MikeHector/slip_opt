@@ -43,15 +43,15 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
 
     %Ending Constraints
     %x - velocity end
-    ViolationMatrix(6,end) = dx(end) - Parameters.end_vel;
+    ViolationMatrix(6,end) = dx(end) - (Parameters.apex_velocity + Parameters.deltav);
     %Final apex height constraint
-    ViolationMatrix(7,end) = Parameters.g * (Parameters.apex_height_final - y(end)) - .5 * dy(end)^2;
+    ViolationMatrix(7,end) = Parameters.g * (Parameters.apex_height + Parameters.deltah - y(end)) - .5 * dy(end)^2;
     %End condition Fs =0 ~> r0 = r @ End of stance 
     ViolationMatrix(8,end) = r0(end)^2 - x(1)^2 - y(1)^2; 
     
     %Lock the TD angle
-    if ~isnan(Parameters.TD_angle)
-        ViolationMatrix(9,end) = atan2(y(1),x(1)) - Parameters.TD_angle;
+    if ~isnan(Parameters.TD_disturb)
+        ViolationMatrix(9,end) = atan2(y(1),x(1)) - (Parameters.baseline_TDA + TD_disturb);
     end
     
 %     ViolationMatrix(1,end + 1) = y(1) - (y(end) - 0); %Dont need with new apex height constraint
