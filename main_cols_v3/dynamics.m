@@ -24,7 +24,7 @@ function [ f_eval ] = dynamics( DecisionVars, Parameters, time )
     
     ydd = (Fs * y / r - Fd * y / r - Ft * x / r  - Parameters.m * Parameters.g) / (Parameters.m);
     
-    r0dd = -Fg / ((Parameters.transmission / Parameters.mechA_leg)^2 * Parameters.i_motor);
+    r0dd = -Fg / (Parameters.transmission^2 * Parameters.i_motor);
     
     f_eval = [dx, dy, dr0, xdd, ydd r0dd]';
 end

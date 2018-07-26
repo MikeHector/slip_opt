@@ -5,9 +5,9 @@
 function [optimized, opt_res] = RUN_COL(seed, leg_damping, apex_vel, apex_height, ankles_on, end_vel, disturbance_f, TD_angle) %TD_angle should be nan unless it is dictated
     %Define parameters
     close all
-    param.m = 32; param.k = 3000; param.r0_start = .9; param.g= 9.81; 
-    param.anklemax = 30; param.legmax = 50; param.N = 60;
-    param.dof = 3; param.cntrl_dof = 2; param.i_motor = .003; 
+    param.m = 32; param.k = 4000; param.r0_start = .9; param.g= 9.81; 
+    param.anklemax = 4.5; param.legmax = 12.2; param.N = 70;
+    param.dof = 3; param.cntrl_dof = 2; param.i_motor = .0934/16^2; 
     param.transmission = 16; param.lf = .23; param.r0_min = .7; 
     param.r0_max = 1.3; param.timemax = 1; param.timemin = .2;
     param.c = leg_damping; param.fmincon_stuff = []; param.end_vel = end_vel;
@@ -15,7 +15,7 @@ function [optimized, opt_res] = RUN_COL(seed, leg_damping, apex_vel, apex_height
     param.disturbance_t_start = 0.05; param.disturbance_t_end = .15;
     param.TD_angle = TD_angle; param.obj_func = 'Better approximation of energy';
     param.R_leg = 25.2; param.R_ankle = 214.5; param.apex_height_final = apex_height;
-    param.mechA_leg = .3; param.mechA_ankle = .7; param.transmission_ankle = 50;
+    param.mechA_leg = .2; param.mechA_ankle = .7; param.transmission_ankle = 50;
     
     assert(length(seed) == param.N,'Seed was not the expected dimension')
     %Define initial conditions
@@ -85,32 +85,3 @@ function [optimized, opt_res] = RUN_COL(seed, leg_damping, apex_vel, apex_height
     opt_res.X = optimized;
 
 end
-% hold on
-% plot(x, y,'bo')
-% title('X vs Y SLIP trajectory')
-% xlabel('X Displacement')
-% ylabel('Y Displacement')
-% 
-% figure
-% plot(x, Tleg, 'b', x, Tankle, 'r')
-% title('Actuator torque, leg - blue; ankle - red')
-% xlabel('X Displacement, m')
-% ylabel('Torque, Nm')
-% 
-% figure
-% plot(x, r, 'b', x, r0, 'r')
-% title('Spring length (blue) and leg length (red)')
-% xlabel('X Displacement, m')
-% ylabel('Length, m')
-
-% q = slip5;
-% q.m = param.m; q.k = param.k; q.r0 = param.r0_start; q.g = param.g;
-% q.inertia_motor = param.i_motor; q.transmission = param.transmission; q.lf = param.lf;
-% q.dx_body = param.apex_velocity;
-% q.y_body = param.apex_height;
-% q.thetac = atan2(y(1),x(1)) - pi/2;
-% stance_start = q.simSLIP(10,0,1,1,0,0).t_stance_start;
-% q.time_tape = linspace(stance_start, stance_start + T, param.N);
-% q.leg_torque_tape = Tleg; q.ankle_torque_tape = Tankle;
-% sim = q.simSLIP(10, 1, 1, 2, 1, 2);
-% sim.animate

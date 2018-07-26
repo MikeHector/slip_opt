@@ -1,7 +1,7 @@
 %MHector 
 %7.19.18
-clear
-newN = 70;
+
+newN = 40;
 load('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\new_obj_func\opt_damping_baseline_Rs9_last')
 variableNames = {'x' 'y' 'r0' 'dx' 'dy' 'dr0' 'Tleg' 'Tankle' 't'};
 oldN = opt_results.N;
