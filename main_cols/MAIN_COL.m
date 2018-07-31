@@ -5,11 +5,11 @@
 %Let's run over several variable values using previous variable value
 %solution as a seed for the next optimization
 clear; clc;
-% colStrucArray = ColStrucBuilder();
-colStrucArray = ColStrucBuilderTest();
+colStrucArray = ColStrucBuilder();
+% colStrucArray = ColStrucBuilderTest();
 fieldNames = fieldnames(colStrucArray);
 
-for m = 1:1%numel(fieldNames)
+for m = 2:numel(fieldNames)
     colStruc = colStrucArray.(fieldNames{m});
     
 
@@ -17,9 +17,10 @@ for m = 1:1%numel(fieldNames)
         direction = colStruc.direction{k};
 
         %Load baseline seed and parameters
-        load('baseline')
+        load('opt_c_300720181641270440')
         opt_seed = opt_results.X;
         param = opt_results.param;
+        param.(colStruc.varName) = colStruc.var;
         clear opt_results
 
         infeasibleCounter = 0;

@@ -6,10 +6,10 @@ function [ColStrucArray] = ColStrucBuilderTest()
 %Damping
 colStruc.direction = {'up'};
 colStruc.varName = 'c';
-colStruc.deltaVar = 1;
-colStruc.varMax = 1;
+colStruc.deltaVar = 5;
+colStruc.varMax = 2500;
 colStruc.varMin = -1;
-colStruc.var = 0; %Initial variable value
+colStruc.var = 150; %Initial variable value
 ColStrucArray.Damping = colStruc;
 clear colStruc
 

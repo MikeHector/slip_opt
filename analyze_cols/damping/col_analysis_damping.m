@@ -10,17 +10,22 @@ if record_video==1
     open(v);
 end
 % strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_*');%dir('D:\Documents\DRL\slip_opt\opt_results\damping_results\opt_damping_*'); %dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_*');
-strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\perturb_results\opt*');
-strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\new_obj_func\new*');
-cmax = 50;
+% strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\perturb_results\opt*');
+
+% {'c', 'apex_velocity', 'disturance_f', 'TD_disturb', 'deltav', 'deltah'}
+varName = 'c';
+varmaxplot = 525;
+plotName = 'damping';
+
+strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\opt_c*');
 fig = figure;
 hold on
 subplot(2,2,1); an1 = plot(1,1);
-axis([-0.25, .5, 0, 1]); title('xy traj'); xlabel('x'); ylabel('y');
+axis([-0.3, .3, 0, 1]); title('xy traj'); xlabel('x'); ylabel('y');
 subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
-axis([-.25, .5, -50, 50]); title('torque traj'); xlabel('x'); ylabel('torque');
+axis([-.3, .3, -12, 12]); title('torque traj'); xlabel('x'); ylabel('torque');
 subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2);
-axis([0,cmax+20, 0, 20]); xlabel('damping'); ylabel('cost');
+axis([0,varmaxplot+20, 0, 4e3]); xlabel(plotName); ylabel('cost');
 subplot(2,2,4); an4 = plot(1,1);
 axis([-.25, .5, -.12, .12]); xlabel('x'); ylabel('xcop')
 % an2 = plot(2,2);
@@ -33,44 +38,44 @@ xlabel('time')
 
 for i = 1:length(strucc)
     filename = strucc(i).name;
-    filename = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\new_obj_func\', filename); %strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\', filename); 
+    filename = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\', filename); %strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\', filename); 
     load(filename)
     results{i} = opt_results;
-    c(i) = opt_results.c;
-    if opt_results.c == 400
+    var(i) = opt_results.param.c;
+    if var(i) == 0
 %         pause
     end
 end
-[c_sorted,i] = sort(c);
+[var_sorted,i] = sort(var);
 
 q=1;
 for k = 1:length(i)
-    results_sorted_c{k} = results{i(k)};
-    flags(k) = results{i(k)}.flag;
-    if results{i(k)}.flag > 0
-        c_graph(q) = results{i(k)}.c;
+    results_sorted_var{k} = results{i(k)};
+    flags(k) = results{i(k)}.param.flag;
+    if results{i(k)}.param.flag > 0
+        var_graph(q) = results{i(k)}.param.(varName);
         cost_graph(q) = results{i(k)}.cost;
         q = q+1;
     end
 end
-an32.XData = c_graph;
+an32.XData = var_graph;
 an32.YData = cost_graph;
 for i = 1:numel(results)
     %Make energy shared figure
-    energy_leg(i) = sum(results_sorted_c{i}.Tleg.^2);
-    energy_ankle(i) = sum(results_sorted_c{i}.Tankle.^2);
+    energy_leg(i) = sum(results_sorted_var{i}.Tleg.^2);
+    energy_ankle(i) = sum(results_sorted_var{i}.Tankle.^2);
     
-    if results_sorted_c{i}.flag > 0
-        time = results_sorted_c{i}.t;
-        leg_response = results_sorted_c{i}.Tleg;
-        ankle_response = results_sorted_c{i}.Tankle;
-        x = results_sorted_c{i}.x;
-        y = results_sorted_c{i}.y;
-        r = results_sorted_c{i}.r;
-        k = results_sorted_c{i}.k;
-        xcop = -ankle_response .* r ./(k .*(results_sorted_c{i}.r0 -r).* y);
+    if results_sorted_var{i}.param.flag > 0
+        time = results_sorted_var{i}.t;
+        leg_response = results_sorted_var{i}.Tleg;
+        ankle_response = results_sorted_var{i}.Tankle;
+        x = results_sorted_var{i}.x;
+        y = results_sorted_var{i}.y;
+        r = results_sorted_var{i}.r;
+        k = results_sorted_var{i}.param.k;
+        xcop = -ankle_response .* r ./(k .*(results_sorted_var{i}.r0 -r).* y);
         
-        if max(leg_response) > 49.9
+        if max(leg_response) > 12
 %             pause
         end
 
@@ -83,15 +88,15 @@ for i = 1:numel(results)
         an22.XData = x;
         an22.YData = leg_response; 
         
-        an3.XData = results_sorted_c{i}.c;
-        an3.YData = results_sorted_c{i}.cost;
+        an3.XData = results_sorted_var{i}.param.(varName);
+        an3.YData = results_sorted_var{i}.cost;
         
         an4.XData = x;
         an4.YData = xcop;
 
         drawnow
-        title1.String = ['damping = ', num2str(floor(results_sorted_c{i}.c))];
-        pause(.5)
+        title1.String = ['damping = ', num2str(floor(results_sorted_var{i}.param.(varName)))];
+        pause(.05)
         if record_video==1
             F=getframe(gcf);
             writeVideo(v,F);
@@ -104,15 +109,15 @@ if record_video == 1
 end
 
 %Make energy shared figure
-[cUnique, indUnique] = unique(c);
+[varUnique, indUnique] = unique(var);
 % barArray = [energy_leg(indUnique)' energy_ankle(indUnique)']; 
 % figure
 % abar = bar(cUnique',barArray, 'stacked');
 figure;
-plot(cUnique, energy_leg(indUnique)); hold on; 
-plot(cUnique, energy_ankle(indUnique),'r');
-a = line([71 71],[0, 12*10^4]); a.LineStyle = '--';
-xlabel('Damping')
+plot(varUnique, energy_leg(indUnique)); hold on; 
+plot(varUnique, energy_ankle(indUnique),'r');
+% a = line([71 71],[0, 12*10^4]); a.LineStyle = '--';
+xlabel(plotName)
 ylabel('Energy')
 legend('Leg energy', 'Ankle energy','Leg begins saturation')
 title('Optimal energies of actuators through stance')

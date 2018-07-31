@@ -27,7 +27,7 @@ clear colStruc
 colStruc.direction = {'up'};
 colStruc.varName = 'disturbance_f';
 colStruc.deltaVar = .5;
-colStruc.varMax = 50;
+colStruc.varMax = 100;
 colStruc.varMin = -1;
 colStruc.var = 0;
 ColStrucArray.ForceDisturbance = colStruc;
