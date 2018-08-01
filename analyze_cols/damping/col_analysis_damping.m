@@ -14,7 +14,7 @@ end
 
 % {'c', 'apex_velocity', 'disturance_f', 'TD_disturb', 'deltav', 'deltah'}
 varName = 'c';
-varmaxplot = 525;
+varmaxplot = 550;
 plotName = 'damping';
 
 strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\opt_c*');
@@ -60,7 +60,9 @@ for k = 1:length(i)
 end
 an32.XData = var_graph;
 an32.YData = cost_graph;
-for i = 1:numel(results)
+% for i = 1:numel(results)
+i = 1;
+while results_sorted_var{i}.param.(varName) < varmaxplot
     %Make energy shared figure
     energy_leg(i) = sum(results_sorted_var{i}.Tleg.^2);
     energy_ankle(i) = sum(results_sorted_var{i}.Tankle.^2);
@@ -102,6 +104,7 @@ for i = 1:numel(results)
             writeVideo(v,F);
         end
     end
+    i = i + 1;
 end
 
 if record_video == 1
@@ -109,18 +112,18 @@ if record_video == 1
 end
 
 %Make energy shared figure
-[varUnique, indUnique] = unique(var);
-% barArray = [energy_leg(indUnique)' energy_ankle(indUnique)']; 
-% figure
-% abar = bar(cUnique',barArray, 'stacked');
-figure;
-plot(varUnique, energy_leg(indUnique)); hold on; 
-plot(varUnique, energy_ankle(indUnique),'r');
-% a = line([71 71],[0, 12*10^4]); a.LineStyle = '--';
-xlabel(plotName)
-ylabel('Energy')
-legend('Leg energy', 'Ankle energy','Leg begins saturation')
-title('Optimal energies of actuators through stance')
+% [varUnique, indUnique] = unique(var);
+% % barArray = [energy_leg(indUnique)' energy_ankle(indUnique)']; 
+% % figure
+% % abar = bar(cUnique',barArray, 'stacked');
+% figure;
+% plot(varUnique, energy_leg(indUnique)); hold on; 
+% plot(varUnique, energy_ankle(indUnique),'r');
+% % a = line([71 71],[0, 12*10^4]); a.LineStyle = '--';
+% xlabel(plotName)
+% ylabel('Energy')
+% legend('Leg energy', 'Ankle energy','Leg begins saturation')
+% title('Optimal energies of actuators through stance')
 % a.Color = 'k';
 % figure
 % subplot(2,2,1)

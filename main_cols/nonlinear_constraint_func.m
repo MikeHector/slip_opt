@@ -51,18 +51,23 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     
     %Lock the TD angle
     if ~isnan(Parameters.TD_disturb)
-        ViolationMatrix(9,end) = atan2(y(1),x(1)) - (Parameters.baseline_TDA + TD_disturb);
+        ViolationMatrix(9,end) = atan2(y(1),x(1)) - (Parameters.baseline_TDA + Parameters.TD_disturb);
     end
     
 %     ViolationMatrix(1,end + 1) = y(1) - (y(end) - 0); %Dont need with new apex height constraint
-%     ViolationMatrix(2,end) = x(1) + x(end); %Artificial AF
-    
+%     ViolationMatrix(1,end+1) = x(1) + x(end); %Artificial AF
+
     %Inequality constraints
     %Ankle torque bounds
     ankle_bound = (Parameters.lf .* y .* ...
                    Parameters.k .* (r0 - r)) ./ (2 .* r);
     Acon1 = Tankle - ankle_bound;
     Acon2 = -(Tankle + ankle_bound);
+    
+    %/JUST FOR SEED FINDING!!!
+%     shit = -x .* dy;
+    %/END SEED FINDING
+    
     A_vio = [Acon1; Acon2];
     
     c = [A_vio];

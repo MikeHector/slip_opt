@@ -63,4 +63,14 @@ colStruc.var = 0;
 ColStrucArray.VelocityBetweenApexes = colStruc;
 clear colStruc
 
+%Changing motor inertias
+colStruc.direction = {'up'};
+colStruc.varName = 'i_motor';
+colStruc.deltaVar = (.095-.003)/12;
+colStruc.varMax = .01;
+colStruc.varMin = .002;
+colStruc.var = .003;
+ColStrucArray.DifferentMotorInertias = colStruc;
+clear colStruc
+
 end

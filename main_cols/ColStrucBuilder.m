@@ -6,7 +6,7 @@ function [ColStrucArray] = ColStrucBuilder()
 %Damping
 colStruc.direction = {'up'};
 colStruc.varName = 'c';
-colStruc.deltaVar = 1;
+colStruc.deltaVar = 2;
 colStruc.varMax = 1000;
 colStruc.varMin = -1;
 colStruc.var = 0; %Initial variable value
@@ -16,8 +16,8 @@ clear colStruc
 %Changing Apex Velocity
 colStruc.direction = {'up','down'};
 colStruc.varName = 'apex_velocity';
-colStruc.deltaVar = .01;
-colStruc.varMax = 5;
+colStruc.deltaVar = .02;
+colStruc.varMax = 3;
 colStruc.varMin = .1;
 colStruc.var = 0;
 ColStrucArray.ApexVelocity = colStruc;
@@ -36,7 +36,7 @@ clear colStruc
 %Changing Touch Down Angle Error
 colStruc.direction = {'up','down'};
 colStruc.varName = 'TD_disturb';
-colStruc.deltaVar = .005;
+colStruc.deltaVar = .01;
 colStruc.varMax = 1;
 colStruc.varMin = -1;
 colStruc.var = 0;
@@ -46,7 +46,7 @@ clear colStruc
 %Changing Velocity Between Apexes
 colStruc.direction = {'up','down'};
 colStruc.varName = 'deltav';
-colStruc.deltaVar = .01;
+colStruc.deltaVar = .02;
 colStruc.varMax = 3;
 colStruc.varMin = -.75;
 colStruc.var = 0;

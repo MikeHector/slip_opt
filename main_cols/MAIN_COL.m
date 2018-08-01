@@ -9,15 +9,14 @@ colStrucArray = ColStrucBuilder();
 % colStrucArray = ColStrucBuilderTest();
 fieldNames = fieldnames(colStrucArray);
 
-for m = 2:numel(fieldNames)
+for m = 1:length(fieldNames)
     colStruc = colStrucArray.(fieldNames{m});
-    
 
     for k = 1:numel(colStruc.direction)
         direction = colStruc.direction{k};
 
         %Load baseline seed and parameters
-        load('opt_c_300720181641270440')
+        load('baseline')
         opt_seed = opt_results.X;
         param = opt_results.param;
         param.(colStruc.varName) = colStruc.var;
@@ -50,7 +49,7 @@ for m = 2:numel(fieldNames)
             elseif strcmp(direction, 'down')
                 param.(colStruc.varName) = opt_results.param.(colStruc.varName) - colStruc.deltaVar;
             end
-
+            disp([colStruc.varName , ' has been incremented to ',num2str(param.(colStruc.varName))]);
             %Clean
             clear DV_out opt_results
         end
