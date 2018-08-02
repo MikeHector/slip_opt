@@ -14,7 +14,7 @@ end
 
 % {'c', 'apex_velocity', 'disturance_f', 'TD_disturb', 'deltav', 'deltah'}
 varName = 'c';
-varmaxplot = 550;
+varmaxplot = 400;
 plotName = 'damping';
 
 strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\opt_c*');
@@ -42,8 +42,8 @@ for i = 1:length(strucc)
     load(filename)
     results{i} = opt_results;
     var(i) = opt_results.param.c;
-    if var(i) == 0
-%         pause
+    if var(i) == 398
+        disp('wtu')
     end
 end
 [var_sorted,i] = sort(var);

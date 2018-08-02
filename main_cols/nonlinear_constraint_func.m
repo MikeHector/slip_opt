@@ -47,7 +47,7 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     %Final apex height constraint
     ViolationMatrix(7,end) = Parameters.g * (Parameters.apex_height + Parameters.deltah - y(end)) - .5 * dy(end)^2;
     %End condition Fs =0 ~> r0 = r @ End of stance 
-    ViolationMatrix(8,end) = r0(end)^2 - x(1)^2 - y(1)^2; 
+    ViolationMatrix(8,end) = r0(end) - r(end); 
     
     %Lock the TD angle
     if ~isnan(Parameters.TD_disturb)

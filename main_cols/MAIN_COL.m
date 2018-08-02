@@ -9,7 +9,7 @@ colStrucArray = ColStrucBuilder();
 % colStrucArray = ColStrucBuilderTest();
 fieldNames = fieldnames(colStrucArray);
 
-for m = 1:length(fieldNames)
+for m = 4:length(fieldNames)
     colStruc = colStrucArray.(fieldNames{m});
 
     for k = 1:numel(colStruc.direction)
@@ -22,9 +22,9 @@ for m = 1:length(fieldNames)
         param.(colStruc.varName) = colStruc.var;
         clear opt_results
 
-        infeasibleCounter = 0;
+        badCounter = 0;
 
-        while infeasibleCounter < 20 && param.(colStruc.varName) <= colStruc.varMax && param.(colStruc.varName) >= colStruc.varMin
+        while badCounter < 20 && param.(colStruc.varName) <= colStruc.varMax && param.(colStruc.varName) >= colStruc.varMin
             [DV_out, opt_results] = RUN_COL(opt_seed, param);
 
             %Save the coll
@@ -36,10 +36,10 @@ for m = 1:length(fieldNames)
             opt_seed = DV_out; 
 
             %Track infeasible counter
-            if opt_results.param.flag < 0
-                infeasibleCounter = infeasibleCounter + 1;
+            if (opt_results.param.flag < 0) || (opt_results.param.flag == 0 && opt_results.param.fmincon_stuff.constrviolation > 1e5)
+                badCounter = badCounter + 1;
             elseif opt_results.param.flag >= 0
-                infeasibleCounter = 0; %Reset counter if not infeasible
+                badCounter = 0; %Reset counter if not infeasible
             end
 
             %Increment collocation variable
