@@ -30,10 +30,10 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     r = sqrt(x.^2 + y.^2);
     
     %Starting constraints
-    %r0 spring starts undeflected
+    %r0 spring starts at nominal length
     ViolationMatrix(1,end + 1) = Parameters.r0_start - r0(1);
-    %change in r0 is 0
-    ViolationMatrix(2,end) = Parameters.r0_start^2 - x(1)^2 - y(1)^2;
+    %Fs starts at 0
+    ViolationMatrix(2,end +1) = r(1) - r0(1);
     %Velocity of spring starts at 0
     ViolationMatrix(3,end) = dr0(1);
     %y - velocity + position. energy approach

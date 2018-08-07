@@ -14,7 +14,7 @@ end
 
 % {'c', 'apex_velocity', 'disturance_f', 'TD_disturb', 'deltav', 'deltah'}
 varName = 'deltav';
-varmaxplot = .01;
+varmaxplot = 3.2;
 plotName = 'deltaV';
 
 dirname = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\opt_', varName, '*');
@@ -22,11 +22,11 @@ strucc = dir(dirname);
 fig = figure;
 hold on
 subplot(2,2,1); an1 = plot(1,1);
-axis([-0.3, .3, 0, 1]); title('xy traj'); xlabel('x'); ylabel('y');
+axis([-0.3, 1, 0, 1]); title('xy traj'); xlabel('x'); ylabel('y');
 subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
-axis([-.3, .3, -12, 12]); title('torque traj'); xlabel('x'); ylabel('torque');
+axis([-.3, 1, -12, 12]); title('torque traj'); xlabel('x'); ylabel('torque');
 subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2);
-axis([0,varmaxplot, 0, 4e3]); xlabel(plotName); ylabel('cost');
+axis([-.75,varmaxplot, 0, 1e3]); xlabel(plotName); ylabel('cost');
 subplot(2,2,4); an4 = plot(1,1);
 axis([-.25, .5, -.12, .12]); xlabel('x'); ylabel('xcop')
 % an2 = plot(2,2);
@@ -34,7 +34,7 @@ title1 = title('wut');
 % axis([-0.25, 0.25, .1, .9])
 
 % legend('leg torque', 'ankle torque')
-xlabel('time')
+% xlabel('time')
 % ylabel('torque')
 
 for i = 1:length(strucc)

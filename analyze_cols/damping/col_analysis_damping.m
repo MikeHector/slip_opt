@@ -14,7 +14,7 @@ end
 
 % {'c', 'apex_velocity', 'disturance_f', 'TD_disturb', 'deltav', 'deltah'}
 varName = 'c';
-varmaxplot = 400;
+varmaxplot = 120;
 plotName = 'damping';
 
 strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\opt_c*');
@@ -25,7 +25,7 @@ axis([-0.3, .3, 0, 1]); title('xy traj'); xlabel('x'); ylabel('y');
 subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
 axis([-.3, .3, -12, 12]); title('torque traj'); xlabel('x'); ylabel('torque');
 subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2);
-axis([0,varmaxplot+20, 0, 4e3]); xlabel(plotName); ylabel('cost');
+axis([0,varmaxplot, 0, 750]); xlabel(plotName); ylabel('cost');
 subplot(2,2,4); an4 = plot(1,1);
 axis([-.25, .5, -.12, .12]); xlabel('x'); ylabel('xcop')
 % an2 = plot(2,2);
@@ -42,7 +42,7 @@ for i = 1:length(strucc)
     load(filename)
     results{i} = opt_results;
     var(i) = opt_results.param.c;
-    if var(i) == 398
+    if var(i) == 100
         disp('wtu')
     end
 end

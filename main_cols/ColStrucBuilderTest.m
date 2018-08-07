@@ -6,10 +6,10 @@ function [ColStrucArray] = ColStrucBuilderTest()
 %Damping
 colStruc.direction = {'up'};
 colStruc.varName = 'c';
-colStruc.deltaVar = 5;
-colStruc.varMax = 2500;
+colStruc.deltaVar = 50;
+colStruc.varMax = 51;
 colStruc.varMin = -1;
-colStruc.var = 150; %Initial variable value
+colStruc.var = 0; %Initial variable value
 ColStrucArray.Damping = colStruc;
 clear colStruc
 
@@ -60,7 +60,7 @@ colStruc.deltaVar = .1;
 colStruc.varMax = .11;
 colStruc.varMin = -.11;
 colStruc.var = 0;
-ColStrucArray.VelocityBetweenApexes = colStruc;
+ColStrucArray.HeightBetweenApexes = colStruc;
 clear colStruc
 
 % %Changing motor inertias

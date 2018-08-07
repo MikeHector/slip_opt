@@ -20,6 +20,7 @@ plotName = 'TD Disturbance';
 
 dirname = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\opt_', varName, '*');
 strucc = dir(dirname);
+assert(numel(strucc) > 0, 'No files by that name in the directory')
 fig = figure;
 hold on
 

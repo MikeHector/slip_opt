@@ -9,14 +9,14 @@ colStrucArray = ColStrucBuilder();
 % colStrucArray = ColStrucBuilderTest();
 fieldNames = fieldnames(colStrucArray);
 
-for m = 1:2
+for m = 1
     colStruc = colStrucArray.(fieldNames{m});
 
     for k = 1:numel(colStruc.direction)
         direction = colStruc.direction{k};
 
         %Load baseline seed and parameters
-        load('baseline')
+        load('baseline3')
         opt_seed = opt_results.X;
         param = opt_results.param;
         param.(colStruc.varName) = colStruc.var;
@@ -30,7 +30,7 @@ for m = 1:2
             %Save the coll
             uniqueID = string(datetime, 'dMMyHHmmssSSSS');
             filename = strcat('opt_', colStruc.varName, '_', uniqueID);
-            save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\',filename),'opt_results');
+            save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\dampingv2\',filename),'opt_results');
 
             %Save optimized decision variables as new seed
             opt_seed = DV_out; 
@@ -39,7 +39,7 @@ for m = 1:2
             if (opt_results.param.flag < 0) || (opt_results.param.flag == 0 && opt_results.param.fmincon_stuff.constrviolation > 1e5)
                 badCounter = badCounter + 1;
             elseif opt_results.param.flag >= 0
-                badCounter = 0; %Reset counter if not infeasible
+                badCounter = 0; %Reset counter if not infeasible/ bad
             end
 
             %Increment collocation variable

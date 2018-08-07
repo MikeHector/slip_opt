@@ -7,7 +7,7 @@ colls = 0;
 %Damping
 colStruc.direction = {'up'};
 colStruc.varName = 'c';
-colStruc.deltaVar = 2;
+colStruc.deltaVar = .5;
 colStruc.varMax = 1000;
 colStruc.varMin = -1;
 colStruc.var = 0; %Initial variable value
@@ -20,9 +20,9 @@ clear colStruc
 colStruc.direction = {'up','down'};
 colStruc.varName = 'apex_velocity';
 colStruc.deltaVar = .02;
-colStruc.varMax = 3;
-colStruc.varMin = .1;
-colStruc.var = 0;
+colStruc.varMax = 2;
+colStruc.varMin = -.9;
+colStruc.var = 1;
 ColStrucArray.ApexVelocity = colStruc;
 colls2 = (abs(colStruc.varMax) + abs(colStruc.varMin))/colStruc.deltaVar;
 colls = colls + colls2;
@@ -71,7 +71,7 @@ colStruc.deltaVar = .005;
 colStruc.varMax = .5;
 colStruc.varMin = -.1;
 colStruc.var = 0;
-ColStrucArray.VelocityBetweenApexes = colStruc;
+ColStrucArray.HeightBetweenApexes = colStruc;
 colls6 = (abs(colStruc.varMax) + abs(colStruc.varMin))/colStruc.deltaVar;
 colls = colls + colls6;
 clear colStruc
