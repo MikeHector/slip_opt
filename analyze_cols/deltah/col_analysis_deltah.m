@@ -5,7 +5,7 @@
 clc; clear; close all
 record_video = 0;
 if record_video==1
-    v=VideoWriter('torques_over_damping','MPEG-4');
+    v=VideoWriter('Final Apex Heights','MPEG-4');
     v.FrameRate=10;
     open(v);
 end
@@ -14,9 +14,9 @@ end
 
 % {'c', 'apex_velocity', 'disturance_f', 'TD_disturb', 'deltav', 'deltah'}
 varName = 'deltah';
-varmaxplot = .5;
+varmaxplot = .4899;
 varminplot = -.1;
-plotName = 'Changing height';
+plotName = 'Final Apex Height';
 
 dirname = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\opt_', varName, '*');
 strucc = dir(dirname);
@@ -26,25 +26,26 @@ hold on
 
 %XY Trajectory
 subplot(2,2,1); an1 = plot(1,1);
-axis([-0.6, .6, 0, 1]); title('xy traj'); xlabel('x'); ylabel('y');
+axis([-0.3, .3, 0, 1.5]); title('XY Trajectory'); xlabel('X Displacement'); ylabel('Y Displacement');
 
 %Torques
 subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
-axis([-.6, .6, -13, 13]); title('torque traj'); xlabel('x'); ylabel('torque');
-TLmax = refline(0, 12.2); TLmax.Color = [0.8500 0.3250 0.0980]; TLmax.LineStyle = '--';
-TLmin = refline(0, -12.2); TLmin.Color = [0.8500 0.3250 0.0980]; TLmin.LineStyle = '--';
-TAmax = refline(0, 4.5); TAmax.Color = 'b'; TAmax.LineStyle = '--';
-TAmin = refline(0, -4.5); TAmin.Color = 'b'; TAmin.LineStyle = '--';
-
+axis([-.3, .3, -13, 13]); title('Torque Trajectory'); xlabel('X Displacement'); ylabel('Torque'); legend('Ankle torque', 'Leg torque', 'Location', 'southwest')
+TLmax = refline(0, 12.2); TLmax.Color = [0.8500 0.3250 0.0980]; TLmax.LineStyle = '--'; TLmax.HandleVisibility = 'off';
+TLmin = refline(0, -12.2); TLmin.Color = [0.8500 0.3250 0.0980]; TLmin.LineStyle = '--'; TLmin.HandleVisibility = 'off';
+TAmax = refline(0, 4.5); TAmax.Color = 'b'; TAmax.LineStyle = '--'; TAmax.HandleVisibility = 'off';
+TAmin = refline(0, -4.5); TAmin.Color = 'b'; TAmin.LineStyle = '--'; TAmin.HandleVisibility = 'off';
 
 subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2);
-axis([varminplot,varmaxplot, 0, 2e3]); xlabel(plotName); ylabel('cost');
+axis([varminplot,varmaxplot, 0, 850]); xlabel('Final Apex Height'); ylabel('Cost');
+title1 = title('wut');
 
 subplot(2,2,4); an4 = plot(1,1);
-axis([-.6, .6, -.12, .12]); xlabel('x'); ylabel('xcop')
+axis([-.3, .3, -.12, .12]); xlabel('X Displacement'); ylabel('Center of Pressure')
+title('Center of Pressure');
 
 % an2 = plot(2,2);
-title1 = title('wut');
+
 % axis([-0.25, 0.25, .1, .9])
 
 % legend('leg torque', 'ankle torque')
@@ -112,7 +113,7 @@ while results_sorted_var{i}.param.(varName) < varmaxplot
         an4.YData = xcop;
 
         drawnow
-        title1.String = [plotName, ' = ', num2str(results_sorted_var{i}.param.(varName))];
+        title1.String = ['Energy Required when ', plotName, ' is ', num2str(1+results_sorted_var{i}.param.(varName)), 'm'];
         pause(.1)
         if record_video==1
             F=getframe(gcf);

@@ -5,7 +5,7 @@
 clc; clear; close all
 record_video = 0;
 if record_video==1
-    v=VideoWriter('torques_over_damping','MPEG-4');
+    v=VideoWriter('Accelerating','MPEG-4');
     v.FrameRate=10;
     open(v);
 end
@@ -14,23 +14,29 @@ end
 
 % {'c', 'apex_velocity', 'disturance_f', 'TD_disturb', 'deltav', 'deltah'}
 varName = 'deltav';
-varmaxplot = 3.2;
-plotName = 'deltaV';
+varmaxplot = 2.98;
+plotName = 'Change in Velocity';
 
 dirname = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\opt_', varName, '*');
 strucc = dir(dirname);
 fig = figure;
 hold on
 subplot(2,2,1); an1 = plot(1,1);
-axis([-0.3, 1, 0, 1]); title('xy traj'); xlabel('x'); ylabel('y');
+axis([-0.3, 1, 0, 1]); title('XY Trajectory'); xlabel('X Displacement'); ylabel('Y Displacement');
 subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
-axis([-.3, 1, -12, 12]); title('torque traj'); xlabel('x'); ylabel('torque');
+axis([-.3, 1, -13, 13]); title('Torque Trajectory'); xlabel('X Displacement'); ylabel('Torque'); legend('Ankle torque', 'Leg torque', 'Location', 'southwest')
+TLmax = refline(0, 12.2); TLmax.Color = [0.8500 0.3250 0.0980]; TLmax.LineStyle = '--'; TLmax.HandleVisibility = 'off';
+TLmin = refline(0, -12.2); TLmin.Color = [0.8500 0.3250 0.0980]; TLmin.LineStyle = '--'; TLmin.HandleVisibility = 'off';
+TAmax = refline(0, 4.5); TAmax.Color = 'b'; TAmax.LineStyle = '--'; TAmax.HandleVisibility = 'off';
+TAmin = refline(0, -4.5); TAmin.Color = 'b'; TAmin.LineStyle = '--'; TAmin.HandleVisibility = 'off';
+
 subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2);
-axis([-.75,varmaxplot, 0, 1e3]); xlabel(plotName); ylabel('cost');
-subplot(2,2,4); an4 = plot(1,1);
-axis([-.25, .5, -.12, .12]); xlabel('x'); ylabel('xcop')
-% an2 = plot(2,2);
+axis([-.75,varmaxplot, 0, 1e3]); xlabel(plotName); ylabel('Cost');
 title1 = title('wut');
+subplot(2,2,4); an4 = plot(1,1);
+axis([-.25, 1, -.12, .12]); xlabel('x'); ylabel('xcop')
+% an2 = plot(2,2);
+title('Center of Pressure')
 % axis([-0.25, 0.25, .1, .9])
 
 % legend('leg torque', 'ankle torque')
@@ -98,8 +104,8 @@ while results_sorted_var{i}.param.(varName) < varmaxplot
         an4.YData = xcop;
 
         drawnow
-        title1.String = [plotName, ' = ', num2str(results_sorted_var{i}.param.(varName))];
-        pause(.1)
+        title1.String = ['Energy Required when ', plotName, ' is ', num2str(results_sorted_var{i}.param.(varName)), 'm/s'];
+        pause(.05)
         if record_video==1
             F=getframe(gcf);
             writeVideo(v,F);

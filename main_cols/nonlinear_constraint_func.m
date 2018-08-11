@@ -11,8 +11,8 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     for i = 1:Parameters.N - 1
         time_i = T * (i - 1) / (Parameters.N - 1);
         time_i_plus_1 = T * i / (Parameters.N - 1);
-        Fk = dynamics(DecisionVars(:, i), Parameters, time_i);
-        Fk_plus_1 = dynamics(DecisionVars(:, i + 1), Parameters, time_i_plus_1);
+        Fk = dynamics2(DecisionVars(:, i), Parameters);
+        Fk_plus_1 = dynamics2(DecisionVars(:, i + 1), Parameters);
         %Trapezoidal Collocation Constraints
         ViolationMatrix(:, i + 1) = ...
             [.5 * (time_i_plus_1 - time_i) * (Fk_plus_1 + Fk)...
@@ -66,6 +66,7 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     
     %/JUST FOR SEED FINDING!!!
 %     shit = -x .* dy;
+%     ass = r - r0;
     %/END SEED FINDING
     
     A_vio = [Acon1; Acon2];

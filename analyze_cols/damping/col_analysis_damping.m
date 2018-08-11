@@ -5,7 +5,7 @@
 clc; clear; close all
 record_video = 0;
 if record_video==1
-    v=VideoWriter('torques_over_damping','MPEG-4');
+    v=VideoWriter('Damping','MPEG-4');
     v.FrameRate=10;
     open(v);
 end
@@ -14,39 +14,46 @@ end
 
 % {'c', 'apex_velocity', 'disturance_f', 'TD_disturb', 'deltav', 'deltah'}
 varName = 'c';
-varmaxplot = 120;
-plotName = 'damping';
+varmaxplot = 115.9;
+plotName = 'Damping';
 
-strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\opt_c*');
+dirname = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\dampingv2\opt_', varName, '*');
+strucc = dir(dirname);
 fig = figure;
 hold on
 subplot(2,2,1); an1 = plot(1,1);
-axis([-0.3, .3, 0, 1]); title('xy traj'); xlabel('x'); ylabel('y');
+axis([-0.2,.25, 0, 1]); title('XY Trajectory'); xlabel('X Displacement'); ylabel('Y Displacement');
 subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
-axis([-.3, .3, -12, 12]); title('torque traj'); xlabel('x'); ylabel('torque');
+axis([-0.2,.25, -13, 13]); title('Torque Trajectory'); xlabel('X Displacement'); ylabel('Torque'); legend('Ankle torque', 'Leg torque', 'Location', 'southwest')
+TLmax = refline(0, 12.2); TLmax.Color = [0.8500 0.3250 0.0980]; TLmax.LineStyle = '--'; TLmax.HandleVisibility = 'off';
+TLmin = refline(0, -12.2); TLmin.Color = [0.8500 0.3250 0.0980]; TLmin.LineStyle = '--'; TLmin.HandleVisibility = 'off';
+TAmax = refline(0, 4.5); TAmax.Color = 'b'; TAmax.LineStyle = '--'; TAmax.HandleVisibility = 'off';
+TAmin = refline(0, -4.5); TAmin.Color = 'b'; TAmin.LineStyle = '--'; TAmin.HandleVisibility = 'off';
+
 subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2);
-axis([0,varmaxplot, 0, 750]); xlabel(plotName); ylabel('cost');
-subplot(2,2,4); an4 = plot(1,1);
-axis([-.25, .5, -.12, .12]); xlabel('x'); ylabel('xcop')
-% an2 = plot(2,2);
+axis([-.75,varmaxplot, 0, 1e3]); xlabel(plotName); ylabel('Cost');
 title1 = title('wut');
+subplot(2,2,4); an4 = plot(1,1);
+axis([-0.2,.25, -.12, .12]); xlabel('x'); ylabel('xcop')
+% an2 = plot(2,2);
+title('Center of Pressure')
 % axis([-0.25, 0.25, .1, .9])
 
 % legend('leg torque', 'ankle torque')
-xlabel('time')
+% xlabel('time')
 % ylabel('torque')
 
 for i = 1:length(strucc)
     filename = strucc(i).name;
-    filename = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\', filename); %strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\', filename); 
+    filename = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\dampingv2\', filename); %strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\', filename); 
     load(filename)
     results{i} = opt_results;
-    var(i) = opt_results.param.c;
-    if var(i) == 100
-        disp('wtu')
+    varr(i) = opt_results.param.(varName);
+    if varr(i) == 0
+%         pause
     end
 end
-[var_sorted,i] = sort(var);
+[var_sorted,i] = sort(varr);
 
 q=1;
 for k = 1:length(i)
@@ -55,6 +62,7 @@ for k = 1:length(i)
     if results{i(k)}.param.flag > 0
         var_graph(q) = results{i(k)}.param.(varName);
         cost_graph(q) = results{i(k)}.cost;
+        energy{q} = get_energy(results{i(k)},0);
         q = q+1;
     end
 end
@@ -97,8 +105,8 @@ while results_sorted_var{i}.param.(varName) < varmaxplot
         an4.YData = xcop;
 
         drawnow
-        title1.String = ['damping = ', num2str(floor(results_sorted_var{i}.param.(varName)))];
-        pause(.05)
+        title1.String = ['Energy Required when ', plotName, ' is ', num2str(floor(results_sorted_var{i}.param.(varName))), ''];
+%         pause(.05)
         if record_video==1
             F=getframe(gcf);
             writeVideo(v,F);
@@ -110,6 +118,27 @@ end
 if record_video == 1
     close(v)
 end
+
+%Energy figure
+
+legE = []; legM = []; ankleE = []; ankleM = [];
+for i = 1:numel(energy)    
+    legE = [legE, energy{i}.leg_e];
+    legM = [legM, energy{i}.leg_m];
+    ankleE = [ankleE, energy{i}.ankle_e];
+    ankleM = [ankleM, energy{i}.ankle_m];
+end
+
+figure;
+plot(var_graph, legE); hold on;
+plot(var_graph, legM);
+plot(var_graph, ankleE);
+plot(var_graph, ankleM);
+rl = refline(0, energy{1}.LegEtoStand); rl.LineStyle = '--';
+legend('Leg electrical', 'Leg mechanical', 'Ankle electrical', 'Ankle mechanical', 'Energy to stand')
+
+% plot(var_graph, 
+
 
 %Make energy shared figure
 % [varUnique, indUnique] = unique(var);

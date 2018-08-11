@@ -6,7 +6,7 @@ function [optimized, opt_res] = RUN_COL(seed, param) %TD_angle should be nan unl
     assert(length(seed) == param.N,'Seed was not the expected dimension')
     
     %Cost function
-    cost_func = @(x) objective_function_2(x, param);
+    cost_func = @(x) objective_function_2_TEMP(x, param);
 
     %Set up nonlinear constraint (which we'll be calling a lot)
     nonlcon = @(x) nonlinear_constraint_func(x, param);
@@ -35,7 +35,7 @@ function [optimized, opt_res] = RUN_COL(seed, param) %TD_angle should be nan unl
     param.options = optimoptions('fmincon','Display','iter','MaxFunctionEvaluations',1000000,...
                             'MaxIterations',15000000, 'ConstraintTolerance', 1e-3,...
                             'UseParallel', true, ...
-                            'OptimalityTolerance',1e-6); %,'OutputFcn', outputfunc)
+                            'OptimalityTolerance',1e-3); %,'OutputFcn', outputfunc)
 
     %Optimize!
     [optimized, ~, param.flag, param.fmincon_stuff] = fmincon(cost_func,seed,A,B,Aeq,Beq,lb,ub,nonlcon,param.options);
