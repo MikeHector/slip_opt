@@ -32,11 +32,11 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     %Starting constraints
     
     %r0 spring starts at nominal length
-%     ViolationMatrix(1,end + 1) = Parameters.r0_start - r0(1);
+    ViolationMatrix(1,end + 1) = Parameters.r0_start - r0(1);
     %Fs starts at 0
-    ViolationMatrix(2,end + 1) = r(1) - r0(1);
+    ViolationMatrix(2,end) = r(1) - r0(1);
     %Velocity of spring starts at 0
-%     ViolationMatrix(3,end) = dr0(1);
+    ViolationMatrix(3,end) = dr0(1);
     %y - velocity + position. energy approach
     ViolationMatrix(4,end) = .5 * dy(1)^2 - Parameters.g * (Parameters.apex_height - y(1));
     %x - velocity
@@ -49,7 +49,15 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     ViolationMatrix(7,end) = Parameters.g * (Parameters.apex_height + Parameters.deltah - y(end)) - .5 * dy(end)^2;
     %End condition Fs =0 ~> r0 = r @ End of stance 
     ViolationMatrix(8,end) = r0(end) - r(end); 
-        
+    
+    %Experimental
+    %y - make sure it's coming from apex to ground
+    ViolationMatrix(1, end+1) = dy(1)^2 + 2 * Parameters.g * (y(1) - Parameters.apex_height);
+    
+    %y - make sure it's going from lift off to apex
+    ViolationMatrix(2, end) = dy(end)^2 - 2 * Parameters.g * (Parameters.apex_height + Parameters.deltah - y(end));
+    
+    
     %Lock the TD angle
     if ~isnan(Parameters.TD_disturb)
         ViolationMatrix(9,end) = atan2(y(1),x(1)) - (Parameters.baseline_TDA + Parameters.TD_disturb);
@@ -71,11 +79,6 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     %/END SEED FINDING
     
     A_vio = [Acon1; Acon2];
-    
-    %Experimental
-    %y - make sure it's coming from apex to ground/ ground to apex
-    A_vio(1,end+1) = dy(1);
-    A_vio(2,end+1) = -dy(end);
     
     c = [A_vio];
     

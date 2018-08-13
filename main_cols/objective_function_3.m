@@ -1,4 +1,4 @@
-function [ cost ] = objective_function_2_TEMP( DecisionVariables, Parameters )
+function [ cost ] = objective_function_3( DecisionVariables, Parameters )
 %objective_function This function evaluates the objective function
 %   This function uses Decision variables and calculates the objective
 %   function or cost

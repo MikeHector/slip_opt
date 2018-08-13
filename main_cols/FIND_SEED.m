@@ -9,9 +9,9 @@ clear; clc;
 % colStrucArray = ColStrucBuilderTest();
 % fieldNames = fieldnames(colStrucArray);
 
-newFileName = 'baselineNewDynamics';
+newFileName = 'baselineNewDyn_FixdOF_Nodr0_Nor0';
 %Load baseline seed and parameters
-load('baseline3')
+load('baselineNewDyn_FixdOF_Nodr0_Nor0.mat')
 opt_results.param.c = 0;
 opt_seed = opt_results.X;
 % opt_results.param.apex_velocity = 0;

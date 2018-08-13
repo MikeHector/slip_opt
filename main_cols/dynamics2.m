@@ -7,26 +7,7 @@ function f_eval = dynamics2(DV,param)
 
 
 %DV = [x, y, r0, dx, dy, dr0, tleg, tankle, Tstance]
-
 %Dynamics
-% x = DV(1);
-% y = DV(2);
-% r0 = DV(3);
-% dx = DV(4);
-% dy = DV(5);
-% dr0 = DV(6); 
-% Tleg = DV(7);
-% Tankle = DV(8);
-% t2 = x.^2;
-% t3 = y.^2;
-% t4 = t2+t3;
-% t5 = param.transmission.^2;
-% t6 = dx.^2;
-% t7 = dy.^2;
-% t8 = 1.0./t4.^2;
-% t9 = t4.^2;
-% t10 = t4.^(3.0./2.0);
-% dyn = [-t8.*(-param.k.*x.*t9+param.k.*x.*r0.*t10+param.i_motor.*x.*t2.*t5.*t6+param.i_motor.*x.*t3.*t5.*t7-param.i_motor.*x.*t4.*t5.*t6-param.i_motor.*x.*t4.*t5.*t7+param.i_motor.*y.*dx.*dy.*t2.*t5.*2.0);t8.*(param.m.*param.g.*t9+param.k.*y.*t9-param.k.*y.*r0.*t10-param.i_motor.*y.*t2.*t5.*t6-param.i_motor.*y.*t3.*t5.*t7+param.i_motor.*y.*t4.*t5.*t6+param.i_motor.*y.*t4.*t5.*t7-param.i_motor.*x.*dx.*dy.*t3.*t5.*2.0);1.0./t4.^(3.0./2.0).*(-param.k.*t9+param.k.*r0.*t10+param.i_motor.*t2.*t5.*t6+param.i_motor.*t3.*t5.*t7-param.i_motor.*t4.*t5.*t6-param.i_motor.*t4.*t5.*t7+param.i_motor.*x.*y.*dx.*dy.*t5.*2.0)];
 
 x = DV(1);
 y = DV(2);

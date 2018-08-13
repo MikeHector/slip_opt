@@ -35,6 +35,9 @@ function [ ] = plot_slip(opt_results, record_video)
     rline.Color = 'r';
     rline.LineStyle = '--';
     title('X Y SLIP')
+    %Trajectory line
+    hold on;
+    plot(s.x, s.y, 'b--')
 
     %COP Animation
     figure(slipbodyanimate)
@@ -95,7 +98,7 @@ function [ ] = plot_slip(opt_results, record_video)
     title('Leg torque trajectory')
 
 
-    for q = 1:2
+    for q = 1:2 %Number of times to play
         for i = 1:length(s.x)
             %Body animation stuff
             %Repatch the spring line
@@ -103,6 +106,7 @@ function [ ] = plot_slip(opt_results, record_video)
             %HG transform stuff
             Tx = makehgtform('translate',[s.x(i),s.y(i),0],'zrotate',leg_angle(i));
             set(tf, 'Matrix', Tx)
+
 
             %COP animation
             %Repatch the arrow                       
