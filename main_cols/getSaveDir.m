@@ -8,13 +8,13 @@ function [saveDir] = getSaveDir(TypeZeroForListOfInputs)
         disp('My Home computer -> Alluring-PC')
         disp('Michaels DRL computer -> Michael-PC')
 
-    elseif strcomp(TypeZeroForListOfInputs, 'DRL-PC')
-        saveDir = 'C:\Users\mike-\Documents\DRL\collocation\opt_results';
+    elseif strcmp(TypeZeroForListOfInputs, 'DRL-PC')
+        saveDir = 'C:\Users\mike-\Documents\DRL\collocation\opt_results\';
 
-    elseif strcomp(TypeZeroForListOfInputs, 'Alluring-PC')
+    elseif strcmp(TypeZeroForListOfInputs, 'Alluring-PC')
         saveDir = ' ';
 
-    elseif strcomp(TypeZeroForListOfInputs, 'Michael-PC')
+    elseif strcmp(TypeZeroForListOfInputs, 'Michael-PC')
         saveDir = ' ';
     
     end

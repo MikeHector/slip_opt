@@ -9,7 +9,7 @@ colStrucArray = ColStrucBuilder();
 % colStrucArray = ColStrucBuilderTest();
 fieldNames = fieldnames(colStrucArray);
 
-saveDir = getSaveDir('DRL-PC');
+saveDir = g
 
 for m = [2 3 7]
     colStruc = colStrucArray.(fieldNames{m});
@@ -32,7 +32,7 @@ for m = [2 3 7]
             %Save the coll
             uniqueID = string(datetime, 'dMMyHHmmssSSSS');
             filename = strcat('opt_', colStruc.varName, '_', uniqueID);
-            save(strcat(saveDir,filename),'opt_results');
+            save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\',filename),'opt_results');
 
             %Save optimized decision variables as new seed
             opt_seed = DV_out; 
