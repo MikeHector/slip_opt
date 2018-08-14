@@ -1,40 +1,42 @@
 % MHector
-
-% 6.5.18
+% 8.14.18
 % COL analysis
 clc; clear; close all
-record_video = 0;
+record_video = 1;
 if record_video==1
     v=VideoWriter('Accelerating','MPEG-4');
     v.FrameRate=10;
     open(v);
 end
-% strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_*');%dir('D:\Documents\DRL\slip_opt\opt_results\damping_results\opt_damping_*'); %dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\opt_damping_*');
-% strucc = dir('C:\\Users\mike-\Documents\DRL\collocation\opt_results\damping_results\perturb_results\opt*');
 
 % {'c', 'apex_velocity', 'disturance_f', 'TD_disturb', 'deltav', 'deltah'}
 varName = 'deltav';
-varmaxplot = 2.98;
-plotName = 'Change in Velocity';
+varmaxplot = 2;
+varminplot = -.9;
+energyMax = 1000;
+plotName = 'Change in Velocity Between Apexes';
+cf = pwd; %Path stuff
+addpath(strcat(cf(1:strfind(pwd, 'collocation')-1), 'collocation\main_cols\')); %Add main col folder to path
+dirComp = getSaveDir('DRL-PC'); %Change if you're running on a different computer
 
-dirname = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\opt_', varName, '*');
+dirname = strcat(dirComp, 'opt_', varName, '*');
 strucc = dir(dirname);
 fig = figure;
 hold on
-subplot(2,2,1); an1 = plot(1,1); hold on; an12 = plot(0,0,'bo');
-axis([-0.3, 1, 0, 1]); title('XY Trajectory'); xlabel('X Displacement'); ylabel('Y Displacement');
+subplot(2,2,1); an1 = plot(1,1);
+axis([0,1, 0, 1.5]); title('Y Height Through Cycle'); xlabel('Normalized Time'); ylabel('Y Displacement');
 subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
-axis([-.3, 1, -13, 13]); title('Torque Trajectory'); xlabel('X Displacement'); ylabel('Torque'); legend('Ankle torque', 'Leg torque', 'Location', 'southwest')
+axis([0, 1, -13, 13]); title('Torque Trajectory'); xlabel('Normalized Time'); ylabel('Torque'); legend('Ankle torque', 'Leg torque', 'Location', 'southwest')
 TLmax = refline(0, 12.2); TLmax.Color = [0.8500 0.3250 0.0980]; TLmax.LineStyle = '--'; TLmax.HandleVisibility = 'off';
 TLmin = refline(0, -12.2); TLmin.Color = [0.8500 0.3250 0.0980]; TLmin.LineStyle = '--'; TLmin.HandleVisibility = 'off';
 TAmax = refline(0, 4.5); TAmax.Color = 'b'; TAmax.LineStyle = '--'; TAmax.HandleVisibility = 'off';
 TAmin = refline(0, -4.5); TAmin.Color = 'b'; TAmin.LineStyle = '--'; TAmin.HandleVisibility = 'off';
 
 subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2);
-axis([-.75,varmaxplot, 0, 1e3]); xlabel(plotName); ylabel('Cost');
+axis([varminplot,varmaxplot, 0, energyMax]); xlabel(plotName); ylabel('Cost');
 title1 = title('wut');
 subplot(2,2,4); an4 = plot(1,1);
-axis([-.25, 1, -.12, .12]); xlabel('x'); ylabel('xcop')
+axis([0,1, -.12, .12]); xlabel('Normalized Time'); ylabel('xcop')
 % an2 = plot(2,2);
 title('Center of Pressure')
 % axis([-0.25, 0.25, .1, .9])
@@ -45,7 +47,7 @@ title('Center of Pressure')
 
 for i = 1:length(strucc)
     filename = strucc(i).name;
-    filename = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\', filename); %strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\', filename); 
+    filename = strcat(dirComp, filename);
     load(filename)
     results{i} = opt_results;
     varr(i) = opt_results.param.(varName);
@@ -72,8 +74,8 @@ an32.YData = cost_graph;
 i = 1;
 while results_sorted_var{i}.param.(varName) < varmaxplot
     
-    if results_sorted_var{i}.param.flag > 0
-        time = results_sorted_var{i}.t;
+   if results_sorted_var{i}.param.flag > 0
+        time = results_sorted_var{i}.t / results_sorted_var{i}.t(end);
         leg_response = results_sorted_var{i}.Tleg;
         ankle_response = results_sorted_var{i}.Tankle;
         xyTraj = getXYplot(results_sorted_var{i},0);
@@ -87,27 +89,27 @@ while results_sorted_var{i}.param.(varName) < varmaxplot
 %             pause
         end
 
-        an1.XData = x;
+        an1.XData = real(xyTraj.t)/real(xyTraj.t(end));
         an1.YData = y;
         
-        an12.XData = [results_sorted_var{i}.x(1), results_sorted_var{i}.x(end)];
+        an12.XData = time;
         an12.YData = [results_sorted_var{i}.y(1), results_sorted_var{i}.y(end)];
 
-        an2.XData = results_sorted_var{i}.x;
+        an2.XData = time;
         an2.YData = ankle_response;  
         
-        an22.XData = results_sorted_var{i}.x;
+        an22.XData = time;
         an22.YData = leg_response; 
         
         an3.XData = results_sorted_var{i}.param.(varName);
         an3.YData = results_sorted_var{i}.cost;
         
-        an4.XData = results_sorted_var{i}.x;
+        an4.XData = time;
         an4.YData = xcop;
 
         drawnow
         title1.String = ['Energy Required when ', plotName, ' is ', num2str(results_sorted_var{i}.param.(varName)), 'm/s'];
-        pause(.05)
+        pause(.005)
         if record_video==1
             F=getframe(gcf);
             writeVideo(v,F);
@@ -120,6 +122,7 @@ if record_video == 1
     close(v)
 end
 
+% Energy figure
 
 legE = []; legM = []; ankleE = []; ankleM = [];
 for i = 1:numel(energy)    
@@ -136,3 +139,33 @@ plot(var_graph, ankleE);
 plot(var_graph, ankleM);
 rl = refline(0, energy{1}.LegEtoStand); rl.LineStyle = '--';
 legend('Leg electrical', 'Leg mechanical', 'Ankle electrical', 'Ankle mechanical', 'Energy to stand')
+
+% GRF/leg length graph
+
+figure;
+subplot(2,1,1); grf = plot(0,0); xlabel('Normalized Time'); ylabel('GRF Normalized by Weight'); title2 = title('Ground Reaction Force');
+axis([0 1 0 3.2])
+subplot(2,1,2); leglen = plot(0,0); xlabel('Normalized Time'); ylabel('Leg Length'); title('Leg Length Through Stance')
+axis([0 1 0 1.2])
+
+i = 1;
+while results_sorted_var{i}.param.(varName) < varmaxplot
+    
+   if results_sorted_var{i}.param.flag > 0
+        time = results_sorted_var{i}.t/results_sorted_var{i}.t(end);
+        r = results_sorted_var{i}.r;
+        k = results_sorted_var{i}.param.k;
+        GRF = k* (results_sorted_var{i}.r0 - results_sorted_var{i}.r)/ (results_sorted_var{i}.param.m * results_sorted_var{i}.param.g);
+        
+        grf.XData = time;
+        grf.YData = GRF;
+        title2.String = ['Ground Reaction Forces when ', plotName, ' is ', num2str(results_sorted_var{i}.param.(varName))];
+        
+        leglen.XData = time;
+        leglen.YData = r;
+        drawnow;
+        pause(.05);
+   end
+    i = i + 1;
+end
+

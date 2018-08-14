@@ -25,7 +25,7 @@ dyn = [param.k.*x-param.k.*x.*r0.*t5;param.m.*param.g+param.k.*y-param.k.*y.*r0.
 
 
 % Virtual work
-Q = [-Tankle * y/t4; Tankle * x/t4; Tleg * param.transmission];
+Q = [-(Tankle/t5 + param.disturbance_f) * y/t5; (Tankle/t5 + param.disturbance_f) * x/t5; Tleg * param.transmission];
 dD = param.c* [-dr0 * x/sqrt(t4) + (dx*x^2 + x*dy*y)/t4; -dr0 * y/sqrt(t4) + (dy*y^2+dx*dx*y)/t4; dr0 - (dx*x+dy*y)/sqrt(t4)];
 % Q = [0; 0; 0];
 % dD = [0; 0; 0];
