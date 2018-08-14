@@ -78,10 +78,10 @@ clear colStruc
 
 %Changing R_ankle
 colStruc.direction = {'down'};
-colStruc.varName = 'deltah';
+colStruc.varName = 'R_ankle';
 colStruc.deltaVar = 2;
 colStruc.varMax = 215;
-colStruc.varMin = 12;
+colStruc.varMin = 3;
 colStruc.var = 214.5;
 ColStrucArray.Motors = colStruc;
 colls7 = (abs(colStruc.varMax) + abs(colStruc.varMin))/colStruc.deltaVar;
