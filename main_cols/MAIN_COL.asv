@@ -9,9 +9,9 @@ colStrucArray = ColStrucBuilder();
 % colStrucArray = ColStrucBuilderTest();
 fieldNames = fieldnames(colStrucArray);
 
-saveDir = g
+saveDir = getSaveDir('DRL-PC');
 
-for m = [2 3 7]
+for m = 3
     colStruc = colStrucArray.(fieldNames{m});
 
     for k = 1:numel(colStruc.direction)
@@ -32,13 +32,13 @@ for m = [2 3 7]
             %Save the coll
             uniqueID = string(datetime, 'dMMyHHmmssSSSS');
             filename = strcat('opt_', colStruc.varName, '_', uniqueID);
-            save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\',filename),'opt_results');
+            save(strcat(saveDir,filename),'opt_results');
 
             %Save optimized decision variables as new seed
             opt_seed = DV_out; 
 
             %Track infeasible counter
-            if (opt_results.param.flag < 0) || (opt_results.param.flag == 0 && opt_results.param.fmincon_stuff.constrviolation > 1e5)
+            if (opt_results.param.flag <= 0) || (opt_results.param.flag == 0 && opt_results.param.fmincon_stuff.constrviolation > 1e5)
                 badCounter = badCounter + 1;
             elseif opt_results.param.flag >= 0
                 badCounter = 0; %Reset counter if not infeasible/ bad

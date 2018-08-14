@@ -38,9 +38,9 @@ for m = 3
             opt_seed = DV_out; 
 
             %Track infeasible counter
-            if (opt_results.param.flag < 0) || (opt_results.param.flag == 0 && opt_results.param.fmincon_stuff.constrviolation > 1e5)
+            if (opt_results.param.flag <= 0)
                 badCounter = badCounter + 1;
-            elseif opt_results.param.flag >= 0
+            elseif opt_results.param.flag > 0
                 badCounter = 0; %Reset counter if not infeasible/ bad
             end
 
