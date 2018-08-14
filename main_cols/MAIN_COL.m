@@ -9,9 +9,9 @@ colStrucArray = ColStrucBuilder();
 % colStrucArray = ColStrucBuilderTest();
 fieldNames = fieldnames(colStrucArray);
 
-saveDir = getSaveDir('DRL-PC');
+saveDir = getSaveDir('Alluring-PC');
 
-for m = 3
+for m = [2 7]
     colStruc = colStrucArray.(fieldNames{m});
 
     for k = 1:numel(colStruc.direction)

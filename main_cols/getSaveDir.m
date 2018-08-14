@@ -12,7 +12,7 @@ function [saveDir] = getSaveDir(TypeZeroForListOfInputs)
         saveDir = 'C:\Users\mike-\Documents\DRL\collocation\opt_results\';
 
     elseif strcmp(TypeZeroForListOfInputs, 'Alluring-PC')
-        saveDir = ' ';
+        saveDir = 'D:\Documents\DRL\slip_opt\opt_results\';
 
     elseif strcmp(TypeZeroForListOfInputs, 'Michael-PC')
         saveDir = ' ';
