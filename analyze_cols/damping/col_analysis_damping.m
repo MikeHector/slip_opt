@@ -14,10 +14,10 @@ end
 
 % {'c', 'apex_velocity', 'disturance_f', 'TD_disturb', 'deltav', 'deltah'}
 varName = 'c';
-varmaxplot = 115.9;
+varmaxplot = 450;
 plotName = 'Damping';
 
-dirname = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\dampingv2\opt_', varName, '*');
+dirname = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\opt_', varName, '*');
 strucc = dir(dirname);
 fig = figure;
 hold on
@@ -31,7 +31,7 @@ TAmax = refline(0, 4.5); TAmax.Color = 'b'; TAmax.LineStyle = '--'; TAmax.Handle
 TAmin = refline(0, -4.5); TAmin.Color = 'b'; TAmin.LineStyle = '--'; TAmin.HandleVisibility = 'off';
 
 subplot(2,2,3); an3 = plot(1,1,'ro'); hold on; an32 = plot(2,2);
-axis([-.75,varmaxplot, 0, 1e3]); xlabel(plotName); ylabel('Cost');
+axis([-.75,varmaxplot, 0, 5e4]); xlabel(plotName); ylabel('Cost');
 title1 = title('wut');
 subplot(2,2,4); an4 = plot(1,1);
 axis([-0.2,.25, -.12, .12]); xlabel('x'); ylabel('xcop')
@@ -45,7 +45,7 @@ title('Center of Pressure')
 
 for i = 1:length(strucc)
     filename = strucc(i).name;
-    filename = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\dampingv2\', filename); %strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\', filename); 
+    filename = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\', filename); %strcat('D:\Documents\DRL\slip_opt\opt_results\damping_results\', filename); 
     load(filename)
     results{i} = opt_results;
     varr(i) = opt_results.param.(varName);

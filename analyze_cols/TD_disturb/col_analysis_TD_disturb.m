@@ -4,6 +4,9 @@
 % COL analysis
 clc; clear; close all
 record_video = 0;
+%Add to path
+% cf = pwd;
+% addpath(strcat(pwd(1:strfind(pwd, 'collocation')-1), 'collocation\main_cols\'));
 if record_video==1
     v=VideoWriter('Touchdown Disturbance','MPEG-4');
     v.FrameRate=10;
@@ -14,9 +17,9 @@ end
 
 % {'c', 'apex_velocity', 'disturance_f', 'TD_disturb', 'deltav', 'deltah'}
 varName = 'TD_disturb';
-varmaxplot = .45;
-varminplot = -.45;
-plotName = 'TD Disturbance Angle';
+varmaxplot = .15;
+varminplot = -.05;
+plotName = 'TD Angle Disturbance';
 
 dirname = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\opt_', varName, '*');
 strucc = dir(dirname);
@@ -80,9 +83,6 @@ an32.YData = cost_graph;
 % for i = 1:numel(results)
 i = 1;
 while results_sorted_var{i}.param.(varName) < varmaxplot
-    %Make energy shared figure
-    energy_leg(i) = sum(results_sorted_var{i}.Tleg.^2);
-    energy_ankle(i) = sum(results_sorted_var{i}.Tankle.^2);
     
     if results_sorted_var{i}.param.flag > 0 && results_sorted_var{i}.param.(varName) > varminplot
         time = results_sorted_var{i}.t;
@@ -114,7 +114,7 @@ while results_sorted_var{i}.param.(varName) < varmaxplot
         an4.YData = xcop;
 
         drawnow
-        title1.String = ['Energy Required when ', plotName, ' is ', num2str(results_sorted_var{i}.param.(varName)), 'N'];
+        title1.String = ['Energy Required when ', plotName, ' is ', num2str(results_sorted_var{i}.param.(varName))];
         pause(.1)
         if record_video==1
             F=getframe(gcf);
@@ -144,32 +144,3 @@ plot(var_graph, ankleM);
 rl = refline(0, energy{1}.LegEtoStand); rl.LineStyle = '--';
 legend('Leg electrical', 'Leg mechanical', 'Ankle electrical', 'Ankle mechanical', 'Energy to stand')
 
-
-%Make energy shared figure
-% [varUnique, indUnique] = unique(var);
-% % barArray = [energy_leg(indUnique)' energy_ankle(indUnique)']; 
-% % figure
-% % abar = bar(cUnique',barArray, 'stacked');
-% figure;
-% plot(varUnique, energy_leg(indUnique)); hold on; 
-% plot(varUnique, energy_ankle(indUnique),'r');
-% % a = line([71 71],[0, 12*10^4]); a.LineStyle = '--';
-% xlabel(plotName)
-% ylabel('Energy')
-% legend('Leg energy', 'Ankle energy','Leg begins saturation')
-% title('Optimal energies of actuators through stance')
-% a.Color = 'k';
-% figure
-% subplot(2,2,1)
-% 
-% plot(c,flag,'bo')
-% title('fmincon ending state flag')
-% subplot(2,2,2)
-% 
-% plot(c,cost,'bo')
-% title('cost')
-% subplot(2,2,3)
-% 
-% plot(c,leg_response,'bo'); hold on
-% plot(c,ankle_response,'ro')
-% title('torque squared')

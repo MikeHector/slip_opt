@@ -9,5 +9,8 @@ function [Fsx, Fsy] = getGRF(optres, oneForPlot)
         plot(optres.t, Fsx); hold on;
         plot(optres.t, Fsy);
         legend('X comp of GRF', 'Y comp of GRF')
+        title('GRFs over time')
+        xlabel('Time'); ylabel('Force')
+        
     end
 end

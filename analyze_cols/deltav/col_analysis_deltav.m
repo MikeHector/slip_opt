@@ -21,7 +21,7 @@ dirname = strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\opt_', v
 strucc = dir(dirname);
 fig = figure;
 hold on
-subplot(2,2,1); an1 = plot(1,1);
+subplot(2,2,1); an1 = plot(1,1); hold on; an12 = plot(0,0,'bo');
 axis([-0.3, 1, 0, 1]); title('XY Trajectory'); xlabel('X Displacement'); ylabel('Y Displacement');
 subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
 axis([-.3, 1, -13, 13]); title('Torque Trajectory'); xlabel('X Displacement'); ylabel('Torque'); legend('Ankle torque', 'Leg torque', 'Location', 'southwest')
@@ -62,6 +62,7 @@ for k = 1:length(i)
     if results{i(k)}.param.flag > 0
         var_graph(q) = results{i(k)}.param.(varName);
         cost_graph(q) = results{i(k)}.cost;
+        energy{q} = get_energy(results{i(k)},0);
         q = q+1;
     end
 end
@@ -70,19 +71,17 @@ an32.YData = cost_graph;
 % for i = 1:numel(results)
 i = 1;
 while results_sorted_var{i}.param.(varName) < varmaxplot
-    %Make energy shared figure
-    energy_leg(i) = sum(results_sorted_var{i}.Tleg.^2);
-    energy_ankle(i) = sum(results_sorted_var{i}.Tankle.^2);
     
     if results_sorted_var{i}.param.flag > 0
         time = results_sorted_var{i}.t;
         leg_response = results_sorted_var{i}.Tleg;
         ankle_response = results_sorted_var{i}.Tankle;
-        x = results_sorted_var{i}.x;
-        y = results_sorted_var{i}.y;
+        xyTraj = getXYplot(results_sorted_var{i},0);
+        x = real(xyTraj.x);
+        y = real(xyTraj.y);
         r = results_sorted_var{i}.r;
         k = results_sorted_var{i}.param.k;
-        xcop = -ankle_response .* r ./(k .*(results_sorted_var{i}.r0 -r).* y);
+        xcop = -ankle_response .* r ./(k .*(results_sorted_var{i}.r0 -r).* results_sorted_var{i}.y);
         
         if max(leg_response) > 12
 %             pause
@@ -90,17 +89,20 @@ while results_sorted_var{i}.param.(varName) < varmaxplot
 
         an1.XData = x;
         an1.YData = y;
+        
+        an12.XData = [results_sorted_var{i}.x(1), results_sorted_var{i}.x(end)];
+        an12.YData = [results_sorted_var{i}.y(1), results_sorted_var{i}.y(end)];
 
-        an2.XData = x;
+        an2.XData = results_sorted_var{i}.x;
         an2.YData = ankle_response;  
         
-        an22.XData = x;
+        an22.XData = results_sorted_var{i}.x;
         an22.YData = leg_response; 
         
         an3.XData = results_sorted_var{i}.param.(varName);
         an3.YData = results_sorted_var{i}.cost;
         
-        an4.XData = x;
+        an4.XData = results_sorted_var{i}.x;
         an4.YData = xcop;
 
         drawnow
@@ -118,31 +120,19 @@ if record_video == 1
     close(v)
 end
 
-%Make energy shared figure
-% [varUnique, indUnique] = unique(var);
-% % barArray = [energy_leg(indUnique)' energy_ankle(indUnique)']; 
-% % figure
-% % abar = bar(cUnique',barArray, 'stacked');
-% figure;
-% plot(varUnique, energy_leg(indUnique)); hold on; 
-% plot(varUnique, energy_ankle(indUnique),'r');
-% % a = line([71 71],[0, 12*10^4]); a.LineStyle = '--';
-% xlabel(plotName)
-% ylabel('Energy')
-% legend('Leg energy', 'Ankle energy','Leg begins saturation')
-% title('Optimal energies of actuators through stance')
-% a.Color = 'k';
-% figure
-% subplot(2,2,1)
-% 
-% plot(c,flag,'bo')
-% title('fmincon ending state flag')
-% subplot(2,2,2)
-% 
-% plot(c,cost,'bo')
-% title('cost')
-% subplot(2,2,3)
-% 
-% plot(c,leg_response,'bo'); hold on
-% plot(c,ankle_response,'ro')
-% title('torque squared')
+
+legE = []; legM = []; ankleE = []; ankleM = [];
+for i = 1:numel(energy)    
+    legE = [legE, energy{i}.leg_e];
+    legM = [legM, energy{i}.leg_m];
+    ankleE = [ankleE, energy{i}.ankle_e];
+    ankleM = [ankleM, energy{i}.ankle_m];
+end
+
+figure;
+plot(var_graph, legE); hold on;
+plot(var_graph, legM);
+plot(var_graph, ankleE);
+plot(var_graph, ankleM);
+rl = refline(0, energy{1}.LegEtoStand); rl.LineStyle = '--';
+legend('Leg electrical', 'Leg mechanical', 'Ankle electrical', 'Ankle mechanical', 'Energy to stand')

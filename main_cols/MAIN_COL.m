@@ -9,14 +9,14 @@ colStrucArray = ColStrucBuilder();
 % colStrucArray = ColStrucBuilderTest();
 fieldNames = fieldnames(colStrucArray);
 
-for m = 1
+for m = [2 3 7]
     colStruc = colStrucArray.(fieldNames{m});
 
     for k = 1:numel(colStruc.direction)
         direction = colStruc.direction{k};
 
         %Load baseline seed and parameters
-        load('baseline3')
+        load('baseline4')
         opt_seed = opt_results.X;
         param = opt_results.param;
         param.(colStruc.varName) = colStruc.var;
@@ -30,7 +30,7 @@ for m = 1
             %Save the coll
             uniqueID = string(datetime, 'dMMyHHmmssSSSS');
             filename = strcat('opt_', colStruc.varName, '_', uniqueID);
-            save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\dampingv2\',filename),'opt_results');
+            save(strcat('C:\\Users\mike-\Documents\DRL\collocation\opt_results\',filename),'opt_results');
 
             %Save optimized decision variables as new seed
             opt_seed = DV_out; 

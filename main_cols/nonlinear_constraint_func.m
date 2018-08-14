@@ -32,11 +32,11 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     %Starting constraints
     
     %r0 spring starts at nominal length
-%     ViolationMatrix(1,end + 1) = Parameters.r0_start - r0(1);
+    ViolationMatrix(1,end + 1) = Parameters.r0_start - r0(1);
     %Fs starts at 0
     ViolationMatrix(2,end + 1) = r(1) - r0(1);
     %Velocity of spring starts at 0
-%     ViolationMatrix(3,end) = dr0(1);
+    ViolationMatrix(3,end) = dr0(1);
     %y - velocity + position. energy approach
     ViolationMatrix(4,end) = .5 * dy(1)^2 - Parameters.g * (Parameters.apex_height - y(1));
     %x - velocity

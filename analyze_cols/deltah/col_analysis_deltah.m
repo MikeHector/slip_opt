@@ -73,6 +73,7 @@ for k = 1:length(i)
         cost_graph(q) = results{i(k)}.cost;
         q = q+1;
     end
+    max(results_sorted_var{k}.Tankle)
 end
 an32.XData = var_graph;
 an32.YData = cost_graph;

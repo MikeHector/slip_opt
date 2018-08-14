@@ -7,7 +7,7 @@ colls = 0;
 %Damping
 colStruc.direction = {'up'};
 colStruc.varName = 'c';
-colStruc.deltaVar = .5;
+colStruc.deltaVar = 1;
 colStruc.varMax = 1000;
 colStruc.varMin = -1;
 colStruc.var = 0; %Initial variable value
@@ -29,11 +29,11 @@ colls = colls + colls2;
 clear colStruc
 
 %Changing Force Disturbance
-colStruc.direction = {'up'};
+colStruc.direction = {'up', 'down'};
 colStruc.varName = 'disturbance_f';
-colStruc.deltaVar = .5;
+colStruc.deltaVar = 1;
 colStruc.varMax = 100;
-colStruc.varMin = -1;
+colStruc.varMin = -100;
 colStruc.var = 0;
 ColStrucArray.ForceDisturbance = colStruc;
 colls3 = (abs(colStruc.varMax) + abs(colStruc.varMin))/colStruc.deltaVar;
@@ -43,9 +43,9 @@ clear colStruc
 %Changing Touch Down Angle Error
 colStruc.direction = {'up','down'};
 colStruc.varName = 'TD_disturb';
-colStruc.deltaVar = .01;
-colStruc.varMax = 1;
-colStruc.varMin = -1;
+colStruc.deltaVar = .001;
+colStruc.varMax = .16;
+colStruc.varMin = -.06;
 colStruc.var = 0;
 ColStrucArray.TouchDownAngleError = colStruc;
 colls4 = (abs(colStruc.varMax) + abs(colStruc.varMin))/colStruc.deltaVar;
@@ -75,5 +75,19 @@ ColStrucArray.HeightBetweenApexes = colStruc;
 colls6 = (abs(colStruc.varMax) + abs(colStruc.varMin))/colStruc.deltaVar;
 colls = colls + colls6;
 clear colStruc
+
+%Changing R_ankle
+colStruc.direction = {'down'};
+colStruc.varName = 'deltah';
+colStruc.deltaVar = 2;
+colStruc.varMax = 215;
+colStruc.varMin = 12;
+colStruc.var = 214.5;
+ColStrucArray.Motors = colStruc;
+colls7 = (abs(colStruc.varMax) + abs(colStruc.varMin))/colStruc.deltaVar;
+colls = colls + colls7;
+clear colStruc
+
+
 
 end
