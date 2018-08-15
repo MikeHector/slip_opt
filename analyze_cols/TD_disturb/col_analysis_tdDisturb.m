@@ -2,7 +2,7 @@
 % 8.14.18
 % COL analysis
 clc; clear; close all
-record_video = 0;
+record_video = 1;
 if record_video==1
     v=VideoWriter('TD Disturbance','MPEG-4');
     v.FrameRate=10;
@@ -11,9 +11,9 @@ end
 
 % {'c', 'apex_velocity', 'disturbance_f', 'TD_disturb', 'deltav', 'deltah'}
 varName = 'TD_disturb';
-varmaxplot = .5;
-varminplot = -.05;
-energyMax = 1000;
+varmaxplot = .12;
+varminplot = -.08;
+energyMax = 1600;
 plotName = 'Touchdown Angle Disturbance During Stance';
 cf = pwd; %Path stuff
 addpath(strcat(cf(1:strfind(pwd, 'collocation')-1), 'collocation\main_cols\')); %Add main col folder to path
@@ -144,7 +144,7 @@ legend('Leg electrical', 'Leg mechanical', 'Ankle electrical', 'Ankle mechanical
 
 figure;
 subplot(2,1,1); grf = plot(0,0); xlabel('Normalized Time'); ylabel('GRF Normalized by Weight'); title2 = title('Ground Reaction Force');
-axis([0 1 0 3.2])
+axis([0 1 0 4])
 subplot(2,1,2); leglen = plot(0,0); xlabel('Normalized Time'); ylabel('Leg Length'); title('Leg Length Through Stance')
 axis([0 1 0 1.2])
 

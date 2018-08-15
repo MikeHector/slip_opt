@@ -4,16 +4,16 @@
 clc; clear; close all
 record_video = 0;
 if record_video==1
-    v=VideoWriter('Damping','MPEG-4');
+    v=VideoWriter('Changing Apex Velocities','MPEG-4');
     v.FrameRate=10;
     open(v);
 end
 
 % {'c', 'apex_velocity', 'disturance_f', 'TD_disturb', 'deltav', 'deltah'}
 varName = 'apex_velocity';
-varmaxplot = 3;
-varminplot = -1;
-energyMax = 4700;
+varmaxplot = 1.98;
+varminplot = 0;
+energyMax = 600;
 plotName = 'Apex Velocity';
 cf = pwd; %Path stuff
 addpath(strcat(cf(1:strfind(pwd, 'collocation')-1), 'collocation\main_cols\')); %Add main col folder to path
@@ -51,7 +51,7 @@ for i = 1:length(strucc)
     load(filename)
     results{i} = opt_results;
     varr(i) = opt_results.param.(varName);
-    if varr(i) == 0
+    if varr(i) < 0
 %         pause
     end
 end
@@ -74,11 +74,13 @@ an32.YData = cost_graph;
 i = 1;
 while results_sorted_var{i}.param.(varName) < varmaxplot
     
-   if results_sorted_var{i}.param.flag > 0
+   if results_sorted_var{i}.param.flag > 0 && results_sorted_var{i}.param.(varName) >= 0
         time = results_sorted_var{i}.t / results_sorted_var{i}.t(end);
         leg_response = results_sorted_var{i}.Tleg;
         ankle_response = results_sorted_var{i}.Tankle;
         xyTraj = getXYplot(results_sorted_var{i},0);
+        cycleTime(i) = real(xyTraj.t(end));
+        cycleVar(i) = results_sorted_var{i}.param.(varName);
         x = real(xyTraj.x);
         y = real(xyTraj.y);
         r = results_sorted_var{i}.r;
@@ -108,8 +110,8 @@ while results_sorted_var{i}.param.(varName) < varmaxplot
         an4.YData = xcop;
 
         drawnow
-        title1.String = ['Energy Required when ', plotName, ' is ', num2str(results_sorted_var{i}.param.(varName)), 'm/s'];
-        pause(.005)
+        title1.String = ['Energy Required when ', plotName, ' is ', num2str(results_sorted_var{i}.param.(varName)), ' m/s'];
+        pause(.05)
         if record_video==1
             F=getframe(gcf);
             writeVideo(v,F);

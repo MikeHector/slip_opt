@@ -11,14 +11,15 @@ fieldNames = fieldnames(colStrucArray);
 
 saveDir = getSaveDir('DRL-PC');
 
-for m = [4]
+for m = [8]
     colStruc = colStrucArray.(fieldNames{m});
 
     for k = 1:numel(colStruc.direction)
         direction = colStruc.direction{k};
 
         %Load baseline seed and parameters
-        load('baseline4')
+%         load('baseline4')
+        load('baseline_no_electrical_loses.mat')
         opt_seed = opt_results.X;
         param = opt_results.param;
         param.(colStruc.varName) = colStruc.var;

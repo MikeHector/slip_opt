@@ -21,7 +21,7 @@ colStruc.direction = {'up','down'};
 colStruc.varName = 'apex_velocity';
 colStruc.deltaVar = .02;
 colStruc.varMax = 2;
-colStruc.varMin = -.9;
+colStruc.varMin = .1;
 colStruc.var = 1;
 ColStrucArray.ApexVelocity = colStruc;
 colls2 = (abs(colStruc.varMax) + abs(colStruc.varMin))/colStruc.deltaVar;
@@ -83,11 +83,21 @@ colStruc.deltaVar = 2;
 colStruc.varMax = 215;
 colStruc.varMin = 3;
 colStruc.var = 214.5;
-ColStrucArray.Motors = colStruc;
+ColStrucArray.AnkleMotor = colStruc;
 colls7 = (abs(colStruc.varMax) + abs(colStruc.varMin))/colStruc.deltaVar;
 colls = colls + colls7;
 clear colStruc
 
-
+%Changing R_leg
+colStruc.direction = {'up'};
+colStruc.varName = 'R_leg';
+colStruc.deltaVar = .2;
+colStruc.varMax = 25.4;
+colStruc.varMin = 0;
+colStruc.var = 0;
+ColStrucArray.LegMotor = colStruc;
+colls8 = (abs(colStruc.varMax) + abs(colStruc.varMin))/colStruc.deltaVar;
+colls = colls + colls8;
+clear colStruc
 
 end

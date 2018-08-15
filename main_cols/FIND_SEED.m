@@ -9,9 +9,9 @@ clear; clc;
 % colStrucArray = ColStrucBuilderTest();
 % fieldNames = fieldnames(colStrucArray);
 
-newFileName = 'baselineNewDyn_FixdOF_Nodr0_Nor0';
+newFileName = 'baseline_no_electrical_loses';
 %Load baseline seed and parameters
-load('baselineNewDyn_FixdOF_Nodr0_Nor0.mat')
+load('baseline_no_electrical_loses')
 opt_results.param.c = 0;
 opt_seed = opt_results.X;
 % opt_results.param.apex_velocity = 0;
