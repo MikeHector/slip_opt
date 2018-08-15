@@ -11,7 +11,7 @@ fieldNames = fieldnames(colStrucArray);
 
 saveDir = getSaveDir('Alluring-PC');
 
-for m = [2 7]
+for m = [4]
     colStruc = colStrucArray.(fieldNames{m});
 
     for k = 1:numel(colStruc.direction)
