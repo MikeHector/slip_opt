@@ -19,7 +19,7 @@ for m = [8]
 
         %Load baseline seed and parameters
 %         load('baseline4')
-        load('baseline_no_electrical_loses.mat')
+        load( 'C:\Users\mike-\Documents\DRL\collocation\opt_results\opt_R_leg_150820181810270730.mat')
         opt_seed = opt_results.X;
         param = opt_results.param;
         param.(colStruc.varName) = colStruc.var;
