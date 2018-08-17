@@ -18,7 +18,7 @@ for m = [8]
         direction = colStruc.direction{k};
 
         %Load baseline seed and parameters
-        load('baseline4')
+        load('baseline5')
 %         load( 'C:\Users\mike-\Documents\DRL\collocation\opt_results\opt_R_leg_150820181810270730.mat')
         opt_seed = opt_results.X;
         param = opt_results.param;

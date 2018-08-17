@@ -20,7 +20,7 @@ clear colStruc
 colStruc.direction = {'up','down'};
 colStruc.varName = 'apex_velocity';
 colStruc.deltaVar = .02;
-colStruc.varMax = 3;
+colStruc.varMax = 2;
 colStruc.varMin = .1;
 colStruc.var = 1;
 ColStrucArray.ApexVelocity = colStruc;
@@ -43,9 +43,9 @@ clear colStruc
 %Changing Touch Down Angle Error
 colStruc.direction = {'up','down'};
 colStruc.varName = 'TD_disturb';
-colStruc.deltaVar = .002;
-colStruc.varMax = .3;
-colStruc.varMin = -.3;
+colStruc.deltaVar = .001;
+colStruc.varMax = .16;
+colStruc.varMin = -.1;
 colStruc.var = 0;
 ColStrucArray.TouchDownAngleError = colStruc;
 colls4 = (abs(colStruc.varMax) + abs(colStruc.varMin))/colStruc.deltaVar;
