@@ -9,7 +9,7 @@ function [saveDir] = getSaveDir(TypeZeroForListOfInputs)
         disp('Michaels DRL computer -> Michael-PC')
 
     elseif strcmp(TypeZeroForListOfInputs, 'DRL-PC')
-        saveDir = 'C:\Users\mike-\Documents\DRL\collocation\opt_results\';
+        saveDir = 'C:\Users\mike-\Documents\DRL\slip_opt\opt_results\';
 
     elseif strcmp(TypeZeroForListOfInputs, 'Alluring-PC')
         saveDir = 'D:\Documents\DRL\slip_opt\opt_results\';

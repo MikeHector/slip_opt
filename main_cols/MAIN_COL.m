@@ -11,7 +11,7 @@ fieldNames = fieldnames(colStrucArray);
 
 saveDir = getSaveDir('DRL-PC');
 
-for m = [8]
+for m = [2 4]
     colStruc = colStrucArray.(fieldNames{m});
 
     for k = 1:numel(colStruc.direction)
