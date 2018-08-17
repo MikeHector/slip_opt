@@ -9,14 +9,11 @@ clear; clc;
 % colStrucArray = ColStrucBuilderTest();
 % fieldNames = fieldnames(colStrucArray);
 
-newFileName = 'baseline_no_electrical_loses';
+newFileName = 'baseline5';
 %Load baseline seed and parameters
-load('baseline_no_electrical_loses')
-opt_results.param.c = 0;
+load('baseline5')
 opt_seed = opt_results.X;
-% opt_results.param.apex_velocity = 0;
 param = opt_results.param;
-param.transmission = 16*5;
 
 iterationCounter = 0;
 lowest_cost = 10e6;

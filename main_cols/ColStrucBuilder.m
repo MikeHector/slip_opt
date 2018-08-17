@@ -91,10 +91,10 @@ clear colStruc
 %Changing R_leg
 colStruc.direction = {'up'};
 colStruc.varName = 'R_leg';
-colStruc.deltaVar = .5;
-colStruc.varMax = 100;
+colStruc.deltaVar = .2;
+colStruc.varMax = 25;
 colStruc.varMin = 0;
-colStruc.var = 25.4;
+colStruc.var = 0;
 ColStrucArray.LegMotor = colStruc;
 colls8 = (abs(colStruc.varMax) + abs(colStruc.varMin))/colStruc.deltaVar;
 colls = colls + colls8;

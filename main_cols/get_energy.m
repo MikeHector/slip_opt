@@ -35,8 +35,8 @@ function [cost] = get_energy(OPT_RES, plotifone)
     
     if plotifone == 1
         figure;
-        plot(OPT_RES.t, cle); hold on;
-        plot(OPT_RES.t, clm); plot(OPT_RES.t, cae); plot(OPT_RES.t, cam);
+        plot(OPT_RES.t/OPT_RES.t(end), cle); hold on;
+        plot(OPT_RES.t/OPT_RES.t(end), clm); plot(OPT_RES.t/OPT_RES.t(end), cae); plot(OPT_RES.t/OPT_RES.t(end), cam);
         stand = refline(0,cost.LegEtoStand); stand.LineStyle = '--';
         legend('Leg electrical', 'Leg mechanical', 'Ankle electrical', 'Ankle mechanical', 'Power to stand')
         title('Actuator power contributing to energy consumption')

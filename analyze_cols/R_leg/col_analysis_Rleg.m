@@ -13,7 +13,7 @@ end
 varName = 'R_leg';
 varmaxplot = 25;
 varminplot = 0;
-energyMax = 550;
+energyMax = 800;
 plotName = 'R leg';
 cf = pwd; %Path stuff
 addpath(strcat(cf(1:strfind(pwd, 'collocation')-1), 'collocation\main_cols\')); %Add main col folder to path
@@ -51,8 +51,8 @@ for i = 1:length(strucc)
     load(filename)
     results{i} = opt_results;
     varr(i) = opt_results.param.(varName);
-    if varr(i) > 25
-        pause
+    if varr(i) > 1.1 && varr(i) < 1.3
+%         pause
     end
 end
 [var_sorted,i] = sort(varr);
@@ -110,7 +110,9 @@ while results_sorted_var{i}.param.(varName) < varmaxplot
 
         drawnow
         title1.String = ['Energy Required when ', plotName, ' is ', num2str(results_sorted_var{i}.param.(varName)), 'm/s'];
-        pause(.005)
+%         fease = results_sorted_var{i}.param.fmincon_stuff.constrviolation;
+%         disp(['constraint violation is ', num2str(fease)])
+        pause(.1)
         if record_video==1
             F=getframe(gcf);
             writeVideo(v,F);
@@ -165,8 +167,43 @@ while results_sorted_var{i}.param.(varName) < varmaxplot
         leglen.XData = time;
         leglen.YData = r;
         drawnow;
+        pause(.005);
+   end
+    i = i + 1;
+end
+opacityscale = linspace(0,1,i);
+opacityscaleflip = flip(opacityscale);
+figure;
+i = 1;
+while results_sorted_var{i}.param.(varName) < varmaxplot
+    
+   if results_sorted_var{i}.param.flag > 0
+        time = results_sorted_var{i}.t/results_sorted_var{i}.t(end);
+        r = results_sorted_var{i}.r;
+        k = results_sorted_var{i}.param.k;
+        GRF = k* (results_sorted_var{i}.r0 - results_sorted_var{i}.r)/ (results_sorted_var{i}.param.m * results_sorted_var{i}.param.g);
+        
+    subplot(3,1,1)
+    hold on;
+    plot(time, GRF,'Color', [opacityscale(i),opacityscaleflip(i),opacityscaleflip(i)])
+%     alpha(opacityscale)
+    subplot(3,1,2)
+    hold on;
+    plot(time, r,'Color', [opacityscale(i),opacityscaleflip(i),opacityscaleflip(i)])
+    subplot(3,1,3)
+    hold on;
+    plot(var_graph(i), cost_graph(i), 'o', 'Color', [opacityscale(i),opacityscaleflip(i),opacityscaleflip(i)])
+%     alpha(opacityscale)
+%         title2.String = ['Ground Reaction Forces when ', plotName, ' is ', num2str(results_sorted_var{i}.param.(varName))];
+        
+%         leglen.XData = time;
+%         leglen.YData = r;
+        drawnow;
         pause(.05);
    end
     i = i + 1;
 end
-
+subplot(3,1,1); grf = plot(0,0); xlabel('Normalized Time'); ylabel('GRF Normalized by Weight'); title('Ground Reaction Force');
+subplot(3,1,2); leglen = plot(0,0); xlabel('Normalized Time'); ylabel('Leg Length'); title('Leg Length Through Stance')
+subplot(3,1,3); xlabel('Electrical losses factor'); ylabel('Energy required'); title('Cost for equilibrium gait cycle')
+hold on; plot(1.4, 32.69, 'r*'); plot(1.4, 32.69, 'ro'); text(.5, 100, 'Cassie losses factor')
