@@ -2,7 +2,7 @@
 % 8.14.18
 % COL analysis
 clc; clear; close all
-record_video = 1;
+record_video = 0;
 if record_video==1
     v=VideoWriter('TD Disturbance','MPEG-4');
     v.FrameRate=10;
@@ -11,12 +11,12 @@ end
 
 % {'c', 'apex_velocity', 'disturbance_f', 'TD_disturb', 'deltav', 'deltah'}
 varName = 'TD_disturb';
-varmaxplot = .12;
-varminplot = -.08;
-energyMax = 1600;
+varmaxplot = .15;
+varminplot = -.16;
+energyMax = 500;
 plotName = 'Touchdown Angle Disturbance During Stance';
 cf = pwd; %Path stuff
-addpath(strcat(cf(1:strfind(pwd, 'collocation')-1), 'collocation\main_cols\')); %Add main col folder to path
+addpath(strcat(cf(1:strfind(pwd, 'slip_opt')-1), 'slip_opt\main_cols\')); %Add main col folder to path
 dirComp = getSaveDir('DRL-PC'); %Change if you're running on a different computer
 
 dirname = strcat(dirComp, 'opt_', varName, '*');
@@ -109,7 +109,7 @@ while results_sorted_var{i}.param.(varName) < varmaxplot
 
         drawnow
         title1.String = ['Energy Required when ', plotName, ' is ', num2str(results_sorted_var{i}.param.(varName)), ' rad'];
-        pause(.005)
+        pause(.2)
         if record_video==1
             F=getframe(gcf);
             writeVideo(v,F);

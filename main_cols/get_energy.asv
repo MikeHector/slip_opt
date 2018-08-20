@@ -23,9 +23,9 @@ function [cost] = get_energy(OPT_RES, plotifone)
         cost_ankle_e = cost_ankle_e + R_ankle * u(2, i)^2 * hk; %electrical
         cae(i) = R_ankle * u(2, i)^2; %electrical
         cost_ankle_m = cost_ankle_m + max(0, u(2, i) * Parameters.transmission_ankle *...
-        (OPT_RES.x(i) * OPT_RES.dy(i) -OPT_RES.y(i) * OPT_RES.dx(i))/r(i)^2 * hk); %mechanical
+        (OPT_RES.x(1,i) * OPT_RES(5,i) -OPT_RES(2,i) * OPT_RES(4,i))/r(i)^2 * hk); %mechanical
         cam(i) = max(0, u(2, i) * Parameters.transmission_ankle *...
-        (OPT_RES.x(i) * OPT_RES.dy(i) -OPT_RES.y(i) * OPT_RES.dx(i))/r(i)^2); %mechanical
+        (OPT_RES(1,i) * OPT_RES(5,i) -OPT_RES(2,i) * OPT_RES(4,i))/r(i)^2); %mechanical
     end
     cost.leg_e = cost_leg_e;
     cost.leg_m = cost_leg_m;

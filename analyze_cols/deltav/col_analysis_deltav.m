@@ -13,10 +13,10 @@ end
 varName = 'deltav';
 varmaxplot = 2;
 varminplot = -.9;
-energyMax = 1000;
+energyMax = 150;
 plotName = 'Change in Velocity Between Apexes';
 cf = pwd; %Path stuff
-addpath(strcat(cf(1:strfind(pwd, 'collocation')-1), 'collocation\main_cols\')); %Add main col folder to path
+addpath(strcat(cf(1:strfind(pwd, 'slip_opt')-1), 'slip_opt\main_cols\')); %Add main col folder to path
 dirComp = getSaveDir('DRL-PC'); %Change if you're running on a different computer
 
 dirname = strcat(dirComp, 'opt_', varName, '*');

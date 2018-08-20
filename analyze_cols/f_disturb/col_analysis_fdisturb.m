@@ -2,9 +2,9 @@
 % 8.14.18
 % COL analysis
 clc; clear; close all
-record_video = 1;
+record_video = 0;
 if record_video==1
-    v=VideoWriter('Accelerating','MPEG-4');
+    v=VideoWriter('Force Disturbance','MPEG-4');
     v.FrameRate=10;
     open(v);
 end
@@ -13,10 +13,10 @@ end
 varName = 'disturbance_f';
 varmaxplot = 100;
 varminplot = -100;
-energyMax = 1000;
+energyMax = 50;
 plotName = 'Force Disturbance During Stance';
 cf = pwd; %Path stuff
-addpath(strcat(cf(1:strfind(pwd, 'collocation')-1), 'collocation\main_cols\')); %Add main col folder to path
+addpath(strcat(cf(1:strfind(pwd, 'slip_opt')-1), 'slip_opt\main_cols\')); %Add main col folder to path
 dirComp = getSaveDir('DRL-PC'); %Change if you're running on a different computer
 
 dirname = strcat(dirComp, 'opt_', varName, '*');
@@ -24,7 +24,7 @@ strucc = dir(dirname);
 fig = figure;
 hold on
 subplot(2,2,1); an1 = plot(1,1);
-axis([0,1, 0, 1.5]); title('Y Height Through Cycle'); xlabel('Normalized Time'); ylabel('Y Displacement');
+axis([-1,1, 0, 1.5]); title('Y Height Through Cycle'); xlabel('Normalized Time'); ylabel('Y Displacement');
 subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
 axis([0, 1, -13, 13]); title('Torque Trajectory'); xlabel('Normalized Time'); ylabel('Torque'); legend('Ankle torque', 'Leg torque', 'Location', 'southwest')
 TLmax = refline(0, 12.2); TLmax.Color = [0.8500 0.3250 0.0980]; TLmax.LineStyle = '--'; TLmax.HandleVisibility = 'off';
@@ -50,9 +50,10 @@ for i = 1:length(strucc)
     filename = strcat(dirComp, filename);
     load(filename)
     results{i} = opt_results;
-    varr(i) = opt_results.param.(varName);
-    if varr(i) == 0
-%         pause
+    results{i}.param.(varName) = results{i}.param.(varName) * -1;
+    varr(i) = results{i}.param.(varName);
+    if varr(i) == -100
+        pause
     end
 end
 [var_sorted,i] = sort(varr);
@@ -89,7 +90,7 @@ while results_sorted_var{i}.param.(varName) < varmaxplot
 %             pause
         end
 
-        an1.XData = real(xyTraj.t)/real(xyTraj.t(end));
+        an1.XData = x; %real(xyTraj.t)/real(xyTraj.t(end));
         an1.YData = y;
         
         an12.XData = time;

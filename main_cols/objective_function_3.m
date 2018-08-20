@@ -17,7 +17,8 @@ function [ cost ] = objective_function_3( DecisionVariables, Parameters )
             max(0, u(1, i) * Parameters.transmission * DecisionVariables(6, i) * hk); %mechanical
         cost_ankle = cost_ankle + ...
             R_ankle * u(2, i)^2 * hk +... %electrical
-            max(0, u(2, i) * Parameters.transmission_ankle / (r(i)) * v(i) * hk); %mechanical
+            max(0, u(2, i) * Parameters.transmission_ankle *...
+            (DecisionVariables(1,i) * DecisionVariables(5,i) - DecisionVariables(2,i) * DecisionVariables(4,i)) / (r(i)^2)  * hk); %mechanical
     end
     cost = cost_leg + cost_ankle;
 end

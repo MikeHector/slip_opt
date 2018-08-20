@@ -29,15 +29,16 @@ colls = colls + colls2;
 clear colStruc
 
 %Changing Force Disturbance
-colStruc.direction = {'up', 'down'};
+colStruc.direction = {'down'};
 colStruc.varName = 'disturbance_f';
-colStruc.deltaVar = 1;
-colStruc.varMax = 100;
-colStruc.varMin = -100;
-colStruc.var = 0;
+colStruc.deltaVar = 5;
+colStruc.varMax = 1;
+colStruc.varMin = -300;
+colStruc.var = -100;
 ColStrucArray.ForceDisturbance = colStruc;
 colls3 = (abs(colStruc.varMax) + abs(colStruc.varMin))/colStruc.deltaVar;
 colls = colls + colls3;
+disp("Force disturbance might be F'd")
 clear colStruc
 
 %Changing Touch Down Angle Error
