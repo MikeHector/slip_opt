@@ -16,7 +16,7 @@ opt_seed = opt_results.X;
 param = opt_results.param;
 
 iterationCounter = 0;
-lowest_cost = 10e6;
+lowest_cost = 1e6;
 
 while iterationCounter < 20000
     [DV_out, opt_results] = RUN_COL(opt_seed, param);

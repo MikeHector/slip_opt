@@ -11,12 +11,12 @@ end
 
 % {'c', 'apex_velocity', 'disturance_f', 'TD_disturb', 'deltav', 'deltah'}
 varName = 'c';
-varmaxplot = 337;
+varmaxplot = 335;
 varminplot = -1;
-energyMax = 4700;
+energyMax = 700;
 plotName = 'Damping';
 cf = pwd; %Path stuff
-addpath(strcat(cf(1:strfind(pwd, 'collocation')-1), 'collocation\main_cols\')); %Add main col folder to path
+addpath(strcat(cf(1:strfind(pwd, 'slip_opt')-1), 'slip_opt\main_cols\')); %Add main col folder to path
 dirComp = getSaveDir('DRL-PC'); %Change if you're running on a different computer
 
 dirname = strcat(dirComp, 'opt_', varName, '*');
