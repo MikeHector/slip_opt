@@ -11,14 +11,14 @@ fieldNames = fieldnames(colStrucArray);
 
 saveDir = getSaveDir('DRL-PC');
 
-for m = [1]
+for m = [3 5 6]
     colStruc = colStrucArray.(fieldNames{m});
 
     for k = 1:numel(colStruc.direction)
         direction = colStruc.direction{k};
 
         %Load baseline seed and parameters
-        load('baseline5')
+        load('baseline6')
 %         load('C:\Users\mike-\Documents\DRL\slip_opt\opt_results\opt_disturbance_f_180820182234015610.mat')
 %         load( 'C:\Users\mike-\Documents\DRL\collocation\opt_results\opt_R_leg_150820181810270730.mat')
         opt_seed = opt_results.X;
@@ -34,7 +34,7 @@ for m = [1]
             %Save the coll
             uniqueID = string(datetime, 'dMMyHHmmssSSSS');
             filename = strcat('opt_', colStruc.varName, '_', uniqueID);
-%             save(strcat(saveDir,filename),'opt_results');
+            save(strcat(saveDir,filename),'opt_results');
 
             %Save optimized decision variables as new seed
             opt_seed = DV_out; 

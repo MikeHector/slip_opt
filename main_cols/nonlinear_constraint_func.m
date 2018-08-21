@@ -62,8 +62,8 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
     %Ankle torque bounds
     ankle_bound = (Parameters.lf .* y .* ...
                    Parameters.k .* (r0 - r)) ./ (2 .* r);
-    Acon1 = Tankle - ankle_bound;
-    Acon2 = -(Tankle + ankle_bound);
+    Acon1 = Tankle * Parameters.transmission_ankle - ankle_bound;
+    Acon2 = -(Tankle * Parameters.transmission_ankle + ankle_bound);
     
     %/JUST FOR SEED FINDING!!!
 %     shit = -x .* dy;
