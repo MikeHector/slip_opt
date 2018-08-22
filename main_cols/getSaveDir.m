@@ -15,8 +15,7 @@ function [saveDir] = getSaveDir(TypeZeroForListOfInputs)
         saveDir = 'D:\Documents\DRL\slip_opt\opt_results\';
 
     elseif strcmp(TypeZeroForListOfInputs, 'Michael-PC')
-        saveDir = ' ';
-    
+        saveDir = 'C:\Users\carda\OneDrive\Pictures\Documents\mikeHectorThings\slip_opt\opt_results\';
     end
 
 
