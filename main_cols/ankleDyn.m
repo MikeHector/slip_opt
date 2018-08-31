@@ -1,0 +1,58 @@
+% MHector
+% 8.22.18
+% Collocation of slip through stance; it takes opt_results
+function [optimized, opt_res] = ankleDyn(R) %TD_angle should be nan unless it is dictated
+    seed = R.X;
+    param = R.param;
+    assert(length(seed) == param.N,'Seed was not the expected dimension')
+    
+    %Cost function
+    cost_func = @(x) 0;
+
+    %Set up nonlinear constraint (which we'll be calling a lot)
+    nonlcon = @(x) ankle_nonlinear_constraint_func(x, param, seed);
+
+    %Set other constraints
+    A = []; B = []; Aeq = []; Beq = [];
+
+    %Set bounds
+    ub = zeros(9, param.N) + inf; %Fill out ub matrix
+    ub(3, :) = param.r0_max; %Leg length max
+    ub(7, :) = param.legmax; %Leg torque max
+    ub(8, :) = param.anklemax; %Ankle torque max
+    ub(9,1) = param.timemax; %Stance time max
+    lb = zeros(9, param.N) - inf; %Fill out lb matrix
+    lb(3, :) = param.r0_min; %Leg length min
+    lb(7, :) = -param.legmax; %Leg torque min
+    lb(8, :) = -param.anklemax; %Ankle torque min
+    lb(2,:) = zeros(1, param.N); %Y minimum of 0
+    lb(9,1) = param.timemin; %Stance time min
+    
+    ub(8,:) = R.X(8,:) +.001; %Ankles have to be what I say they are
+    lb(8,:) = R.X(8,:) -.001; %Ankles have to be what I say they are
+
+    if param.ankles_on == 0 %Turn off ankle torques
+        ub(8,:) = 0; lb(8,:) = 0;
+    end
+
+    %Optimizer parameters
+    param.options = optimoptions('fmincon','Display','iter','MaxFunctionEvaluations',1000000,...
+                            'MaxIterations',15000000, 'ConstraintTolerance', 1e-3,...
+                            'UseParallel', true, ...
+                            'OptimalityTolerance',1e-3); %,'OutputFcn', outputfunc)
+
+    %Optimize!
+    [optimized, ~, param.flag, param.fmincon_stuff] = fmincon(cost_func,seed,A,B,Aeq,Beq,lb,ub,nonlcon,param.options);
+
+    x = optimized(1,:); y = optimized(2,:); r0 = optimized(3,:);
+    dx = optimized(4,:); dy = optimized(5,:); dr0 = optimized(6,:);
+    Tleg = optimized(7,:); Tankle = optimized(8,:); T = optimized(9,1);
+    t = linspace(0, T, param.N); r = sqrt(x.^2 + y.^2);
+
+    opt_res.param = param;
+    opt_res.x = x; opt_res.y = y; opt_res.r0 = r0; opt_res.dx = dx; opt_res.dy = dy;
+    opt_res.dr0 = dr0; opt_res.Tleg = Tleg; opt_res.Tankle = Tankle; opt_res.T = T;
+    opt_res.t = t; opt_res.r = r; opt_res.cost = cost_func(optimized);
+    opt_res.X = optimized;
+
+end

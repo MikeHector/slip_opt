@@ -35,6 +35,7 @@ function [FullTraj] = getXYplot(OPTRES, plotifone)
     FullTraj.yStart = yStance(1);
     FullTraj.xEnd = xStance(end);
     FullTraj.yEnd = yStance(end);
+    FullTraj.tTD = tTD;
 
 end
     

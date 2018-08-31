@@ -2,7 +2,7 @@
 % 8.14.18
 % COL analysis
 clc; clear; close all
-record_video = 0;
+record_video = 1;
 if record_video==1
     v=VideoWriter('Force Disturbance','MPEG-4');
     v.FrameRate=10;
@@ -11,9 +11,9 @@ end
 
 % {'c', 'apex_velocity', 'disturbance_f', 'TD_disturb', 'deltav', 'deltah'}
 varName = 'disturbance_f';
-varmaxplot = 100;
-varminplot = -100;
-energyMax = 50;
+varmaxplot = 200;
+varminplot = -200;
+energyMax = 100;
 plotName = 'Force Disturbance During Stance';
 cf = pwd; %Path stuff
 addpath(strcat(cf(1:strfind(pwd, 'slip_opt')-1), 'slip_opt\main_cols\')); %Add main col folder to path
@@ -23,8 +23,8 @@ dirname = strcat(dirComp, 'opt_', varName, '*');
 strucc = dir(dirname);
 fig = figure;
 hold on
-subplot(2,2,1); an1 = plot(1,1);
-axis([-1,1, 0, 1.5]); title('Y Height Through Cycle'); xlabel('Normalized Time'); ylabel('Y Displacement');
+subplot(2,2,1); an1 = plot(1,1);  hold on; an12 = plot([0 1], [1 1], 'bo');
+axis([0,1, 0, 1.5]); title('Y Height Through Cycle'); xlabel('Normalized Time'); ylabel('Y Displacement');
 subplot(2,2,2); an2 = plot(1,1); hold on; an22 = plot(2,2);
 axis([0, 1, -13, 13]); title('Torque Trajectory'); xlabel('Normalized Time'); ylabel('Torque'); legend('Ankle torque', 'Leg torque', 'Location', 'southwest')
 TLmax = refline(0, 12.2); TLmax.Color = [0.8500 0.3250 0.0980]; TLmax.LineStyle = '--'; TLmax.HandleVisibility = 'off';
@@ -37,6 +37,8 @@ axis([varminplot,varmaxplot, 0, energyMax]); xlabel(plotName); ylabel('Cost');
 title1 = title('wut');
 subplot(2,2,4); an4 = plot(1,1);
 axis([0,1, -.12, .12]); xlabel('Normalized Time'); ylabel('xcop')
+COPmax = refline(0, .165/2); COPmax.Color = 'b'; COPmax.LineStyle = '--'; COPmax.HandleVisibility = 'off';
+COPmin = refline(0, -.165/2); COPmin.Color = 'b'; COPmin.LineStyle = '--'; COPmin.HandleVisibility = 'off';
 % an2 = plot(2,2);
 title('Center of Pressure')
 % axis([-0.25, 0.25, .1, .9])
@@ -53,7 +55,7 @@ for i = 1:length(strucc)
     results{i}.param.(varName) = results{i}.param.(varName) * -1;
     varr(i) = results{i}.param.(varName);
     if varr(i) == -100
-        pause
+%         pause
     end
 end
 [var_sorted,i] = sort(varr);
@@ -84,16 +86,20 @@ while results_sorted_var{i}.param.(varName) < varmaxplot
         y = real(xyTraj.y);
         r = results_sorted_var{i}.r;
         k = results_sorted_var{i}.param.k;
-        xcop = -ankle_response .* r ./(k .*(results_sorted_var{i}.r0 -r).* results_sorted_var{i}.y);
+        xcop = (ankle_response * results_sorted_var{i}.param.transmission_ankle)...
+        .* r ./(k .*(results_sorted_var{i}.r0 -r).* results_sorted_var{i}.y); 
         
         if max(leg_response) > 12
 %             pause
         end
 
-        an1.XData = x; %real(xyTraj.t)/real(xyTraj.t(end));
+        an1.XData = real(xyTraj.t)/real(xyTraj.t(end));
         an1.YData = y;
         
-        an12.XData = time;
+%         an12.XData = time;
+%         an12.YData = [results_sorted_var{i}.y(1), results_sorted_var{i}.y(end)];
+
+        an12.XData = [real(xyTraj.tTD), real(xyTraj.tTD) + results_sorted_var{i}.t(end)]./real(xyTraj.t(end));
         an12.YData = [results_sorted_var{i}.y(1), results_sorted_var{i}.y(end)];
 
         an2.XData = time;
@@ -142,31 +148,31 @@ rl = refline(0, energy{1}.LegEtoStand); rl.LineStyle = '--';
 legend('Leg electrical', 'Leg mechanical', 'Ankle electrical', 'Ankle mechanical', 'Energy to stand')
 
 % GRF/leg length graph
-
-figure;
-subplot(2,1,1); grf = plot(0,0); xlabel('Normalized Time'); ylabel('GRF Normalized by Weight'); title2 = title('Ground Reaction Force');
-axis([0 1 0 3.2])
-subplot(2,1,2); leglen = plot(0,0); xlabel('Normalized Time'); ylabel('Leg Length'); title('Leg Length Through Stance')
-axis([0 1 0 1.2])
-
-i = 1;
-while results_sorted_var{i}.param.(varName) < varmaxplot
-    
-   if results_sorted_var{i}.param.flag > 0
-        time = results_sorted_var{i}.t/results_sorted_var{i}.t(end);
-        r = results_sorted_var{i}.r;
-        k = results_sorted_var{i}.param.k;
-        GRF = k* (results_sorted_var{i}.r0 - results_sorted_var{i}.r)/ (results_sorted_var{i}.param.m * results_sorted_var{i}.param.g);
-        
-        grf.XData = time;
-        grf.YData = GRF;
-        title2.String = ['Ground Reaction Forces when ', plotName, ' is ', num2str(results_sorted_var{i}.param.(varName)),' N'];
-        
-        leglen.XData = time;
-        leglen.YData = r;
-        drawnow;
-        pause(.05);
-   end
-    i = i + 1;
-end
+% 
+% figure;
+% subplot(2,1,1); grf = plot(0,0); xlabel('Normalized Time'); ylabel('GRF Normalized by Weight'); title2 = title('Ground Reaction Force');
+% axis([0 1 0 3.2])
+% subplot(2,1,2); leglen = plot(0,0); xlabel('Normalized Time'); ylabel('Leg Length'); title('Leg Length Through Stance')
+% axis([0 1 0 1.2])
+% 
+% i = 1;
+% while results_sorted_var{i}.param.(varName) < varmaxplot
+%     
+%    if results_sorted_var{i}.param.flag > 0
+%         time = results_sorted_var{i}.t/results_sorted_var{i}.t(end);
+%         r = results_sorted_var{i}.r;
+%         k = results_sorted_var{i}.param.k;
+%         GRF = k* (results_sorted_var{i}.r0 - results_sorted_var{i}.r)/ (results_sorted_var{i}.param.m * results_sorted_var{i}.param.g);
+%         
+%         grf.XData = time;
+%         grf.YData = GRF;
+%         title2.String = ['Ground Reaction Forces when ', plotName, ' is ', num2str(results_sorted_var{i}.param.(varName)),' N'];
+%         
+%         leglen.XData = time;
+%         leglen.YData = r;
+%         drawnow;
+%         pause(.05);
+%    end
+%     i = i + 1;
+% end
 

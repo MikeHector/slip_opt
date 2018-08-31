@@ -10,7 +10,7 @@ function [ ] = plot_slip(opt_results, record_video)
     s = opt_results;
     
     Fs = s.param.k * (s.r0 - s.r);
-    xcop = -s.Tankle .* s.r ./ (Fs .* s.y);
+    xcop = -s.Tankle * s.param.transmission_ankle .* s.r ./ (Fs .* s.y);
     leg_angle = atan2(s.y,s.x) - pi/2;
     
     %X Y Animation

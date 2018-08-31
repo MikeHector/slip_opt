@@ -6,11 +6,11 @@ function [ c, ViolationMatrix ] = nonlinear_constraint_func( DecisionVars, Param
 %   violation
 
     ViolationMatrix = zeros(size(DecisionVars));
-    T = DecisionVars(9,1);
+    Tstance = DecisionVars(9,1);
     %Collocation constraints (dynamics)
     for i = 1:Parameters.N - 1
-        time_i = T * (i - 1) / (Parameters.N - 1);
-        time_i_plus_1 = T * i / (Parameters.N - 1);
+        time_i = Tstance * (i - 1) / (Parameters.N - 1);
+        time_i_plus_1 = Tstance * i / (Parameters.N - 1);
         Fk = dynamics2(DecisionVars(:, i), Parameters);
         Fk_plus_1 = dynamics2(DecisionVars(:, i + 1), Parameters);
         %Trapezoidal Collocation Constraints

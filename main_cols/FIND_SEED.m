@@ -9,18 +9,21 @@ clear; clc;
 % colStrucArray = ColStrucBuilderTest();
 % fieldNames = fieldnames(colStrucArray);
 
-newFileName = 'baseline6';
+newFileName = 'NewBaselineSOFTMAXObjlower';
 %Load baseline seed and parameters
-load('baseline6')
+load('NewBaselineOldObj')
 opt_seed = opt_results.X;
-param = opt_results.param;
+param = opt_results.param;  
 
 iterationCounter = 0;
-lowest_cost = opt_results.cost;
+lowest_cost = 10e6;
+goodCounter = 0;
 
 while iterationCounter < 20000
-    [DV_out, opt_results] = RUN_COL(opt_seed, param);
-
+    [DV_out, opt_results] = RUN_COL2(opt_seed, param);
+    if opt_results.param.flag > 0
+        goodCounter = goodCounter + 1
+    end
     if opt_results.cost < lowest_cost && opt_results.param.flag > 0
         lowest_cost = opt_results.cost;
         %Save the coll

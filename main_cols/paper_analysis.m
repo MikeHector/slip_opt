@@ -34,6 +34,9 @@ for i = 1:length(xcopMax)
 end
 Tmax = abs(-R.param.lf/2 .* (R.param.k .* (R.r0 - R.r)) .* R.y./R.r);
 Forcemax = Tmax .* R.r;
+GRFy = R.param.k * (R.r0 - R.r);
+prop = GRFy./Forcemax;
+figure; plot(R.t, prop)
 
         
         
