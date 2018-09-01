@@ -22,7 +22,7 @@ function [ c, ceq ] = nonlinear_constraint_func2( dv, Parameters )
     Tankle = dv(8,:);
     r = sqrt(x.^2 + y.^2);
     
-    eqCon = zeros(9,3);  
+    eqCon = zeros(6,3);  
     stanceEnd = Parameters.Nstance;
     %Starting stance constraints
     %Fs starts at 0
@@ -38,15 +38,17 @@ function [ c, ceq ] = nonlinear_constraint_func2( dv, Parameters )
     %Liftoff energy
 %     eqCon(5,1) = Parameters.g * (Parameters.apex_height + Parameters.deltah - y(stanceEnd)) - .5 * dy(stanceEnd)^2;
     %Apex velocity x
-    eqCon(6,1) = dx(stanceEnd) - (Parameters.apex_velocity);
+    eqCon(5,1) = dx(stanceEnd) - (Parameters.apex_velocity);
 
     %Transition Constraints
     %State at end of stance matches state at start of flight
 %     eqCon(4:6,2) = dv(4:6,stanceEnd) - dv(4:6, stanceEnd+1);
     
     %Ending flight constraints - match initial stance translated in x
-    eqCon(2:8,3) = dv(2:8,end) - (dv(2:8,1) +...
-        [0 0 0 0 0 0 0]');
+    eqCon(6,1) = dv(1,end) - dv(1,1);
+    eqCon(1:6,2) = dv(2:7,end) - (dv(2:7,1) +...
+        [0 0 0 0 0 0]');
+    
         
 %     %Lock the TD angle ~~~~~~~~~~~~~~~~~~~FIX~~~~~~~~~~~~~~~~~~~~~~~~
 %     if ~isnan(Parameters.TD_disturb)
@@ -54,11 +56,11 @@ function [ c, ceq ] = nonlinear_constraint_func2( dv, Parameters )
 %     end
     
     %Average velocity
-    eqCon(7,1) = dx(1) - (x(end) - x(1)) / (dv(9,1) + dv(9,2));
+    eqCon(1,3) = dx(1) - (x(end) - x(1)) / (dv(9,1) + dv(9,2));
     
     %Concatenate
     ceq = [eqStance, eqFlight, eqCon];
-
+    
     %Inequality constraints
     %Ankle torque bounds
     ankle_bound = (Parameters.lf .* y(1:stanceEnd) .* ...

@@ -2,8 +2,8 @@ function [eqFlight] = flightConstraints(dv, p)
 %flightConstraints runs collocation constraints and others
 %   Takes in full decision variables, parameters and outputs the inequality
 %   constraints and equality constraints.
-
-    eqFlight = zeros(9, p.Nflight-1);
+    qLen = 2*p.dof;
+    eqFlight = zeros(qLen, p.Nflight-1);
     Tflight = dv(9,2);
     %Collocation constraints (dynamics)
     for i = p.Nstance:p.Nstance + p.Nflight - 2
@@ -14,8 +14,8 @@ function [eqFlight] = flightConstraints(dv, p)
         %Trapezoidal Collocation Constraints
         eqFlight(:, i-p.Nstance+1) = ...%i+1?
             [.5 * (time_i_plus_1 - time_i) * (Fk_plus_1 + Fk)...
-            - dv(1:2*p.dof, i + 1)...
-            + dv(1:2*p.dof, i); 0; 0; 0];
+            - dv(1:qLen, i + 1)...
+            + dv(1:qLen, i)];
     end
 end
 

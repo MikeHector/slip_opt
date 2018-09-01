@@ -14,11 +14,13 @@ p.cntrl_dof = 2;
 
 % Objective function
 %Get symbolic: objective func - gradient - hessian
-obj_func = objectiveFunctionSymbolic(dv, p, vStruc);
+obj_func = objectiveFunctionSymbolic(dv, p, vList);
 grad_obj = jacobian(obj_func, dv).';
-hess_obj = cell(1,size(grad_obj,2));
-for i = 1:size(grad_obj,2)
-    hess_obj{i} = jacobian(grad_obj(:,i),dv);
+if makehessian == 1
+    hess_obj = cell(1,size(grad_obj,2));
+    for i = 1:size(grad_obj,2)
+        hess_obj{i} = jacobian(grad_obj(:,i),dv);
+    end
 end
 
 if makefile == 1
@@ -26,21 +28,21 @@ if makefile == 1
     currdir = [pwd filesep];
     filename = [currdir, 'SymObjFunc.m'];
     disp('Making objective + grad file')
-    matlabFunction(obj_func,grad_obj,'file',filename,'vars',{dv, vList});
+    matlabFunction(obj_func,grad_obj,'file',filename,'vars',{dv, vList}, 'Optimize', false);
     disp('Done')
     
     if makehessian == 1
         %Objective Hessian
         filename = [currdir, 'SymObjHessFunc.m'];
         disp('making objective hessian file')
-        matlabFunction(hess_obj{size(grad_obj,2)},'file',filename,'vars',{dv, vList});
+        matlabFunction(hess_obj{size(grad_obj,2)},'file',filename,'vars',{dv, vList}, 'Optimize', false);
         disp('Done')
     end
 end
 
 % Constraints
 %Get symbolic constraints
-[c_ineq, c_eq, c_linear, A, b] = getSymbolicConstraints(dv,p,vStruc);
+[c_ineq, c_eq, c_linear, A, b, ceqCheck] = getSymbolicConstraints(dv,p,vStruc);
 
 % [c_ineq_from_old, c_eq_from_old] = nonlinear_constraint_func2(dv_num_block, symparamEX);
 
@@ -57,26 +59,59 @@ if makefile == 1
     disp('Making c_eq file')
     matlabFunction(c_eq,'file',filename,'vars',{dv, vList},...
         'outputs',{'c_eq'},'Optimize', false);
+    disp('Done')
 end
+
+if makefile == 1
+    filename = 'c_eq_check_func';
+    disp('Making c_eq_check file')
+    matlabFunction(c_eq,'file',filename,'vars',{dv, vList},...
+        'outputs',{'c_eq_check'},'Optimize', false);
+    disp('Done')
+end
+
 
 %Now we compare!
 
 %Get old 
+obj_old = objective_function_3(Example.dvNum, Example.vNum);
 [c_ineq_old_block, c_eq_old_block] = nonlinear_constraint_func2(Example.dvNum, Example.vNum);
 %Get it into list form
-c_ineq_old_list = [c_ineq_old_block(1,:)'; c_ineq_old_block(2,:)'];
-c_eq_old_list = []; %zeros( size(c_eq_old_block,1)*size(c_eq_old_block,2) ,1);
+c_ineq_old = [c_ineq_old_block(1,:)'; c_ineq_old_block(2,:)'];
+c_eq_old = []; %zeros( size(c_eq_old_block,1)*size(c_eq_old_block,2) ,1);
 for i = 1:size(c_eq_old_block,2)
-    c_eq_old_list = [c_eq_old_list; c_eq_old_block(:,i)];
+    c_eq_old = [c_eq_old; c_eq_old_block(:,i)];
+end
+%Get rid of the zeros (from empty spots in matrix)
+if any(c_eq_old_block(:,end) == 0)
+    nullify = length(find(c_eq_old_block(:,end) == 0));
+    c_eq_old = c_eq_old(1:end-nullify);
 end
 
 %Get new
+% obj_new = objectiveFunctionSymbolic(Example.dvSym, Example.vNum, Example.vNum);
+[obj_new, ~] = SymObjFunc(Example.dvSym, Example.vSymList);
 c_ineq_new = c_ineq_func(Example.dvSym, Example.vSymList);
-c_eq_new = c_eq_func(Example.dvSym, Example.vSymList);
+c_eq_new = c_eq_check_func(Example.dvSym, Example.vSymList);
+
+assert(size(c_eq_new,1) == size(c_eq_old,1), 'Equality constraint sizes do not match');
+
+%Compare!
+disp(['Error in objective function is  ', num2str(abs(obj_new - obj_old))]);
+disp(['Error in c_ineq constraint function is  ', num2str(max(max(abs(c_ineq_new - c_ineq_old))))]);
+disp(['Error in c_eq constraint function is  ', num2str(max(max(abs(c_eq_new - c_eq_old))))]);
+
+% %debug obj func
+% o_old = objective_function_3(Example.dvNum,vNum);
+% o_new_source = objectiveFunctionSymbolic(Example.dvSym, vNum
 
 
 
-disp('stop'); pause; pause; pause(60); pause;
+disp('stop'); 
+pause; 
+pause; 
+pause(60); 
+pause;
 grad_c_eq = jacobian(c_eq, DV).';
 grad_c_ineq = jacobian(c_ineq,DV).';
 

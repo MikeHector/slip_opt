@@ -1,4 +1,4 @@
-function [ c, ceq, c_linear, A, b] = getSymbolicConstraints( dv, p, v )
+function [ c, ceq, c_linear, A, b, ceqCheck] = getSymbolicConstraints( dv, p, v )
 %nonlcon This function determines the violation of the constraints
 %   Using trapezoidal collocation, the violation of the constraints is
 %   determined by plugging in the decision variables into formulated
@@ -71,6 +71,7 @@ function [ c, ceq, c_linear, A, b] = getSymbolicConstraints( dv, p, v )
     %Concatenate
     ceq = [ceq_stance; ceq_flight; eqCon'];
     c_linear = c_linear';
+    ceqCheck = [ceq_stance; ceq_flight; eqCon'; c_linear];
 
     %Inequality constraints
     %Ankle torque bounds
