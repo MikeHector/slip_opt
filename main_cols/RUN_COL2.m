@@ -2,12 +2,12 @@
 % 4.26.18
 % Collocation of slip through stance; v2 includes stance duration as a
 % decision variable
-function [optimized, opt_res] = RUN_COL2(seed, param) %TD_angle should be nan unless it is dictated
+function [optimized, opt_res] = RUN_COL2(seed, param, smooth) %TD_angle should be nan unless it is dictated
     assert(length(seed) == param.N-1,'Seed was not the expected dimension')
     assert(param.Nstance+param.Nflight == param.N, 'Collocation points of stance and flight do not add up to param.N!')
     
     %Cost function
-    cost_func = @(x) objective_function_3(x, param);
+    cost_func = @(x) objective_function_3(x, param, smooth);
 
     %Set up nonlinear constraint (which we'll be calling a lot)
     nonlcon = @(x) nonlinear_constraint_func2(x, param);

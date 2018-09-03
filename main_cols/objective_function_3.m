@@ -1,4 +1,4 @@
-function [ cost ] = objective_function_3( DecisionVariables, Parameters )
+function [ cost ] = objective_function_3( DecisionVariables, Parameters, smooth )
 %objective_function This function evaluates the objective function
 %   This function uses Decision variables and calculates the objective
 %   function or cost
@@ -12,16 +12,16 @@ function [ cost ] = objective_function_3( DecisionVariables, Parameters )
     cost_ankle = 0;
     R_leg = Parameters.R_leg;
     R_ankle = Parameters.R_ankle;
-%     maxXzero = @(x) x .* (atan(.5*x)/pi + .5);
-    maxXzeroLeg = @(x) .2*log(1+exp(5*x));
-    maxXzeroAnkle = @(x) .05*log(1+exp(20*x));
+    maxXzero = MikeMax(smooth);
+%     maxXzeroLeg = @(x) .2*log(1+exp(5*x));
+%     maxXzeroAnkle = @(x) .05*log(1+exp(20*x));
     for i = 1:size(DecisionVariables,2)
         cost_leg = cost_leg + ...
             R_leg * u(1, i)^2 * hk(i) +... %electrical
-            maxXzeroLeg(u(1, i) * Parameters.transmission * DecisionVariables(6, i) * hk(i)); %mechanical
+            maxXzero(u(1, i) * Parameters.transmission * DecisionVariables(6, i) * hk(i)); %mechanical
         cost_ankle = cost_ankle + ...
             R_ankle * u(2, i)^2 * hk(i) +... %electrical
-            maxXzeroAnkle(u(2, i) * Parameters.transmission_ankle *...
+            maxXzero(u(2, i) * Parameters.transmission_ankle *...
             (DecisionVariables(1,i) * DecisionVariables(5,i) - DecisionVariables(2,i) * DecisionVariables(4,i)) / (r(i)^2)  * hk(i)); %mechanical
     end
     cost = cost_leg + cost_ankle;
