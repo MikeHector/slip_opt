@@ -9,9 +9,9 @@ clear; clc;
 % colStrucArray = ColStrucBuilderTest();
 % fieldNames = fieldnames(colStrucArray);
 
-newFileName = 'NewBaselineSOFTMAXObjlower';
-%Load baseline seed and parameters
-load('NewBaselineOldObj')
+newFileName = 'SmoothTest_softmax';
+smooth = 2;%Load baseline seed and parameters
+load('SmoothTest_softmax')
 opt_seed = opt_results.X;
 param = opt_results.param;  
 
@@ -20,7 +20,7 @@ lowest_cost = 10e6;
 goodCounter = 0;
 
 while iterationCounter < 20000
-    [DV_out, opt_results] = RUN_COL2(opt_seed, param);
+    [DV_out, opt_results] = RUN_COL2(opt_seed, param, smooth);
     if opt_results.param.flag > 0
         goodCounter = goodCounter + 1
     end
