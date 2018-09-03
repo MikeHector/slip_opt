@@ -1,7 +1,7 @@
 %Let's try to make this analytic
 clear; close all; clc;
-
-makefile = 1; makehessian = 0;
+tic
+makefile = 1; makehessian = 1;
 %Set up collocation parameters - these are fixed for every compile
 p.N = 90;
 p.Nstance = 60;
@@ -121,34 +121,35 @@ disp(['Error in c_eq constraint function is  ', num2str(max(max(abs(c_eq_new - c
 
 
 
-disp('stop'); 
-pause; 
-pause; 
-pause(60); 
-pause;
-grad_c_eq = jacobian(c_eq, DV).';
-grad_c_ineq = jacobian(c_ineq,DV).';
+% disp('stop'); 
+% pause; 
+% pause; 
+% pause(60); 
+% pause;
+
+grad_c_eq = jacobian(c_eq, dv).';
+grad_c_ineq = jacobian(c_ineq,dv).';
 
 %Constraint function files
 filename = [currdir, 'SymConFunc.m'];
-matlabFunction(c_ineq,c_eq,grad_c_ineq,grad_c_eq,'file',filename,'vars',{DV, symparamlist},...
-    'outputs',{'c_ineq','c_eq','grad_c_ineq','grad_c_eq'});
+matlabFunction(c_ineq,c_eq,grad_c_ineq,grad_c_eq,'file',filename,'vars',{dv, vList},...
+    'outputs',{'c_ineq','c_eq','grad_c_ineq','grad_c_eq'},'Optimize', false);
 
-i_c_eq = size(grad_c_eq,2);
-hess_c_eq = cell(1,i_c_eq);
-for i = 1:i_c_eq
-    hess_c_eq{i} = jacobian(grad_c_eq(:,i),DV);
-    disp('Constraint Hessian 1 of 2 generating...')
-    disp(['Progress: ', num2str(i/i_c_eq*100), ' %'])
-end
-
-i_c_ineq = size(grad_c_ineq,2);
-hess_c_ineq = cell(1,i_c_ineq);
-for i = 1:i_c_ineq
-    hess_c_ineq{i} = jacobian(grad_c_ineq(:,i),DV);
-    disp('Constraint Hessian 2 of 2 generating...')
-    disp(['Progress: ', num2str(i/i_c_ineq*100), ' %'])
-end
+% i_c_eq = size(grad_c_eq,2);
+% hess_c_eq = cell(1,i_c_eq);
+% for i = 1:i_c_eq
+%     hess_c_eq{i} = jacobian(grad_c_eq(:,i),DV);
+%     disp('Constraint Hessian 1 of 2 generating...')
+%     disp(['Progress: ', num2str(i/i_c_eq*100), ' %'])
+% end
+% 
+% i_c_ineq = size(grad_c_ineq,2);
+% hess_c_ineq = cell(1,i_c_ineq);
+% for i = 1:i_c_ineq
+%     hess_c_ineq{i} = jacobian(grad_c_ineq(:,i),DV);
+%     disp('Constraint Hessian 2 of 2 generating...')
+%     disp(['Progress: ', num2str(i/i_c_ineq*100), ' %'])
+% end
 
 %%%
 %Constraint Hessian
@@ -158,7 +159,7 @@ end
 % %%%
 
 time2gen = toc;
-disp(['It took ' num2str(time2gen/60), ' minutes to generate analytics'])
+disp(['It took ' num2str(time2gen/3600), ' hours to generate analytics'])
 
 
 
