@@ -10,8 +10,7 @@ clear; clc;
 % fieldNames = fieldnames(colStrucArray);
 
 newFileName = 'SmoothTest_softmax';
-smooth = 2;
-%Load baseline seed and parameters
+smooth = 2;%Load baseline seed and parameters
 load('SmoothTest_softmax')
 opt_seed = opt_results.X;
 param = opt_results.param;  
