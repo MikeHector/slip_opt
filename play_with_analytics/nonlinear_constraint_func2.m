@@ -1,4 +1,4 @@
-function [ c, ceq ] = nonlinear_constraint_func2( dv, Parameters )
+function [ c, ceq, eqFlight] = nonlinear_constraint_func2( dv, Parameters )
 %nonlcon This function determines the violation of the constraints
 %   Using trapezoidal collocation, the violation of the constraints is
 %   determined by plugging in the decision variables into formulated
@@ -45,9 +45,10 @@ function [ c, ceq ] = nonlinear_constraint_func2( dv, Parameters )
 %     eqCon(4:6,2) = dv(4:6,stanceEnd) - dv(4:6, stanceEnd+1);
     
     %Ending flight constraints - match initial stance translated in x
-    eqCon(6,1) = dv(1,end) - dv(1,1);
-    eqCon(1:6,2) = dv(2:7,end) - (dv(2:7,1) +...
+    eqCon(6,1) = dv(2,end) - dv(2,1);
+    eqCon(1:6,2) = dv(3:8,end) - (dv(3:8,1) +...
         [0 0 0 0 0 0]');
+%     eqCon(1,3) = dv(8,end) - dv(8,1) + 0;
     
         
 %     %Lock the TD angle ~~~~~~~~~~~~~~~~~~~FIX~~~~~~~~~~~~~~~~~~~~~~~~

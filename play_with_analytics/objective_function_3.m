@@ -3,7 +3,7 @@ function [ cost ] = objective_function_3( DecisionVariables, Parameters )
 %   This function uses Decision variables and calculates the objective
 %   function or cost
     x = DecisionVariables(1, :);
-    x(43);
+%     x(43);
     y = DecisionVariables(2, :);
     r0 = DecisionVariables(3, :);
     dx = DecisionVariables(4, :);

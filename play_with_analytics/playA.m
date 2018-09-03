@@ -12,6 +12,9 @@ p.cntrl_dof = 2;
 % Setup
 [dv, vStruc, vList, Example] = makeParamSym(p);
 
+
+%%%%%ljkfewl;akjfe
+
 % Objective function
 %Get symbolic: objective func - gradient - hessian
 obj_func = objectiveFunctionSymbolic(dv, p, vList);
@@ -65,17 +68,18 @@ end
 if makefile == 1
     filename = 'c_eq_check_func';
     disp('Making c_eq_check file')
-    matlabFunction(c_eq,'file',filename,'vars',{dv, vList},...
-        'outputs',{'c_eq_check'},'Optimize', false);
+    matlabFunction(ceqCheck,'file',filename,'vars',{dv, vList},...
+        'outputs',{'ceqCheck'},'Optimize', false);
     disp('Done')
 end
 
+%%%%%%%%%%%%;lifje4w;alj;
 
 %Now we compare!
 
 %Get old 
 obj_old = objective_function_3(Example.dvNum, Example.vNum);
-[c_ineq_old_block, c_eq_old_block] = nonlinear_constraint_func2(Example.dvNum, Example.vNum);
+[c_ineq_old_block, c_eq_old_block, eqStanceOld] = nonlinear_constraint_func2(Example.dvNum, Example.vNum);
 %Get it into list form
 c_ineq_old = [c_ineq_old_block(1,:)'; c_ineq_old_block(2,:)'];
 c_eq_old = []; %zeros( size(c_eq_old_block,1)*size(c_eq_old_block,2) ,1);
@@ -89,11 +93,21 @@ if any(c_eq_old_block(:,end) == 0)
 end
 
 %Get new
+%Round 2
+% obj_new = objective_function_3(Example.dvSym, Example.vNum);
+% [c_ineq_new,~,~,~,~,c_eq_old, ~] = getSymbolicConstraints(Example.dvSym, Example.vNum, Example.vNum);
+
+%Check stance
+% eqStanceOldLine = reshape(eqStanceOld,[size(eqStanceOld,1)*size(eqStanceOld,2),1]);
+% max(abs(eqStanceNew - eqStanceOldLine))
+
 % obj_new = objectiveFunctionSymbolic(Example.dvSym, Example.vNum, Example.vNum);
 [obj_new, ~] = SymObjFunc(Example.dvSym, Example.vSymList);
 c_ineq_new = c_ineq_func(Example.dvSym, Example.vSymList);
 c_eq_new = c_eq_check_func(Example.dvSym, Example.vSymList);
 
+assert(size(obj_new,1) == size(obj_old,1), 'Objective sizes do not match');
+assert(size(c_ineq_new,1) == size(c_ineq_old,1), 'Inequality constraint sizes do not match');
 assert(size(c_eq_new,1) == size(c_eq_old,1), 'Equality constraint sizes do not match');
 
 %Compare!
