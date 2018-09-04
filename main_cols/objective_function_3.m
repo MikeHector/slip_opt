@@ -16,6 +16,9 @@ function [ cost ] = objective_function_3( DecisionVariables, Parameters, smooth 
 %     maxXzeroLeg = @(x) .2*log(1+exp(5*x));
 %     maxXzeroAnkle = @(x) .05*log(1+exp(20*x));
     for i = 1:size(DecisionVariables,2)
+%         if i >= Parameters.Nstance
+%             disp('stop')
+%         end
         cost_leg = cost_leg + ...
             R_leg * u(1, i)^2 * hk(i) +... %electrical
             maxXzero(u(1, i) * Parameters.transmission * DecisionVariables(6, i) * hk(i)); %mechanical
@@ -25,4 +28,5 @@ function [ cost ] = objective_function_3( DecisionVariables, Parameters, smooth 
             (DecisionVariables(1,i) * DecisionVariables(5,i) - DecisionVariables(2,i) * DecisionVariables(4,i)) / (r(i)^2)  * hk(i)); %mechanical
     end
     cost = cost_leg + cost_ankle;
+%     disp(['Cost of ankle is ', num2str(cost_ankle), ' J']);
 end

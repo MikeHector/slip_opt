@@ -7,7 +7,7 @@ x = [x, linspace(0, 265, 10000)];
 
 ySharp = max(x,0);
 tic
-ySmooth = x .* (atan(50*x)/pi + .5);
+ySmooth = x.^3./x.^2 .* (atan(50*x)/pi + .5);
 tansoft = toc;
 a = .2;
 b = 1/a;

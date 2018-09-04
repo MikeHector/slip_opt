@@ -21,6 +21,7 @@ function [ c, ceq ] = nonlinear_constraint_func2( dv, Parameters )
     Tleg = dv(7,:);
     Tankle = dv(8,:);
     r = sqrt(x.^2 + y.^2);
+    apex_height = dv(9,3);
     
     eqCon = zeros(9,3);  
     stanceEnd = Parameters.Nstance;
@@ -28,9 +29,9 @@ function [ c, ceq ] = nonlinear_constraint_func2( dv, Parameters )
     %Fs starts at 0
     eqCon(1,1) = r(1) - r0(1);
     %y - velocity + position. energy approach
-    eqCon(2,1) = .5 * dy(1)^2 - Parameters.g * (Parameters.apex_height - y(1));
+    eqCon(2,1) = .5 * dy(1)^2 - Parameters.g * (apex_height - y(1));
     %x - velocity
-    eqCon(3,1) = dx(1) - Parameters.apex_velocity;
+%     eqCon(3,1) = dx(1) - Parameters.apex_velocity;
     
     %Ending stance constraints
     %Force in spring is 0
@@ -38,7 +39,7 @@ function [ c, ceq ] = nonlinear_constraint_func2( dv, Parameters )
     %Liftoff energy
 %     eqCon(5,1) = Parameters.g * (Parameters.apex_height + Parameters.deltah - y(stanceEnd)) - .5 * dy(stanceEnd)^2;
     %Apex velocity x
-    eqCon(6,1) = dx(stanceEnd) - (Parameters.apex_velocity + Parameters.deltav);
+%     eqCon(6,1) = dx(stanceEnd) - (Parameters.apex_velocity + Parameters.deltav);
 
     %Transition Constraints
     %State at end of stance matches state at start of flight
@@ -54,7 +55,7 @@ function [ c, ceq ] = nonlinear_constraint_func2( dv, Parameters )
     end
     
     %Average velocity
-    eqCon(7,1) = dx(1) - (x(end) - x(1)) / (dv(9,1) + dv(9,2));
+    eqCon(7,1) = Parameters.average_velocity - (x(end) - x(1)) / (dv(9,1) + dv(9,2));
     
     %Concatenate
     ceq = [eqStance, eqFlight, eqCon];

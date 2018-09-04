@@ -9,9 +9,9 @@ clear; clc;
 % colStrucArray = ColStrucBuilderTest();
 % fieldNames = fieldnames(colStrucArray);
 
-newFileName = 'SmoothTest_softmax';
+newFileName = 'Baseline_apex_vel_height_free';
 smooth = 2;%Load baseline seed and parameters
-load('SmoothTest_softmax')
+load('Baseline_apex_vel_height_free')
 opt_seed = opt_results.X;
 param = opt_results.param;  
 
