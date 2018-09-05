@@ -16,8 +16,8 @@ varminplot = 0;
 energyMax = 800;
 plotName = 'R leg';
 cf = pwd; %Path stuff
-addpath(strcat(cf(1:strfind(pwd, 'collocation')-1), 'collocation\main_cols\')); %Add main col folder to path
-dirComp = getSaveDir('DRL-PC'); %Change if you're running on a different computer
+addpath(strcat(cf(1:strfind(pwd, 'slip_opt')-1), 'slip_opt\main_cols\')); %Add main col folder to path
+dirComp = getSaveDir('Michael-PC'); %Change if you're running on a different computer
 
 dirname = strcat(dirComp, 'opt_', varName, '*');
 strucc = dir(dirname);
@@ -64,7 +64,7 @@ for k = 1:length(i)
     if results{i(k)}.param.flag > 0
         var_graph(q) = results{i(k)}.param.(varName);
         cost_graph(q) = results{i(k)}.cost;
-        energy{q} = get_energy(results{i(k)},0);
+        energy{q} = get_energy2(results{i(k)},0);
         q = q+1;
     end
 end

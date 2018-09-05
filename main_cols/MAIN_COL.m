@@ -9,7 +9,7 @@ colStrucArray = ColStrucBuilder();
 % colStrucArray = ColStrucBuilderTest();
 fieldNames = fieldnames(colStrucArray);
 
-saveDir = getSaveDir('DRL-PC');
+saveDir = getSaveDir('Michael-PC');
 
 for m = [8]
     colStruc = colStrucArray.(fieldNames{m});
